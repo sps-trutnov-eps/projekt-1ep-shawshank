@@ -9,8 +9,9 @@ pygame.init()
 okno = pygame.display.set_mode((736,448))
 pygame.display.set_caption("Minihra Martina Michálka")
 
-seznam_zadani = ["test", "tset"]
-zadani = seznam_zadani[random.randint(0,len(seznam_zadani))-1]
+seznam_zadani = {"test":1, "tset":2}
+zadani = random.choice(list(seznam_zadani))
+reseni = seznam_zadani[zadani]
 
 while True:
     udalost = pygame.event.get()
