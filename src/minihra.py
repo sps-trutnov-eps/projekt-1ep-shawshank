@@ -1,9 +1,19 @@
 import pygame
-import sys
 
 pygame.init()
-display = pygame.display.set_mode((400, 300))
-myfont = pygame.font.Sysfont("verdana", 20)
+screen = pygame.display.set_mode((1000, 1000))
+dialogue_font = pygame.font.SysFont("arial", 60)
+dialogue = dialogue_font.render("Matematika začíná!", True, (255, 50, 100))
 
-mytext = myfont.render("Matematika začíná:", (200, 50, 50))
-
+while True:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+   
+    screen.fill((255, 255, 255))
+     
+    screen.blit(dialogue, (40, 40))
+     
+    pygame.display.flip()
+    
