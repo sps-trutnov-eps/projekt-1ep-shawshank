@@ -1,3 +1,4 @@
+## ToDo input a kontrola řešení, časovač odpovědi
 import pygame
 import sys
 import random
@@ -27,7 +28,5 @@ while True:
     font = pygame.font.SysFont("Comic Sans MS", 42)
     uloha = font.render(zadani, True, (255, 255, 255))
     okno.blit(uloha, (0,0))
-    
-    ## ToDo input řešení
-    
+        
     pygame.display.update()
