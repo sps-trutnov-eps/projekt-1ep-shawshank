@@ -1,7 +1,7 @@
 import pygame
 import sys
 
-BARVA_POZADI = (0, 0, 0)
+BARVA_POZADI = (0, 20, 0)
 
 pygame.init()
 
