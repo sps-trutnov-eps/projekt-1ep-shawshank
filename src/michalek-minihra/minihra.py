@@ -6,6 +6,7 @@ import random
 BARVA_POZADI = (0, 20, 0)
 
 pygame.init()
+input_active = True
 
 okno = pygame.display.set_mode((736,448))
 pygame.display.set_caption("Minihra Martina Michálka")
@@ -22,6 +23,9 @@ while True:
         if u.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
+        elif event.type == pygame.KEYDOWN and input_active:
+            if event.key == pygame.K_RETURN:
+                input_active = False
     
     okno.fill(BARVA_POZADI)
     
