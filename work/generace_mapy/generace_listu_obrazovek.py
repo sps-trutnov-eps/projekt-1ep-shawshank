@@ -34,17 +34,17 @@ while True:
                           [False,"sem_příjde_třída"],["prozatím_nepoužitá_kolonka_pro_bullyho"]]
         
         if obrazovka[0][15] == "5":
-            obrazovka_list[1][0]=True
-        if obrazovka[0][6] == "5":
-            obrazovka_list[1][5]=True
-        if obrazovka[6][-1] == "5":
             obrazovka_list[1][1]=True
-        if obrazovka[6][0] == "5":
-            obrazovka_list[1][4]=True
-        if obrazovka[-1][15] == "5":
+        if obrazovka[0][6] == "5":
+            obrazovka_list[1][0]=True
+        if obrazovka[6][-1] == "5":
             obrazovka_list[1][2]=True
-        if obrazovka[-1][6] == "5":
+        if obrazovka[6][0] == "5":
+            obrazovka_list[1][5]=True
+        if obrazovka[-1][15] == "5":
             obrazovka_list[1][3]=True
+        if obrazovka[-1][6] == "5":
+            obrazovka_list[1][4]=True
             
         obrazovky.append(obrazovka_list)
 
