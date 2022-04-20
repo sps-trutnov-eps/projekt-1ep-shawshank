@@ -23,7 +23,13 @@ otazky = cteni_dat_list("otazky.csv")
 i_otazka = random.randint(0,(len(otazky) - 1))
 otazka = otazky[i_otazka]
 odpoved = kontrola_kod(odpovedi,otazka,"kod")
-print(otazka)
+odpoved_kod = odpoved["kod"]
+i_false_otazka = random.randint(0,(len(otazky) - 1))
+false_odpoved = odpovedi[i_false_otazka]
+while false_odpoved["kod"] == odpoved["kod"]:
+    i_false_otazka = random.randint(0,(len(otazky) - 1))
+    false_odpoved = odpovedi[i_false_otazka]
+print(false_odpoved)
 print(odpoved)
 
 rozliseni_okna = rozliseni_x, rozliseni_y = (1200,800)
