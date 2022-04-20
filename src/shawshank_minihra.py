@@ -1,5 +1,30 @@
 import pygame
 import sys
+def cteni_dat_list(jmeno_souboru):
+    soubor = open(jmeno_souboru, 'r', encoding = 'utf-8')
+    data = []
+    klice = soubor.readline()
+    klice = klice[:-1].split(",")
+    for radek in soubor:
+        hodnota = radek[:-1].split(',')
+        polozka = {}
+        for i, klic in enumerate(klice):
+            polozka[klic] = hodnota[i]
+        else:
+            data.append(polozka)
+    soubor.close
+    return data
+def kontrola_kod(seznam,seznam2,typ):
+    for polozka in seznam:
+        if polozka[typ] == seznam2[typ]:
+            return polozka
+odpovedi = cteni_dat_list("odpovedi.csv")
+otazky = cteni_dat_list("otazky.csv")
+i_otazka = random.randint(0,(len(otazky) - 1))
+otazka = otazky[i_otazka]
+odpoved = kontrola_kod(odpovedi,otazka,"kod")
+print(otazka)
+print(odpoved)
 
 rozliseni_okna = rozliseni_x, rozliseni_y = (1200,800)
 pozadi_barva = (186, 140, 90)
