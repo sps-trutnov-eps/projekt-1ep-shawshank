@@ -11,8 +11,12 @@ class zed(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(topleft = (pozice))
         
 class hrac(pygame.sprite.Sprite):
-    def __init__(self):
+    def __init__(self, pozice):
         super().__init__()
         
         self.image = pygame.image.load("../data/textury_hrac/player_front.png").convert_alpha()
-        self.rect = self.image.get_rect(center = ((23*32)/2,(14*32)/2))
+        self.rect = self.image.get_rect(center = (pozice))
+        
+    def update(self, poziceX, poziceY):
+        self.rect.centerx = poziceX
+        self.rect.centery = poziceY
