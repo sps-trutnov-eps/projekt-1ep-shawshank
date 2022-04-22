@@ -53,51 +53,43 @@ def umisteni(pos,mapa,new_pos):
         data_fc.append(dat)
     
     #určení možných vstupů/výstupů
-    try:
-        if y == 0:
-            new_screen[0] = "0"
-            new_screen[1] = "0"
-        elif mapa[y-1][x] != []:
-            new_screen[0] = mapa[y-1][x][0][4]
-            new_screen[1] = mapa[y-1][x][0][3]
-            
-        if y == len(mapa)-1:
-            new_screen[3] = "0"
-            new_screen[4] = "0"
-        elif mapa[y+1][x] != []:
-            new_screen[4] = mapa[y+1][x][0][0]
-            new_screen[3] = mapa[y+1][x][0][1]
-            
-        if x == 0:
-            new_screen[5] = "0"
-        elif mapa[y][x-1] != []:
-            new_screen[5] = mapa[y][x-1][0][2]
-            
-        if x == len(mapa[0])-1:
-            new_screen[2] = "0"
-        elif mapa[y][x+1] != []:
-            new_screen[2] = mapa[y][x+1][0][5]
-    except:
-        print(f"\nx = {x}\ny = {y}")
+    if y == 0:
+        new_screen[0] = "0"
+        new_screen[1] = "0"
+    elif mapa[y-1][x] != []:
+        new_screen[0] = mapa[y-1][x][0][4]
+        new_screen[1] = mapa[y-1][x][0][3]
         
-    if new_pos == "up": new_screen[random.choise((0,1))] = "1"
-    elif new_pos == "down": new_screen[random.choise((3,4))] = "1"
-    elif new_pos == "left": new_screen[5] = "1"
-    elif new_pos == "right": new_screen[2] = "1"
+    if y == len(mapa)-1:
+        new_screen[3] = "0"
+        new_screen[4] = "0"
+    elif mapa[y+1][x] != []:
+        new_screen[4] = mapa[y+1][x][0][0]
+        new_screen[3] = mapa[y+1][x][0][1]
         
-    print(new_screen)
+    if x == 0:
+        new_screen[5] = "0"
+    elif mapa[y][x-1] != []:
+        new_screen[5] = mapa[y][x-1][0][2]
+        
+    if x == len(mapa[0])-1:
+        new_screen[2] = "0"
+    elif mapa[y][x+1] != []:
+        new_screen[2] = mapa[y][x+1][0][5]
+        
+    if "up" in new_pos: new_screen[random.choice((0,1))] = "1"
+    elif "down" in new_pos: new_screen[random.choice((3,4))] = "1"
+    elif "left" in new_pos: new_screen[5] = "1"
+    elif "right" in new_pos: new_screen[2] = "1"
+        
+    #print(new_screen,new_pos)
+    real_new_screen = ""
     #vybrání tile
-    for dat in data_fc:
-        for parameter_ind,parameter in enumerate(new_screen):
-            if parameter:
-                if dat[0][parameter_ind] != parameter:
-                    data_fc.remove(dat)
-                    break
-    try:
-        mapa[y][x] = random.choice(data_fc)
-    except:
-        print(mapa,f"\n{data}")
+    for symbol in new_screen:
+        if symbol: real_new_screen += symbol
+        else: real_new_screen += random.choice(("0","1"))
         
+    mapa[y][x] = [real_new_screen,False]
     return mapa
 
 #generace soupisu čísel (prozatimní)
@@ -125,10 +117,12 @@ for x in range(1):
 for main_ind,main in enumerate(main_screenes):
     pos = main_positions[main_ind]
     pos,new_pos = test(pos,["none","none"])
-    while new_pos != ["none","none"] and pos != [5,5]:
-        mapa = umisteni(pos,mapa,new_pos)
+    
+    while new_pos != ["none","none"] and pos != master:
+        old_pos = [pos[0],pos[1]]
         pos,new_pos = test(pos,["none","none"])
+        mapa = umisteni(old_pos,mapa,new_pos)
 
-print("\nmapa::::",len(data))
+print("\n::::mapa::::")
 for line in mapa:
     print(line)
