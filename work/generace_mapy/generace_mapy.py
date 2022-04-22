@@ -1,4 +1,5 @@
-import random
+import random,pygame,sys
+pygame.init()
 # základní proměnné
 data = []
 mapa = [
@@ -17,6 +18,27 @@ mapa = [
 main_screenes = []
 main_positions = []
 master = [5,5]
+screen = pygame.display.set_mode((len(mapa[0])*20,len(mapa)*12))
+drawing_positions = {"0" : (4,0),
+                     "1" : (12,0),
+                     "2" : (16,4),
+                     "3" : (12,8),
+                     "4" : (4,8),
+                     "5" : (0,4)}
+
+#kreslení obrazovky na micromapu:
+def draw_screen(obrazovka,pos):
+    base = pygame.Surface((12,4))
+    base.fill("white")
+    pixel = pygame.Surface((4,4))
+    pixel.fill("white")
+    dot = pygame.Surface((4,4))
+    dot.fill("lime")
+    screen.blit(base,(pos[0]+4,pos[1]+4))
+    for symbol_ind,symbol in enumerate(obrazovka[0]):
+        if symbol == "1": screen.blit(pixel,(pos[0]+drawing_positions[str(symbol_ind)][0],pos[1]+drawing_positions[str(symbol_ind)][1]))
+    if obrazovka[1]: screen.blit(dot,(pos[0]+8,pos[1]+4))
+        
 
 #hledání cesty    
 def test(pos,new_pos):
@@ -87,7 +109,7 @@ def umisteni(pos,mapa,new_pos):
     #vybrání tile
     for symbol in new_screen:
         if symbol: real_new_screen += symbol
-        else: real_new_screen += random.choice(("0","1"))
+        else: real_new_screen += random.choice(("0","1","0"))
         
     mapa[y][x] = [real_new_screen,False]
     return mapa
@@ -126,3 +148,22 @@ for main_ind,main in enumerate(main_screenes):
 print("\n::::mapa::::")
 for line in mapa:
     print(line)
+    
+#vykreslování obrazovky
+screen.fill("black")
+for line_ind,line in enumerate(mapa):
+    for part_ind,part in enumerate(line):
+        if part != []: draw_screen(part,(part_ind*20,line_ind*12))
+    
+#main loop(vypnutí obrazovky)
+while True:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_ESCAPE]:
+            pygame.quit()
+            sys.exit()
+            
+    pygame.display.update()
