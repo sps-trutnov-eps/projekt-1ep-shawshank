@@ -7,13 +7,14 @@ mapa = [
         [[],[],[],[],[],[],[],[],[],[],[]],
         [[],[],[],[],[],[],[],[],[],[],[]],
         [[],[],[],[],[],[],[],[],[],[],[]],
-        [[],[],[],[],[],["111111",True],[],[],[],[],[]],
+        [[],[],[],[],[],["111111","master"],[],[],[],[],[]],
         [[],[],[],[],[],[],[],[],[],[],[]],
         [[],[],[],[],[],[],[],[],[],[],[]],
         [[],[],[],[],[],[],[],[],[],[],[]],
         [[],[],[],[],[],[],[],[],[],[],[]],
         [[],[],[],[],[],[],[],[],[],[],[]]
        ]
+chances = ["0","1","0"]
 main_screenes = []
 main_positions = []
 master = [5,5]
@@ -36,8 +37,14 @@ def draw_screen(obrazovka,pos):
     screen.blit(base,(pos[0]+4,pos[1]+4))
     for symbol_ind,symbol in enumerate(obrazovka[0]):
         if symbol == "1": screen.blit(pixel,(pos[0]+drawing_positions[str(symbol_ind)][0],pos[1]+drawing_positions[str(symbol_ind)][1]))
-    if obrazovka[1]: screen.blit(dot,(pos[0]+8,pos[1]+4))
-        
+    if obrazovka[1]:
+        screen.blit(dot,(pos[0]+8,pos[1]+4))
+        if obrazovka[1] == "master":
+            dot.fill("red")
+            screen.blit(dot,(pos[0]+8,pos[1]+4))
+        elif obrazovka[1] == "main":
+            dot.fill("blue")
+            screen.blit(dot,(pos[0]+8,pos[1]+4))
 
 #hledání cesty    
 def test(pos):
@@ -103,13 +110,12 @@ def umisteni(pos,mapa,new_pos):
     elif "down" in new_pos: new_screen[random.choice((3,4))] = "1"
     elif "left" in new_pos: new_screen[5] = "1"
     elif "right" in new_pos: new_screen[2] = "1"
-        
-    #print(new_screen,new_pos)
     real_new_screen = ""
+    
     #vybrání tile
     for symbol in new_screen:
         if symbol: real_new_screen += symbol
-        else: real_new_screen += random.choice(("0","1","0"))
+        else: real_new_screen += random.choice(chances)
         
     mapa[y][x] = [real_new_screen,state_of_door]
     return mapa
@@ -129,16 +135,14 @@ for x in range(3):
      |_____ X _____|      
            | |             
            | |
-           |_|            """,True]
-    print(chosen)
+           |_|            ""","main"]
     main_screenes.append(chosen) 
     
     pos = [random.randint(1,len(mapa[0])-1),random.randint(1,len(mapa)-1)]
-    while 8 > pos[0] > 2 and 8 > pos[1] > 2:
+    while master[0]+3 > pos[0] > master[0]-3 and master[1]+3 > pos[1] > master[1]-3:
         pos = [random.randint(1,len(mapa[0])-1),random.randint(1,len(mapa)-1)]
     main_positions.append(pos)
     mapa[pos[0]][pos[1]] = chosen
-    print(pos, mapa[pos[0]][pos[1]])
 
 #generace mapy
 for main_ind,main in enumerate(main_screenes):
@@ -146,16 +150,49 @@ for main_ind,main in enumerate(main_screenes):
     pos = main_positions[main_ind]
     pos,new_pos = test(pos)
     mapa = umisteni(old_pos,mapa,new_pos)
-    mapa[old_pos[0]][old_pos[1]][1] = True
     
     while new_pos != ["none","none"] and pos != master:
         old_pos = [pos[0],pos[1]]
         pos,new_pos = test(pos)
         mapa = umisteni(old_pos,mapa,new_pos)
 
-print("\n::::mapa::::")
-for line in mapa:
-    print(line)
+#doplňování zbytku mapy
+generate = True
+while generate:
+    generate = False
+    for line_ind,line in enumerate(mapa):
+        for part_ind,part in enumerate(line):
+            variable = False
+            if part == []:
+                if line_ind != 0:
+                    if mapa[line_ind-1][part_ind] != []:
+                        if mapa[line_ind-1][part_ind][0][3] == "1" or mapa[line_ind-1][part_ind][0][4] == "1": variable = True
+                if line_ind != len(mapa)-1:
+                    if mapa[line_ind+1][part_ind] != []:
+                        if mapa[line_ind+1][part_ind][0][0] == "1" or mapa[line_ind+1][part_ind][0][1] == "1": variable = True
+                if part_ind != 0:
+                    if mapa[line_ind][part_ind-1] != []:
+                        if mapa[line_ind][part_ind-1][0][2] == "1": variable = True
+                if part_ind != len(mapa[0])-1:
+                    if mapa[line_ind][part_ind+1] != []:
+                        if mapa[line_ind][part_ind+1][0][5] == "1": variable = True
+                
+                if variable:
+                    mapa = umisteni([line_ind,part_ind],mapa,["none","none"])
+                    generate = True
+                    
+#doplnění dveří dalším obrazovkám
+seznam = []
+for line_ind,line in enumerate(mapa):
+    for part_ind,part in enumerate(line):
+        if part != []:
+            if not part[1]:
+                seznam.append((line_ind,part_ind))
+for x in range(len(seznam)//6):
+    chosen_one = random.choice(seznam)
+    mapa[chosen_one[0]][chosen_one[1]][1] = "regular_door"
+    seznam.remove(chosen_one)
+        
     
 #vykreslování obrazovky
 screen.fill("black")
