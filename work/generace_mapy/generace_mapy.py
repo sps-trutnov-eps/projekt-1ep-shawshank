@@ -1,7 +1,6 @@
 import random,pygame,sys
 pygame.init()
 # základní proměnné
-data = []
 mapa = [
         [[],[],[],[],[],[],[],[],[],[],[]],
         [[],[],[],[],[],[],[],[],[],[],[]],
@@ -41,7 +40,8 @@ def draw_screen(obrazovka,pos):
         
 
 #hledání cesty    
-def test(pos,new_pos):
+def test(pos):
+    new_pos = ["none","none"]
     if pos[0] > master[0]:
         new_pos[0] = "up"
     elif pos[0] < master[0]:
@@ -67,12 +67,12 @@ def test(pos,new_pos):
 
 #umištěňování obrazovek
 def umisteni(pos,mapa,new_pos):
+    state_of_door = False
+    if mapa[pos[0]][pos[1]] != []:
+        state_of_door = mapa[pos[0]][pos[1]][1]
     new_screen = [False,False,False,False,False,False]
     x = pos[1]
     y = pos[0]
-    data_fc = []
-    for dat in data:
-        data_fc.append(dat)
     
     #určení možných vstupů/výstupů
     if y == 0:
@@ -111,22 +111,26 @@ def umisteni(pos,mapa,new_pos):
         if symbol: real_new_screen += symbol
         else: real_new_screen += random.choice(("0","1","0"))
         
-    mapa[y][x] = [real_new_screen,False]
+    mapa[y][x] = [real_new_screen,state_of_door]
     return mapa
 
-#generace soupisu čísel (prozatimní)
-for number in range(64):
-    dat = bin(number).split("b")[1]
-    if len(dat) != 6:
-        for x in range(6 - len(dat)):
-            dat = "0"+dat
-    
-    data.append([dat, False])
-
 #generace hlavních obrazovek
-for x in range(1):
-    chosen = random.choice(data)
-    chosen[1] = True
+for x in range(3):
+    chosen = ["""
+            _            
+           | |             
+           | |             
+           | |             
+           | |             
+           | |             
+           | |             
+           | |             
+      _____| |_____        
+     |_____ X _____|      
+           | |             
+           | |
+           |_|            """,True]
+    print(chosen)
     main_screenes.append(chosen) 
     
     pos = [random.randint(1,len(mapa[0])-1),random.randint(1,len(mapa)-1)]
@@ -134,15 +138,19 @@ for x in range(1):
         pos = [random.randint(1,len(mapa[0])-1),random.randint(1,len(mapa)-1)]
     main_positions.append(pos)
     mapa[pos[0]][pos[1]] = chosen
+    print(pos, mapa[pos[0]][pos[1]])
 
 #generace mapy
 for main_ind,main in enumerate(main_screenes):
+    old_pos = [main_positions[main_ind][0],main_positions[main_ind][1]]
     pos = main_positions[main_ind]
-    pos,new_pos = test(pos,["none","none"])
+    pos,new_pos = test(pos)
+    mapa = umisteni(old_pos,mapa,new_pos)
+    mapa[old_pos[0]][old_pos[1]][1] = True
     
     while new_pos != ["none","none"] and pos != master:
         old_pos = [pos[0],pos[1]]
-        pos,new_pos = test(pos,["none","none"])
+        pos,new_pos = test(pos)
         mapa = umisteni(old_pos,mapa,new_pos)
 
 print("\n::::mapa::::")
