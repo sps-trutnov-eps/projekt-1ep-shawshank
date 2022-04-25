@@ -139,7 +139,7 @@ for x in range(3):
     main_screenes.append(chosen) 
     
     pos = [random.randint(1,len(mapa[0])-1),random.randint(1,len(mapa)-1)]
-    while master[0]+3 > pos[0] > master[0]-3 and master[1]+3 > pos[1] > master[1]-3:
+    while (master[0]+3 > pos[0] > master[0]-3 and master[1]+3 > pos[1] > master[1]-3) or mapa[pos[0]][pos[1]] != []:
         pos = [random.randint(1,len(mapa[0])-1),random.randint(1,len(mapa)-1)]
     main_positions.append(pos)
     mapa[pos[0]][pos[1]] = chosen
@@ -192,7 +192,6 @@ for x in range(len(seznam)//6):
     chosen_one = random.choice(seznam)
     mapa[chosen_one[0]][chosen_one[1]][1] = "regular_door"
     seznam.remove(chosen_one)
-        
     
 #vykreslování obrazovky
 screen.fill("black")
