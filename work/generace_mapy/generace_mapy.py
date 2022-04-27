@@ -1,4 +1,5 @@
 import random,pygame,sys
+from list_obrazovek_1 import screens_with_doors,screens_without_doors
 pygame.init()
 
 #kreslení obrazovky na micromapu:
@@ -49,7 +50,7 @@ def test(pos,master):
 
 #umištěňování obrazovek
 def umisteni(pos,mapa,new_pos):
-    state_of_door = False
+    state_of_door = None
     if mapa[pos[0]][pos[1]] != []:
         state_of_door = mapa[pos[0]][pos[1]][1]
     new_screen = [False,False,False,False,False,False]
@@ -201,7 +202,39 @@ while True:
                 počet_prázdných += 1
     if počet_prázdných < počet_všech/4:
         break
-    
+
+#vytvoření mapky pro Vojtu
+game_map = []
+mains = ("WC","LOCKER_ROOM","EXIT")
+main_ind = 0
+for line in mapa: game_map.append([])
+for row in mapa[0]:
+    for line in game_map:
+        line.append([])
+
+for line_ind,line in enumerate(mapa):
+    for part_ind,part in enumerate(line):
+        if part != []:
+            possibilities = []
+            if part[1]:
+                for possibility in screens_with_doors:
+                    if possibility[1] == part[0]:
+                        possibilities.append(possibility)
+            else:
+                for possibility in screens_without_doors:
+                    if possibility[1] == part[0]:
+                        possibilities.append(possibility)
+            try:
+                new = random.choice(possibilities)
+            except:
+                print(part[0])
+            if part[1] == "main":
+                new[2][1] = mains[main_ind]
+                main_ind += 1
+            else: new[2][1] = part[1]
+            game_map[line_ind][part_ind] = new
+print(game_map)
+
 #vykreslování obrazovky
 drawing_positions = {"0" : (4,0),
                      "1" : (12,0),
