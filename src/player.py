@@ -4,10 +4,15 @@ from sprites import *
 
 pygame.init()
 
+RESOLUTION_X = 23*32
+RESOLUTION_Y = 14*32
+screen = pygame.display.set_mode((RESOLUTION_X, RESOLUTION_Y))
+
 zdi = pygame.sprite.Group()
 hraci = pygame.sprite.Group()
 podlaha = pygame.sprite.Group()
 dvere = pygame.sprite.Group()
+mask = pygame.sprite.Group()
 
 mapa = ((15,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,6),
         (14,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,8),
@@ -58,9 +63,11 @@ for radek_ind,radek in enumerate(mapa):
         elif symbol == 12:
             zdi.add(zed((symbol_ind*32,radek_ind*32),"vnitřní_roh_2"))
 
-poziceHracX = 0
-poziceHracY = 0
-hraci.add(hrac((poziceHracX, poziceHracY)))
+playerPosX = 0
+playerPosY = 0
+hraci.add(hrac((playerPosX, playerPosY)))
+
+mask.add(blackMask(RESOLUTION_X))
     
 while True:
     pressedButton = pygame.key.get_pressed()
@@ -71,19 +78,20 @@ while True:
             sys.exit()
             
     if (pressedButton[pygame.K_LEFT]):
-        poziceHracX -= 0.1
+        playerPosX -= 1
     if (pressedButton[pygame.K_RIGHT]):
-        poziceHracX += 0.1
+        playerPosX += 1
     if (pressedButton[pygame.K_UP]):
-        poziceHracY -= 0.1
+        playerPosY -= 1
     if (pressedButton[pygame.K_DOWN]):
-        poziceHracY += 0.1
+        playerPosY += 1
     
-    hraci.update(poziceHracX, poziceHracY)
+    hraci.update(playerPosX, playerPosY)
     
-    screen.fill("black")
     zdi.draw(screen)
     podlaha.draw(screen)
     dvere.draw(screen)
     hraci.draw(screen)
+    mask.update(screen, playerPosX, playerPosY)
+    
     pygame.display.update()
