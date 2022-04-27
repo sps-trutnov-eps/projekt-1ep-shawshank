@@ -11,9 +11,10 @@ screens_with_doors = []
 screens_without_doors = []
 
 #vytvoření seznamu oprazovek
-for screen in list_of_screens:
+for screen_ind,screen in enumerate(list_of_screens):
     new = ["map","binary",[None,"sem_příjde_třída"],["prozatím_nepoužitá_kolonka_pro_bullyho"]]
     
+    #mapka
     file = open(path+"\\"+screen,"r",encoding = "utf8")
     mapka = file.read()
     file.close()
@@ -27,8 +28,28 @@ for screen in list_of_screens:
         mapka[line_ind] = new_line
     new[0] = mapka
     
+    #dveře
     for line in mapka:
         if "1" in line or "2" in line or "3" in line or "4" in line:
-            new[1][0] = True
+            new[2][0] = True
     
+    #průchody
     binary = ""
+    if mapka[0][6] == "5": binary += "1"
+    else: binary += "0"
+    if mapka[0][15] == "5": binary += "1"
+    else: binary += "0"
+    if mapka[6][-1] == "5": binary += "1"
+    else: binary += "0"
+    if mapka[-1][15] == "5": binary += "1"
+    else: binary += "0"
+    if mapka[-1][6] == "5": binary += "1"
+    else: binary += "0"
+    if mapka[6][0] == "5": binary += "1"
+    else: binary += "0"
+    
+    new[1] = binary
+    
+    if new[2][0]: screens_with_doors.append(new)
+    else: screens_without_doors.append(new)
+    #os.rename(path+"\\"+screen,f"{path}\\{binary}_{str(new[2][0])}({screen_ind}).tmx")
