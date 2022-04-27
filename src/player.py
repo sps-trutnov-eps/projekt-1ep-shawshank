@@ -64,6 +64,8 @@ hrac_display_grp.add(player(player_x, player_y))
 player_hitbox_instance = player_hitbox(player_x, player_y)
 hrac_hitbox_grp.add(player_hitbox_instance)
     
+hrac_hitbox = hrac_hitbox_grp.sprites()[0]
+
 while True:
     
     pressed = pygame.key.get_pressed()
@@ -77,15 +79,6 @@ while True:
             pygame.quit()
             sys.exit()
     
-    if pressed[pygame.K_j]:
-        if hitbox == False:
-            hitbox = True
-            player_hitbox_instance.showHitBox()
-    if pressed[pygame.K_h]:
-        if hitbox == True:
-            hitbox = False
-            player_hitbox_instance.hideHitBox()
-    
     posun_x = 0
     posun_y = 0
     
@@ -97,6 +90,15 @@ while True:
         posun_x = -player_speed
     if pressed[pygame.K_d]:
         posun_x = +player_speed
+        
+    if pressed[pygame.K_j]:
+        if hitbox == False:
+            hitbox = True
+            player_hitbox_instance.showHitBox()
+    if pressed[pygame.K_h]:
+        if hitbox == True:
+            hitbox = False
+            player_hitbox_instance.hideHitBox()
     
     hrac_display_grp.update(player_x + posun_x, player_y)
     hrac_hitbox_grp.update(player_x + posun_x, player_y)
@@ -113,9 +115,12 @@ while True:
     
     if pygame.sprite.groupcollide(hrac_hitbox_grp, zdi, False, False):
         hrac_display_grp.update(player_x, player_y - posun_y)
-        hrac_hitbox_grp.update(player_x, player_y - posun_y)
+        hrac_hitbox_grp.update(player_x - posun_x, player_y - posun_y)
     else:
         player_y += posun_y
+      
+    if pygame.sprite.spritecollide(hrac_hitbox, dvere, False):
+        print(dvere.sprites().index(pygame.sprite.spritecollide(hrac_hitbox, dvere, False)[0]))
     
     screen.fill("black")
     zdi.draw(screen)
