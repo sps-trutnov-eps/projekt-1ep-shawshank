@@ -12,7 +12,7 @@ screens_without_doors = []
 
 #vytvoření seznamu oprazovek
 for screen in list_of_screens:
-    new = ["map","binary",["druh_dveří","sem_příjde_třída"],["prozatím_nepoužitá_kolonka_pro_bullyho"]]
+    new = ["map","binary",[None,"sem_příjde_třída"],["prozatím_nepoužitá_kolonka_pro_bullyho"]]
     
     file = open(path+"\\"+screen,"r",encoding = "utf8")
     mapka = file.read()
@@ -28,4 +28,7 @@ for screen in list_of_screens:
     new[0] = mapka
     
     for line in mapka:
-        pass
+        if "1" in line or "2" in line or "3" in line or "4" in line:
+            new[1][0] = True
+    
+    binary = ""
