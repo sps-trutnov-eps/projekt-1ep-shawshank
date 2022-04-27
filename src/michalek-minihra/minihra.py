@@ -11,10 +11,12 @@ okno = pg.display.set_mode((736,448))
 pg.display.set_caption("Minihra Martina Michálka")
 
 seznam_zadani = {"1 + 1 =":"2", "5 - 4 =":"1"}
+klice = list(seznam_zadani)
 notazek = random.randint(2, 7)
 
 while notazek > 0:
-    zadani = random.choice(list(seznam_zadani))
+    zadani = random.choice(klice)
+    klice.remove(zadani)
     reseni = seznam_zadani[zadani]
     odpovezeno = False
     spravneb = (0, 25, 0)
@@ -43,8 +45,6 @@ while notazek > 0:
             else:
                 spravne = "Špatně"
                 spravneb = (255, 0, 0)
-                            
-                
                 
         font = pg.font.SysFont("Comic Sans MS", 42)
         uloha = font.render(zadani, True, (255, 255, 255))
@@ -56,11 +56,10 @@ while notazek > 0:
         okno.blit(uloha, (0,0))
         okno.blit(odpovedin, (0, 50))
         okno.blit(spravneout, (0, 108))
-        okno.blit(zbotazky, (650, 0))
+        okno.blit(zbotazky, (689, 0))
             
         pg.display.update()
     time.sleep(0.5)
     notazek = notazek - 1
-print("konec")
 pg.quit()
 sys.exit()
