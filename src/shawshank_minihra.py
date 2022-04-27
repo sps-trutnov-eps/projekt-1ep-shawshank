@@ -19,10 +19,10 @@ def kontrola_kod(seznam,seznam2,typ):
     for polozka in seznam:
         if polozka[typ] == seznam2[typ]:
             return polozka
-def datum_souradnice(text,x):
+def datum_souradnice(text,font,x,y):
     datum = font.render(text, True, (0,0,0))
     datum_rect = datum.get_rect()
-    datum_rect.center = (x,y_center)
+    datum_rect.center = (x,y)
     return datum, datum_rect
 odpovedi = cteni_dat_list("odpovedi.csv")
 otazky = cteni_dat_list("otazky.csv")
@@ -70,6 +70,7 @@ okno = pygame.display.set_mode(rozliseni_okna)
 datum_1,datum_1_center = datum_souradnice(data[lokace_1],x1_center)
 datum_2,datum_2_center = datum_souradnice(data[lokace_2],x2_center)
 datum_3,datum_3_center = datum_souradnice(data[lokace_3],x3_center)
+otazka,otazka_center = datum_souradnice(otazka,font_otazka,x_pap_center,y_pap_center)
 
 while True:
     udalosti = pygame.event.get()
@@ -93,4 +94,5 @@ while True:
     okno.blit(datum_1, datum_1_center)
     okno.blit(datum_2, datum_2_center)
     okno.blit(datum_3, datum_3_center)
+    okno.blit(otazka, otazka_center)
     pygame.display.update()
