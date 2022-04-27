@@ -58,6 +58,7 @@ for radek_ind,radek in enumerate(mapa):
 hitbox = False
 player_x = 23 * 32 / 2
 player_y = 14 * 32 / 2
+player_speed = 0.1
 
 hrac_display_grp.add(player(player_x, player_y))
 player_hitbox_instance = player_hitbox(player_x, player_y)
@@ -75,16 +76,7 @@ while True:
         if pressed[pygame.K_ESCAPE]:
             pygame.quit()
             sys.exit()
-        
-    if pressed[pygame.K_w]:
-        player_y -= 0.1
-    if pressed[pygame.K_s]:
-        player_y += 0.1
-    if pressed[pygame.K_a]:
-        player_x -= 0.1
-    if pressed[pygame.K_d]:
-        player_x += 0.1
-        
+    
     if pressed[pygame.K_j]:
         if hitbox == False:
             hitbox = True
@@ -93,18 +85,37 @@ while True:
         if hitbox == True:
             hitbox = False
             player_hitbox_instance.hideHitBox()
-        
-    #if hitbox == 0:
-        
-        
-    #if hitbox == 1:
-        
-        
-    #if hitbox > 1:
-    #    hitbox == 0
     
-    hrac_display_grp.update(player_x, player_y)
-    hrac_hitbox_grp.update(player_x, player_y)
+    posun_x = 0
+    posun_y = 0
+    
+    if pressed[pygame.K_w]:
+        posun_y = -player_speed
+    if pressed[pygame.K_s]:
+        posun_y = +player_speed
+    if pressed[pygame.K_a]:
+        posun_x = -player_speed
+    if pressed[pygame.K_d]:
+        posun_x = +player_speed
+    
+    hrac_display_grp.update(player_x + posun_x, player_y)
+    hrac_hitbox_grp.update(player_x + posun_x, player_y)
+
+    if pygame.sprite.groupcollide(hrac_hitbox_grp, zdi, False, False):
+        hrac_display_grp.update(player_x - posun_x, player_y)
+        hrac_hitbox_grp.update(player_x - posun_x, player_y)
+    else:
+        player_x += posun_x
+
+
+    hrac_display_grp.update(player_x, player_y + posun_y)
+    hrac_hitbox_grp.update(player_x, player_y + posun_y)
+    
+    if pygame.sprite.groupcollide(hrac_hitbox_grp, zdi, False, False):
+        hrac_display_grp.update(player_x, player_y - posun_y)
+        hrac_hitbox_grp.update(player_x, player_y - posun_y)
+    else:
+        player_y += posun_y
     
     screen.fill("black")
     zdi.draw(screen)
