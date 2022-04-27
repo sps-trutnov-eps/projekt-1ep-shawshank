@@ -30,6 +30,8 @@ x1_center = x1 + (w_odp/2)
 x2_center = x2 + (w_odp/2)
 x3_center = x3 + (w_odp/2)
 y_center = y_odp + (h_odp/2)
+vybrana_odpoved = ''
+a = ''
 i_otazka = random.randint(0,(len(otazky) - 1))
 otazka = otazky[i_otazka]
 odpoved = kontrola_kod(odpovedi,otazka,"kod")
@@ -85,6 +87,22 @@ while True:
         pygame.quit()
         sys.exit()
       
+    m_x,m_y = pygame.mouse.get_pos()
+    if stisknuto[pygame.K_k]:
+        if y_odp < m_y < y_odp + h_odp and x1 < m_x < x1 + w_odp:
+            vybrana_odpoved = data[lokace_1]
+            a = 1
+        elif y_odp < m_y < y_odp + h_odp and x2 < m_x < x2 + w_odp:
+            vybrana_odpoved = data[lokace_2]
+            a = 1
+        elif y_odp < m_y < y_odp + h_odp and x3 < m_x < x3 + w_odp:
+            vybrana_odpoved = data[lokace_3]
+            a = 1
+    if a == 1:        
+        if vybrana_odpoved == odpoved['datum']:
+            print('spravne')
+        else:
+            print('spatne')
     okno.fill(pozadi_barva)
     
     pygame.draw.rect(okno, (255, 255, 255), (x_pap,y_pap,w_pap,h_pap))
