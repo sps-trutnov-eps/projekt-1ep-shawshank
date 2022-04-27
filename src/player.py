@@ -5,7 +5,8 @@ from sprites import *
 pygame.init()
 
 zdi = pygame.sprite.Group()
-hraci = pygame.sprite.Group()
+hrac_display_grp = pygame.sprite.Group()
+hrac_hitbox_grp = pygame.sprite.Group()
 podlaha = pygame.sprite.Group()
 dvere = pygame.sprite.Group()
 
@@ -54,18 +55,62 @@ for radek_ind,radek in enumerate(mapa):
         elif symbol == 6:
             zdi.add(zed((symbol_ind*32,radek_ind*32),"vnitřní_roh_0"))
 
-hraci.add(hrac())
+hitbox = False
+player_x = 23 * 32 / 2
+player_y = 14 * 32 / 2
+
+hrac_display_grp.add(player(player_x, player_y))
+player_hitbox_instance = player_hitbox(player_x, player_y)
+hrac_hitbox_grp.add(player_hitbox_instance)
     
 while True:
+    
+    pressed = pygame.key.get_pressed()
+    
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
             
+        if pressed[pygame.K_ESCAPE]:
+            pygame.quit()
+            sys.exit()
+        
+    if pressed[pygame.K_w]:
+        player_y -= 0.1
+    if pressed[pygame.K_s]:
+        player_y += 0.1
+    if pressed[pygame.K_a]:
+        player_x -= 0.1
+    if pressed[pygame.K_d]:
+        player_x += 0.1
+        
+    if pressed[pygame.K_j]:
+        if hitbox == False:
+            hitbox = True
+            player_hitbox_instance.showHitBox()
+    if pressed[pygame.K_h]:
+        if hitbox == True:
+            hitbox = False
+            player_hitbox_instance.hideHitBox()
+        
+    #if hitbox == 0:
+        
+        
+    #if hitbox == 1:
+        
+        
+    #if hitbox > 1:
+    #    hitbox == 0
+    
+    hrac_display_grp.update(player_x, player_y)
+    hrac_hitbox_grp.update(player_x, player_y)
     
     screen.fill("black")
     zdi.draw(screen)
     podlaha.draw(screen)
     dvere.draw(screen)
-    hraci.draw(screen)
+    hrac_display_grp.draw(screen)
+    hrac_hitbox_grp.draw(screen)
+    
     pygame.display.update()

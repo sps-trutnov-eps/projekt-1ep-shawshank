@@ -10,9 +10,38 @@ class zed(pygame.sprite.Sprite):
         self.image = pygame.image.load(f"../data/textury_hry/{textura}.png").convert()
         self.rect = self.image.get_rect(topleft = (pozice))
         
-class hrac(pygame.sprite.Sprite):
-    def __init__(self):
+class player(pygame.sprite.Sprite):
+    def __init__(self, player_x, player_y):
         super().__init__()
         
         self.image = pygame.image.load("../data/textury_hrac/player_front.png").convert_alpha()
-        self.rect = self.image.get_rect(center = ((23*32)/2,(14*32)/2))
+        self.rect = self.image.get_rect(center = (player_x, player_y))
+        
+    def update(self, player_x, player_y):
+        self.rect.centerx = player_x
+        self.rect.centery = player_y
+        
+class player_hitbox(pygame.sprite.Sprite):
+    def __init__(self, player_x, player_y):
+        super().__init__()
+        
+        self.image = pygame.image.load("../data/textury_hrac/player_hitbox.png").convert_alpha()
+        self.hitBox = pygame.image.load("../data/textury_hrac/player_hitbox.png").convert_alpha()
+        self.visibleHitBox = pygame.image.load("../data/textury_hrac/player_hitbox_visible.png").convert_alpha()
+        self.rect = self.image.get_rect(center = (player_x, player_y + 12))
+        
+        self.hitbox = False
+        
+    def update(self, player_x, player_y):
+        self.rect.centerx = player_x
+        self.rect.centery = player_y + 12
+    
+    def showHitBox(self):
+        if self.hitbox == False:
+            self.hitbox = True
+            self.image = self.visibleHitBox
+            
+    def hideHitBox(self):
+        if self.hitbox == True:
+            self.hitbox = False
+            self.image = self.hitBox
