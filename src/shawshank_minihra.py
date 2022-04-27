@@ -1,5 +1,6 @@
 import pygame
 import sys
+import random
 def cteni_dat_list(jmeno_souboru):
     soubor = open(jmeno_souboru, 'r', encoding = 'utf-8')
     data = []
@@ -24,13 +25,17 @@ i_otazka = random.randint(0,(len(otazky) - 1))
 otazka = otazky[i_otazka]
 odpoved = kontrola_kod(odpovedi,otazka,"kod")
 odpoved_kod = odpoved["kod"]
-i_false_otazka = random.randint(0,(len(otazky) - 1))
-false_odpoved = odpovedi[i_false_otazka]
+i_false_odpoved = random.randint(0,(len(otazky) - 1))
+false_odpoved = odpovedi[i_false_odpoved]
+i_false_odpoved_2 = random.randint(0,(len(otazky) - 1))
+false_odpoved_2 = odpovedi[i_false_odpoved_2]
 while false_odpoved["kod"] == odpoved["kod"]:
     i_false_otazka = random.randint(0,(len(otazky) - 1))
     false_odpoved = odpovedi[i_false_otazka]
 print(false_odpoved)
-print(odpoved)
+while false_odpoved_2['kod'] == odpoved['kod'] or false_odpoved_2 == false_odpoved:
+    i_false_odpoved_2 = random.randint(0,(len(otazky) - 1))
+    false_odpoved_2 = odpovedi[i_false_odpoved_2]
 
 rozliseni_okna = rozliseni_x, rozliseni_y = (1200,800)
 pozadi_barva = (186, 140, 90)
