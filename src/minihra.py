@@ -1,62 +1,39 @@
 import random
+import tkinter as tk
+okno=tk.Tk()
+okno.geometry("400x350")
+okno.title("kámen nůžky papír")
 
-while True:
-    volba = ["kámen", "nůžky", "papír"]
+#hráč, počítač
+hrac_score=0
+pocitac_score=0
+hrac_choice=""
+pocitac_choice=""
 
-    počítač = random.choice(volba)
-    hráč = None
+#cisla, volby
+def volba_to_cislo(volba):
+    rps={"kámen":0,"papír":1,"nůžky":2}
+    return rps[volba]
 
-    while hráč not in volba:
-        hráč = input("kámen, nůžky, nebo papír?: ").lower()
-    
-        if hráč == počítač:
-            print("počítač: ", počítač)
-            print("hráč: ", hráč)
-            print("Remíza!")
-        
-    if hráč == "kámen":
-        if počítač == "papír":
-            print("počítač: ", počítač)
-            print("hráč: ", hráč)
-            print("Prohráváš!")
-        
-    if hráč == "nůžky":
-        if počítač == "papír":
-            print("počítač: ", počítač)
-            print("hráč: ", hráč)
-            print("Vyhráváš!")
-        
-    if hráč == "papír":
-        if počítač == "kámen":
-            print("počítač: ", počítač)
-            print("hráč: ", hráč)
-            print("Vyhráváš!")
-        
-    if hráč == "papír":
-        if počítač == "nůžky":
-            print("počítač: ", počítač)
-            print("hráč: ", hráč)
-            print("Prohráváš!")
-        
-    if hráč == "kámen":
-        if počítač == "nůžky":
-            print("počítač: ", počítač)
-            print("hráč: ", hráč)
-            print("Vyhráváš!")
-        
-    if hráč == "nůžky":
-        if počítač == "kámen":
-            print("počítač: ", počítač)
-            print("hráč: ", hráč)
-            print("Prohráváš!")
-        
-    Hrát_znova = input("Hrát znova? (ano/ne): ").lower()     
-        
-    if Hrát_znova !="ano":
-        break
-    
-print("Sbohem")
-    
+def cislo_to_volba(cislo):
+    rps={0:"kámen",1:"nůžky",2:"papír"}
+    return rps[cislo]
+
+#random volba počítače
+
+
+
+#tlačítka
+tlacitko1=tk.Button(text=" kámen ", width=8,height=2,bg="gray")
+tlacitko1.grid(row=1,column=0,padx=3,pady=3)
+
+tlacitko2=tk.Button(text=" nůžky ", width=8,height=2,bg="skyblue")
+tlacitko2.grid(row=2,column=0,padx=3,pady=3)
+
+tlacitko3=tk.Button(text=" papír ", width=8,height=2,bg="white")
+tlacitko3.grid(row=3,column=0,padx=3,pady=3)
+
+okno.mainloop()
 
         
 
