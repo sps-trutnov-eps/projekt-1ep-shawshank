@@ -20,7 +20,7 @@ def cislo_to_volba(cislo):
     return rps[cislo]
 
 #random volba počítače
-def random_pocitac_choice():
+def random_pocitac_volba():
     return random.choice(["kámen", "nůžky", "papír"])
 
 #pocitadlo
@@ -37,28 +37,43 @@ def result(clovek_volba,comp_volba):
     else:
         print("prohráváš")
         pocitac_score +=1
-    rozliseni_tabulky=tk.Text(master=okno,width=30,height=12,bg="#FFFF99")
-    rozliseni_tabulky.grid(row=6,column=2)
+    rozliseni_tabulky=tk.Text(master=okno,width=75,height=15,bg="#FFFF99")
+    rozliseni_tabulky.grid(row=6,column=50)
     answer="tva volba:{uc} \n pocitac volba:{cc} \n tve score:{u}" \
            "\n pocitac score:{c}".format(uc=hrac_volba,cc=pocitac_volba
                                       ,u=hrac_score,c=pocitac_score)
-    text_area.insert(tk.END,answer)
+    rozliseni_tabulky.insert(tk.END,answer)
 
 #funkčnost tlačítek
 def kámen():
     global hrac_volba
     global pocitac_volba
     hrac_volba="kámen"
-    pocitac_volba=random_pocitac_volba()                                                   ###tady dodelat
-
+    pocitac_volba=random_pocitac_volba()                                             
+    result(hrac_volba,pocitac_volba)
+    
+def nůžky():
+    global hrac_volba
+    global pocitac_volba
+    hrac_volba="nůžky"
+    pocitac_volba=random_pocitac_volba()                                             
+    result(hrac_volba,pocitac_volba)
+    
+def papír():
+    global hrac_volba
+    global pocitac_volba
+    hrac_volba="papír"
+    pocitac_volba=random_pocitac_volba()                                             
+    result(hrac_volba,pocitac_volba)
+    
 #výroba tlačítek
-tlacitko1=tk.Button(text=" kámen ", width=8,height=2,bg="gray")
+tlacitko1=tk.Button(text=" kámen ", width=8,height=2,bg="gray",command=kámen)
 tlacitko1.grid(row=1,column=0,padx=3,pady=3)
 
-tlacitko2=tk.Button(text=" nůžky ", width=8,height=2,bg="skyblue")
+tlacitko2=tk.Button(text=" nůžky ", width=8,height=2,bg="skyblue",command=nůžky)
 tlacitko2.grid(row=2,column=0,padx=3,pady=3)
 
-tlacitko3=tk.Button(text=" papír ", width=8,height=2,bg="white")
+tlacitko3=tk.Button(text=" papír ", width=8,height=2,bg="white",command=papír)
 tlacitko3.grid(row=3,column=0,padx=3,pady=3)
 
 okno.mainloop()
