@@ -245,6 +245,9 @@ drawing_positions = {"0" : (4,0),
 screen.fill("black")
 for line_ind,line in enumerate(mapa):
     for part_ind,part in enumerate(line):
+        full = pygame.Surface((20,12))
+        full.fill((random.randint(0,250),random.randint(0,250),random.randint(0,250)))
+        screen.blit(full,(part_ind*20,line_ind*12))
         if part != []: draw_screen(part,(part_ind*20,line_ind*12),drawing_positions)
     
 #main loop(vypnutí obrazovky)
