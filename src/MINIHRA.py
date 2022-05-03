@@ -2,32 +2,32 @@ import pygame,random
 import sys
 
 def spawn_kridy():
-    kx = random.randint(200,880+203)
-    return kx
+    return random.randint(300,780+203)
 
-kx = spawn_kridy()
-ky = 10
+
 
 okno = pygame.display.set_mode((1280, 720))
 pygame.display.set_caption("Trida")
 
-x = 400
-y = 550
+kx = spawn_kridy()
+ky = 10
+kw = 20
+kh = 132
 
-x2 = 400
-y2 = 10
+hx = 400
+hy = 550
+hw = 223
+hh = 151
 
-width = 40
-height = 55
-
-r = 5
-krida_r = 5
+hr = 5
+kr = 5
 krida = pygame.image.load("krida.png")
 libor = pygame.image.load("libor.png")
 lavice = pygame.image.load("lavice.png")
 tabule = pygame.image.load("tabule.png")
 vyhled = pygame.image.load("okno.png")
 hrac = pygame.image.load("hrac.png")
+
 
 run = True
 
@@ -42,11 +42,11 @@ while run:
         if event.type == pygame.QUIT:
             run = False
     keys = pygame.key.get_pressed()
-    if keys[pygame.K_LEFT] and x>200:
-        x -= r
+    if keys[pygame.K_LEFT] and hx>200:
+        hx -= hr
     
-    if keys[pygame.K_RIGHT] and x<880-width:
-        x += r
+    if keys[pygame.K_RIGHT] and hx<970-hw:
+        hx += hr
             
     okno.fill("white")
     
@@ -60,7 +60,7 @@ while run:
     okno.blit(lavice, (500, 400))
     okno.blit(vyhled, (20, 500))
     okno.blit(vyhled, (20, 280))
-    okno.blit(hrac, (x, y))
+    okno.blit(hrac, (hx, hy))
     okno.blit(krida, (kx,ky))
     
     
@@ -69,6 +69,13 @@ while run:
     if ky > 720:
         ky = 10
         kx = spawn_kridy()
+    
+    
+    #kolize
+    if ((kx+kw>hx and kx+kw<hx+hw) or (hx>kx and kx<hx+hw)) and (ky+kh>hy):
+        print("kolize")
+        
+    
               
     pygame.display.update()
 pygame.quit()
