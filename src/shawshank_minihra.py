@@ -24,6 +24,20 @@ def datum_souradnice(text,font,x,y):
     datum_rect = datum.get_rect()
     datum_rect.center = (x,y)
     return datum, datum_rect
+def kontrola_random(rand3,status,min,max):
+    rand1 = random.randint(min,max)
+    rand2 = random.randint(min,max)
+    if status == 1:
+        rand3 = random.randint(min,max)
+    while rand1 == rand2 or rand1 == rand3 or rand2 == rand3:
+        rand1 = random.randint(min,max)
+        rand2 = random.randint(min,max)
+        if status == 1:
+            rand3 = random.randint(min,max)
+    if status == 1:
+        return rand1,rand2,rand3
+    else:
+        return rand1,rand2
 odpovedi = cteni_dat_list("odpovedi.csv")
 otazky = cteni_dat_list("otazky.csv")
 x1_center = x1 + (w_odp/2)
@@ -65,6 +79,11 @@ x2 = ((x_pap + w_pap) / 2) + w_odp
 x3 = (x_pap + w_pap) - (w_odp + w_odp / 2)
 y_odp = y_pap * 24.16
 
+i_false_odpoved1,i_false_odpoved2 = kontrola_random((int(odpoved["kod"])-1),0,0,len(otazky)-1)
+false_odpoved = odpovedi[i_false_odpoved1]
+false_odpoved2 = odpovedi[i_false_odpoved2]
+print(odpoved,false_odpoved,false_odpoved2)
+lokace_1,lokace_2,lokace_3 = kontrola_random("",1,0,2)    
     
 pygame.init()
 okno = pygame.display.set_mode(rozliseni_okna)
