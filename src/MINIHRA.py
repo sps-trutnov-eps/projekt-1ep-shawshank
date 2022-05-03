@@ -1,5 +1,12 @@
-import pygame
+import pygame,random
 import sys
+
+def spawn_kridy():
+    kx = random.randint(200,880+203)
+    return kx
+
+kx = spawn_kridy()
+ky = 10
 
 okno = pygame.display.set_mode((1280, 720))
 pygame.display.set_caption("Trida")
@@ -14,7 +21,13 @@ width = 40
 height = 55
 
 r = 5
+krida_r = 5
 krida = pygame.image.load("krida.png")
+libor = pygame.image.load("libor.png")
+lavice = pygame.image.load("lavice.png")
+tabule = pygame.image.load("tabule.png")
+vyhled = pygame.image.load("okno.png")
+hrac = pygame.image.load("hrac.png")
 
 run = True
 
@@ -24,17 +37,6 @@ while run:
         if event.type == pygame.QUIT:
             run = False
     
-        
-        
-libor = pygame.image.load("libor.png")
-lavice = pygame.image.load("lavice.png")
-tabule = pygame.image.load("tabule.png")
-vyhled = pygame.image.load("okno.png")
-hrac = pygame.image.load("hrac.png")
-    
-run = True
-
-while run:
     pygame.time.delay(5)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -59,9 +61,15 @@ while run:
     okno.blit(vyhled, (20, 500))
     okno.blit(vyhled, (20, 280))
     okno.blit(hrac, (x, y))
-    okno.blit(krida, (400, 10))
+    okno.blit(krida, (kx,ky))
     
     
-    
+    #pohyb kridy
+    ky+=5
+    if ky > 720:
+        ky = 10
+        kx = spawn_kridy()
               
     pygame.display.update()
+pygame.quit()
+sys.exit()
