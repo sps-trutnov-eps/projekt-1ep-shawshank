@@ -67,13 +67,13 @@ def papír():
     result(hrac_volba,pocitac_volba)
     
 #výroba tlačítek
-tlacitko1=tk.Button(text=" kámen ", width=8,height=2,bg="gray",command=kámen)
+tlacitko1=tk.Button(text="kámen", width=8,height=3,bg="red",command=kámen)
 tlacitko1.grid(row=1,column=0,padx=3,pady=3)
 
-tlacitko2=tk.Button(text=" nůžky ", width=8,height=2,bg="skyblue",command=nůžky)
+tlacitko2=tk.Button(text="nůžky", width=8,height=3,bg="chartreuse1",command=nůžky)
 tlacitko2.grid(row=2,column=0,padx=3,pady=3)
 
-tlacitko3=tk.Button(text=" papír ", width=8,height=2,bg="white",command=papír)
+tlacitko3=tk.Button(text="papír", width=8,height=3,bg="aqua",command=papír)
 tlacitko3.grid(row=3,column=0,padx=3,pady=3)
 
 okno.mainloop()
