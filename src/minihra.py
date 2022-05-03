@@ -1,26 +1,49 @@
 import pygame
 
+
+sirka_okno = 800
+vyska_okno = 600
+
 pygame.init() 
-screen = pygame.display.set_mode((1000, 1000)) 
- def submt(var1):
-    if var1.get() == str(resultPLUS()):
-        correct = (text="Správně!", fg="green", font=("Courier", 16))
-        correct.place(relx=0.3, rely=0.2)
-    else:
-        wrong = (text="Špatně!!", fg="red", font=("Courier", 16))
-        wrong.place(relx=0.3, rely=0.2)
+okno = pygame.display.set_mode((sirka_okno, vyska_okno)) 
 
+zelena = (0,255,0)
+cervena = (255,0,0)
+modra = (0,0,255)
+fialova = (0,0,128)
+bila = (255,255,255)
+cerna = (0,0,0)
+ruzova = (255,200,200)
+
+maly_font = pygame.font.SysFont("timesnewroman", 25)
+stredni_font = pygame.font.SysFont("timesnewroman", 50)
+velky_font = pygame.font.SysFont("timesnewroman", 85)
+
+def textove_objekty(text, barva, velikost = "malá"):    
+    
+    if velikost == "malá":
+        textSurface = maly_font.render(text, True, barva)
+    if velikost == "střední":
+        textSurface = stredni_font.render(text, True, barva)
+    if velikost == "velká":
+        textSurface = velky_font.render(text, True, barva)
+    
+    return textSurface, textSurface.get_rect()
+
+def zprava_na_obrazovce(zprava, barva, y_displace = 0, velikost = "malá"):
+    textSurf, textRect = textove_objekty(zprava, barva, velikost)
+    textRect.center = (int(sirka_okno / 2), int(vyska_okno / 2)+y_displace)
+    okno.blit(textSurf, textRect)
+
+while True:
+    zprava_na_obrazovce("Vítej na hodině matematiky", zelena, -230)
+    zprava_na_obrazovce("Cílem hry je spočítat všechny příklady", zelena, -200)
+    zprava_na_obrazovce("Stistknutím S spustíte hru, Stisknutím Q vypnete hru", zelena, -30)
+    pygame.display.update()
+    
+okno.fill(255, 255, 255)
+pygame.display.update()
  
-while True: 
-    for event in pygame.event.get(): 
-        if event.type == pygame.QUIT: 
-            pygame.quit() 
-             
- 
-    screen.fill((195, 155, 119)) 
-      
-    screen.blit(dialogue, (40, 40)) 
-      
 
 
 
@@ -31,23 +54,6 @@ while True:
 
 
 
-
-
-
-
-
-
-
-
-
-
-def submt(var1):
-    if var1.get() == str(resultPLUS()):
-        correct = (text="Správně!", fg="green", font=("Courier", 16))
-        correct.place(relx=0.3, rely=0.2)
-    else:
-        wrong = (text="Špatně!!", fg="red", font=("Courier", 16))
-        wrong.place(relx=0.3, rely=0.2)
 
 
 
