@@ -39,9 +39,9 @@ def result(clovek_volba,comp_volba):
         pocitac_score +=1
     rozliseni_tabulky=tk.Text(master=okno,width=75,height=15,bg="#FFFF99")
     rozliseni_tabulky.grid(row=6,column=50)
-    answer="tvá volba: {uc} \nvolba počítače: {cc} \ntvé skóre: {u}" \
+    answer="tvá volba: {uc} \nvolba počítače: {cc} \nvýsledek: {uu} \ntvé skóre: {u}" \
            "\nskóre počítače: {c}".format(uc=hrac_volba,cc=pocitac_volba
-                                      ,u=hrac_score,c=pocitac_score)
+                                      ,u=hrac_score,c=pocitac_score,uu=result)
     rozliseni_tabulky.insert(tk.END,answer)
 
 #funkčnost tlačítek
