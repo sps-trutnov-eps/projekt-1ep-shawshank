@@ -89,9 +89,14 @@ def umisteni(pos,mapa,new_pos):
     real_new_screen = ""
     
     #vybrání tile
-    for symbol in new_screen:
-        if symbol: real_new_screen += symbol
-        else: real_new_screen += random.choice(("0","1","0"))
+    while True:
+        for symbol in new_screen:
+            if symbol: real_new_screen += symbol
+            else: real_new_screen += random.choice(("0","1","0"))
+            
+        if " " in real_new_screen or len(real_new_screen) != 6:
+            print(new_screen)
+        else: break
         
     mapa[y][x] = [real_new_screen,state_of_door]
     return mapa
@@ -117,7 +122,7 @@ def main_generation():
 
     #generace hlavních obrazovek
     for x in range(3):
-        chosen = ["""
+        chosen = ["""101101
                 _            
                | |             
                | |             
@@ -227,7 +232,7 @@ for line_ind,line in enumerate(mapa):
             try:
                 new = random.choice(possibilities)
             except:
-                print(part[0])
+                print(part[0],line_ind,part_ind)
             if part[1] == "main":
                 new[2][1] = mains[main_ind]
                 main_ind += 1
