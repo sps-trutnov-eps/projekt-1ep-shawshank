@@ -118,7 +118,8 @@ def main_generation():
     main_screenes = []
     main_positions = []
     master = [5,5]
-    screen = pygame.display.set_mode((len(mapa[0])*20,len(mapa)*12))
+    #screen = pygame.display.set_mode((len(mapa[0])*20,len(mapa)*12))
+    screen = pygame.display.set_mode((23*32,14*32))
 
     #generace hlavních obrazovek
     for x in range(3):
@@ -240,6 +241,10 @@ for line_ind,line in enumerate(mapa):
             game_map[line_ind][part_ind] = new
 print(game_map)
 
+
+loading = pygame.font.SysFont("Courier New",30).render("Loading...",False,"white")
+screen.blit(loading,(20,10))
+pygame.display.update()
 #vykreslování obrazovky
 drawing_positions = {"0" : (4,0),
                      "1" : (12,0),
@@ -256,14 +261,14 @@ for line_ind,line in enumerate(mapa):
         if part != []: draw_screen(part,(part_ind*20,line_ind*12),drawing_positions)
     
 #main loop(vypnutí obrazovky)
-while True:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            sys.exit()
-    keys = pygame.key.get_pressed()
-    if keys[pygame.K_ESCAPE]:
-            pygame.quit()
-            sys.exit()
-            
-    pygame.display.update()
+# while True:
+#     for event in pygame.event.get():
+#         if event.type == pygame.QUIT:
+#             pygame.quit()
+#             sys.exit()
+#     keys = pygame.key.get_pressed()
+#     if keys[pygame.K_ESCAPE]:
+#             pygame.quit()
+#             sys.exit()
+#             
+#     pygame.display.update()
