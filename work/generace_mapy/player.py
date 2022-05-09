@@ -9,7 +9,7 @@ clock = pygame.time.Clock()
 hitbox = False
 player_x = 23 * 32 / 2
 player_y = 14 * 32 / 2
-player_speed = 2.5
+player_speed = 3
 
 hrac_display_grp = pygame.sprite.Group()
 hrac_hitbox_grp = pygame.sprite.Group()
@@ -123,12 +123,20 @@ while True:
     #pohyb mezi obrazovkami
     if player_hitbox_instance.rect.left < 0:
         player_hitbox_instance.rect.right = width
+        current_position[1] -=1
+        zdi,podlaha,dvere = urceni_sprite_group(game_map[current_position[0]][current_position[1]])
     elif player_hitbox_instance.rect.right > width:
         player_hitbox_instance.rect.left = 0
+        current_position[1] +=1
+        zdi,podlaha,dvere = urceni_sprite_group(game_map[current_position[0]][current_position[1]])
     elif player_hitbox_instance.rect.top < 0:
         player_hitbox_instance.rect.bottom = heigth
+        current_position[0] -=1
+        zdi,podlaha,dvere = urceni_sprite_group(game_map[current_position[0]][current_position[1]])
     elif player_hitbox_instance.rect.bottom > heigth:
         player_hitbox_instance.rect.top = 0
+        current_position[0] +=1
+        zdi,podlaha,dvere = urceni_sprite_group(game_map[current_position[0]][current_position[1]])
     
     #zbytek pohybu
     player_instance.rect.centerx = player_hitbox_instance.rect.centerx
