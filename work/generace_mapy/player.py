@@ -13,7 +13,8 @@ player_speed = 2.5
 
 hrac_display_grp = pygame.sprite.Group()
 hrac_hitbox_grp = pygame.sprite.Group()
-hrac_display_grp.add(player(player_x, player_y))
+player_instance = player(player_x, player_y)
+hrac_display_grp.add(player_instance)
 player_hitbox_instance = player_hitbox(player_x, player_y)
 hrac_hitbox_grp.add(player_hitbox_instance)
 hrac_hitbox = hrac_hitbox_grp.sprites()[0]
@@ -69,29 +70,17 @@ zdi,podlaha,dvere = urceni_sprite_group(game_map[current_position[0]][current_po
 
 #main loop
 while True:
+    #vypnutí
     pressed = pygame.key.get_pressed()
-    
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
-            
         if pressed[pygame.K_ESCAPE]:
             pygame.quit()
             sys.exit()
     
-    posun_x = 0
-    posun_y = 0
-    
-    if pressed[pygame.K_w]:
-        posun_y = -player_speed
-    if pressed[pygame.K_s]:
-        posun_y = +player_speed
-    if pressed[pygame.K_a]:
-        posun_x = -player_speed
-    if pressed[pygame.K_d]:
-        posun_x = +player_speed
-        
+    #ukázka hitboxu
     if pressed[pygame.K_j]:
         if hitbox == False:
             hitbox = True
@@ -101,28 +90,55 @@ while True:
             hitbox = False
             player_hitbox_instance.hideHitBox()
     
-    hrac_display_grp.update(player_x + posun_x, player_y)
-    hrac_hitbox_grp.update(player_x + posun_x, player_y)
-
-    if pygame.sprite.groupcollide(hrac_hitbox_grp, zdi, False, False):
-        hrac_display_grp.update(player_x - posun_x, player_y)
-        hrac_hitbox_grp.update(player_x - posun_x, player_y)
-    else:
-        player_x += posun_x
-
-
-    hrac_display_grp.update(player_x, player_y + posun_y)
-    hrac_hitbox_grp.update(player_x, player_y + posun_y)
+    #pohyb
+    posun_x = 0
+    posun_y = 0
     
-    if pygame.sprite.groupcollide(hrac_hitbox_grp, zdi, False, False):
-        hrac_display_grp.update(player_x, player_y - posun_y)
-        hrac_hitbox_grp.update(player_x - posun_x, player_y - posun_y)
-    else:
-        player_y += posun_y
-      
+    if pressed[pygame.K_w]:
+        posun_y -= player_speed
+    if pressed[pygame.K_s]:
+        posun_y += player_speed
+    if pressed[pygame.K_a]:
+        posun_x -= player_speed
+    if pressed[pygame.K_d]:
+        posun_x += player_speed
+    
+    player_hitbox_instance.posun_x(posun_x)
+
+    #kolize se zdmi
+    for wall in zdi:
+        if wall.rect.collidepoint(player_hitbox_instance.rect.topleft) or wall.rect.collidepoint(player_hitbox_instance.rect.bottomleft):
+            player_hitbox_instance.rect.left = wall.rect.right+1
+        if wall.rect.collidepoint(player_hitbox_instance.rect.topright) or wall.rect.collidepoint(player_hitbox_instance.rect.bottomright):
+            player_hitbox_instance.rect.right = wall.rect.left-1
+            
+    player_hitbox_instance.posun_y(posun_y)
+    
+    for wall in zdi:
+        if wall.rect.collidepoint(player_hitbox_instance.rect.topleft) or wall.rect.collidepoint(player_hitbox_instance.rect.topright):
+            player_hitbox_instance.rect.top = wall.rect.bottom+1
+        if wall.rect.collidepoint(player_hitbox_instance.rect.bottomleft) or wall.rect.collidepoint(player_hitbox_instance.rect.bottomright):
+            player_hitbox_instance.rect.bottom = wall.rect.top-1
+    
+    #pohyb mezi obrazovkami
+    if player_hitbox_instance.rect.left < 0:
+        player_hitbox_instance.rect.right = width
+    elif player_hitbox_instance.rect.right > width:
+        player_hitbox_instance.rect.left = 0
+    elif player_hitbox_instance.rect.top < 0:
+        player_hitbox_instance.rect.bottom = heigth
+    elif player_hitbox_instance.rect.bottom > heigth:
+        player_hitbox_instance.rect.top = 0
+    
+    #zbytek pohybu
+    player_instance.rect.centerx = player_hitbox_instance.rect.centerx
+    player_instance.rect.bottom = player_hitbox_instance.rect.bottom
+        
+    #kolize s dvermi
     if pygame.sprite.spritecollide(hrac_hitbox, dvere, False):
         print(dvere.sprites().index(pygame.sprite.spritecollide(hrac_hitbox, dvere, False)[0]))
     
+    #vykreslování
     screen.fill("black")
     zdi.draw(screen)
     podlaha.draw(screen)
