@@ -1,13 +1,10 @@
 import pygame, sys
-from generace_mapy import game_map
+from generace_mapy import game_map,master
 from sprites import *
 pygame.init()
 
 #základní proměnné
 clock = pygame.time.Clock()
-zdi = pygame.sprite.Group()
-podlaha = pygame.sprite.Group()
-dvere = pygame.sprite.Group()
 
 hitbox = False
 player_x = 23 * 32 / 2
@@ -21,58 +18,54 @@ player_hitbox_instance = player_hitbox(player_x, player_y)
 hrac_hitbox_grp.add(player_hitbox_instance)
 hrac_hitbox = hrac_hitbox_grp.sprites()[0]
 
-current_position = [0,0]
+current_position = master
 
 #načtení obrazovek
-for line_ind,line in enumerate(game_map):
-    for mapa_ind,mapa in enumerate(line):
-        if mapa != []:
-            mapa.append({"podlaha" : pygame.sprite.Group(),
-                          "dvere" : pygame.sprite.Group(),
-                          "zdi" : pygame.sprite.Group()})
-            if mapa[2][1] == "master":
-                current_position = [line_ind,mapa_ind]
-                
-            for radek_ind,radek in enumerate(mapa[0]):
-                for symbol_ind,symbol in enumerate(radek):
-                    if symbol == "6":
-                        mapa[-1]["zdi"].add(zed((symbol_ind*32,radek_ind*32),"zeď_0"))
-                    elif symbol == "9":
-                        mapa[-1]["zdi"].add(zed((symbol_ind*32,radek_ind*32),"zeď_1"))
-                    elif symbol == "12":
-                        mapa[-1]["zdi"].add(zed((symbol_ind*32,radek_ind*32),"zeď_2"))
-                    elif symbol == "15":
-                        mapa[-1]["zdi"].add(zed((symbol_ind*32,radek_ind*32),"zeď_3"))
-                    elif symbol == "18":
-                        mapa[-1]["zdi"].add(zed((symbol_ind*32,radek_ind*32),"void"))
-                    elif symbol == "5":
-                        mapa[-1]["podlaha"].add(zed((symbol_ind*32,radek_ind*32),"podlaha")) 
-                    elif symbol == "7":
-                        mapa[-1]["zdi"].add(zed((symbol_ind*32,radek_ind*32),"vnější_roh_0")) 
-                    elif symbol == "10":
-                        mapa[-1]["zdi"].add(zed((symbol_ind*32,radek_ind*32),"vnější_roh_1"))
-                    elif symbol == "13":
-                        mapa[-1]["zdi"].add(zed((symbol_ind*32,radek_ind*32),"vnější_roh_2")) 
-                    elif symbol == "16":
-                        mapa[-1]["zdi"].add(zed((symbol_ind*32,radek_ind*32),"vnější_roh_3"))  
-                    elif symbol == "8":
-                        mapa[-1]["zdi"].add(zed((symbol_ind*32,radek_ind*32),"vnitřní_roh_0"))  
-                    elif symbol == "11":
-                        mapa[-1]["zdi"].add(zed((symbol_ind*32,radek_ind*32),"vnitřní_roh_1"))  
-                    elif symbol == "14":
-                        mapa[-1]["zdi"].add(zed((symbol_ind*32,radek_ind*32),"vnitřní_roh_2"))
-                    elif symbol == "17":
-                        mapa[-1]["zdi"].add(zed((symbol_ind*32,radek_ind*32),"vnitřní_roh_3"))
-                    elif symbol == "1":
-                        mapa[-1]["dvere"].add(zed((symbol_ind*32,radek_ind*32),"dveře_0"))
-                    elif symbol == "2":
-                        mapa[-1]["dvere"].add(zed((symbol_ind*32,radek_ind*32),"dveře_1"))
-                    elif symbol == "3":
-                        mapa[-1]["dvere"].add(zed((symbol_ind*32,radek_ind*32),"dveře_2"))
-                    elif symbol == "4":
-                        mapa[-1]["dvere"].add(zed((symbol_ind*32,radek_ind*32),"dveře_3"))
+def urceni_sprite_group(mapa):
+    zdi = pygame.sprite.Group()
+    podlaha = pygame.sprite.Group()
+    dvere = pygame.sprite.Group()
+    for radek_ind,radek in enumerate(mapa[0]):
+        for symbol_ind,symbol in enumerate(radek):
+            if symbol == "6":
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"zeď_0"))
+            elif symbol == "9":
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"zeď_1"))
+            elif symbol == "12":
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"zeď_2"))
+            elif symbol == "15":
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"zeď_3"))
+            elif symbol == "18":
+                podlaha.add(zed((symbol_ind*32,radek_ind*32),"void"))
+            elif symbol == "5":
+                podlaha.add(zed((symbol_ind*32,radek_ind*32),"podlaha")) 
+            elif symbol == "7":
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnitřní_roh_0")) 
+            elif symbol == "10":
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnitřní_roh_1"))
+            elif symbol == "13":
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnitřní_roh_2")) 
+            elif symbol == "16":
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnitřní_roh_3"))  
+            elif symbol == "8":
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnější_roh_0"))  
+            elif symbol == "11":
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnější_roh_1"))  
+            elif symbol == "14":
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnější_roh_2"))
+            elif symbol == "17":
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnější_roh_3"))
+            elif symbol == "1":
+                dvere.add(zed((symbol_ind*32,radek_ind*32),"dveře_0"))
+            elif symbol == "2":
+                dvere.add(zed((symbol_ind*32,radek_ind*32),"dveře_1"))
+            elif symbol == "3":
+                dvere.add(zed((symbol_ind*32,radek_ind*32),"dveře_2"))
+            elif symbol == "4":
+                dvere.add(zed((symbol_ind*32,radek_ind*32),"dveře_3"))
+    return zdi,podlaha,dvere
 
-zdi,podlaha,dvere = mapa[current_position[0]][current_position[1]][-1][zdi],mapa[current_position[0]][current_position[1]][-1][podlaha],mapa[current_position[0]][current_position[1]][-1][dvere]
+zdi,podlaha,dvere = urceni_sprite_group(game_map[current_position[0]][current_position[1]])
 
 #main loop
 while True:

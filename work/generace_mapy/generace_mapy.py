@@ -194,11 +194,11 @@ def main_generation():
         mapa[chosen_one[0]][chosen_one[1]][1] = "regular_door"
         seznam.remove(chosen_one)
         
-    return mapa,screen
+    return mapa,screen,master
 
 #možné opakování gemerace
 while True:
-    mapa,screen = main_generation()
+    mapa,screen,master = main_generation()
     počet_všech = 0
     počet_prázdných = 0
     for line in mapa:
