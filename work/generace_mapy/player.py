@@ -21,12 +21,10 @@ hrac_hitbox = hrac_hitbox_grp.sprites()[0]
 
 current_position = master
 
-#načtení obrazovek
-def urceni_sprite_group(mapa):
+#načtení zdí specificky
+def random_zdi(mapka):
     zdi = pygame.sprite.Group()
-    podlaha = pygame.sprite.Group()
-    dvere = pygame.sprite.Group()
-    for radek_ind,radek in enumerate(mapa[0]):
+    for radek_ind,radek in enumerate(mapka):
         for symbol_ind,symbol in enumerate(radek):
             if symbol == "6":
                 zdi.add(zed((symbol_ind*32,radek_ind*32),"zeď_0"))
@@ -35,11 +33,7 @@ def urceni_sprite_group(mapa):
             elif symbol == "12":
                 zdi.add(zed((symbol_ind*32,radek_ind*32),"zeď_2"))
             elif symbol == "15":
-                zdi.add(zed((symbol_ind*32,radek_ind*32),"zeď_3"))
-            elif symbol == "18":
-                podlaha.add(zed((symbol_ind*32,radek_ind*32),"void"))
-            elif symbol == "5":
-                podlaha.add(zed((symbol_ind*32,radek_ind*32),"podlaha")) 
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"zeď_3")) 
             elif symbol == "7":
                 zdi.add(zed((symbol_ind*32,radek_ind*32),"vnitřní_roh_0")) 
             elif symbol == "10":
@@ -56,6 +50,18 @@ def urceni_sprite_group(mapa):
                 zdi.add(zed((symbol_ind*32,radek_ind*32),"vnější_roh_2"))
             elif symbol == "17":
                 zdi.add(zed((symbol_ind*32,radek_ind*32),"vnější_roh_3"))
+    return zdi
+
+#načtení obrazovek
+def urceni_sprite_group(mapa):
+    podlaha = pygame.sprite.Group()
+    dvere = pygame.sprite.Group()
+    for radek_ind,radek in enumerate(mapa[0]):
+        for symbol_ind,symbol in enumerate(radek):
+            if symbol == "18":
+                podlaha.add(zed((symbol_ind*32,radek_ind*32),"void"))
+            elif symbol == "5":
+                podlaha.add(zed((symbol_ind*32,radek_ind*32),"podlaha"))
             elif symbol == "1":
                 dvere.add(zed((symbol_ind*32,radek_ind*32),"dveře_0"))
             elif symbol == "2":
@@ -64,9 +70,19 @@ def urceni_sprite_group(mapa):
                 dvere.add(zed((symbol_ind*32,radek_ind*32),"dveře_2"))
             elif symbol == "4":
                 dvere.add(zed((symbol_ind*32,radek_ind*32),"dveře_3"))
-    return zdi,podlaha,dvere
+    return podlaha,dvere
 
-zdi,podlaha,dvere = urceni_sprite_group(game_map[current_position[0]][current_position[1]])
+wall_map = []
+for line in game_map:
+    new = []
+    for something in line:
+        if something != []:
+            new.append(random_zdi(something[0]))
+        else: new.append(None)
+    wall_map.append(new)
+    
+podlaha,dvere = urceni_sprite_group(game_map[current_position[0]][current_position[1]])
+zdi = wall_map[current_position[0]][current_position[1]]
 
 #main loop
 while True:
@@ -124,19 +140,23 @@ while True:
     if player_hitbox_instance.rect.left < 0:
         player_hitbox_instance.rect.right = width
         current_position[1] -=1
-        zdi,podlaha,dvere = urceni_sprite_group(game_map[current_position[0]][current_position[1]])
+        podlaha,dvere = urceni_sprite_group(game_map[current_position[0]][current_position[1]])
+        zdi = wall_map[current_position[0]][current_position[1]]
     elif player_hitbox_instance.rect.right > width:
         player_hitbox_instance.rect.left = 0
         current_position[1] +=1
-        zdi,podlaha,dvere = urceni_sprite_group(game_map[current_position[0]][current_position[1]])
+        podlaha,dvere = urceni_sprite_group(game_map[current_position[0]][current_position[1]])
+        zdi = wall_map[current_position[0]][current_position[1]]
     elif player_hitbox_instance.rect.top < 0:
         player_hitbox_instance.rect.bottom = heigth
         current_position[0] -=1
-        zdi,podlaha,dvere = urceni_sprite_group(game_map[current_position[0]][current_position[1]])
+        podlaha,dvere = urceni_sprite_group(game_map[current_position[0]][current_position[1]])
+        zdi = wall_map[current_position[0]][current_position[1]]
     elif player_hitbox_instance.rect.bottom > heigth:
         player_hitbox_instance.rect.top = 0
         current_position[0] +=1
-        zdi,podlaha,dvere = urceni_sprite_group(game_map[current_position[0]][current_position[1]])
+        podlaha,dvere = urceni_sprite_group(game_map[current_position[0]][current_position[1]])
+        zdi = wall_map[current_position[0]][current_position[1]]
     
     #zbytek pohybu
     player_instance.rect.centerx = player_hitbox_instance.rect.centerx

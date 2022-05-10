@@ -239,7 +239,7 @@ for line_ind,line in enumerate(mapa):
                 main_ind += 1
             else: new[2][1] = part[1]
             game_map[line_ind][part_ind] = new
-print(game_map)
+#print(game_map)
 
 
 loading = pygame.font.SysFont("Courier New",30).render("Loading...",False,"white")

@@ -4,10 +4,34 @@ pygame.init()
 width,heigth = 23*32,14*32
 screen = pygame.display.set_mode((width,heigth))
 
+images = {"zeď_0" : pygame.image.load("data/textury_hry/zeď_0.png").convert(),
+          "zeď_1" : pygame.image.load("data/textury_hry/zeď_1.png").convert(),
+          "zeď_2" : pygame.image.load("data/textury_hry/zeď_2.png").convert(),
+          "zeď_3" : pygame.image.load("data/textury_hry/zeď_3.png").convert(),
+          
+          "vnitřní_roh_0" : pygame.image.load("data/textury_hry/vnitřní_roh_0.png").convert(),
+          "vnitřní_roh_1" : pygame.image.load("data/textury_hry/vnitřní_roh_1.png").convert(),
+          "vnitřní_roh_2" : pygame.image.load("data/textury_hry/vnitřní_roh_2.png").convert(),
+          "vnitřní_roh_3" : pygame.image.load("data/textury_hry/vnitřní_roh_3.png").convert(),
+          
+          
+          "vnější_roh_0" : pygame.image.load("data/textury_hry/vnější_roh_0.png").convert(),
+          "vnější_roh_1" : pygame.image.load("data/textury_hry/vnější_roh_1.png").convert(),
+          "vnější_roh_2" : pygame.image.load("data/textury_hry/vnější_roh_2.png").convert(),
+          "vnější_roh_3" : pygame.image.load("data/textury_hry/vnější_roh_3.png").convert(),
+          
+          "dveře_0" : pygame.image.load("data/textury_hry/dveře_0.png").convert(),
+          "dveře_1" : pygame.image.load("data/textury_hry/dveře_1.png").convert(),
+          "dveře_2" : pygame.image.load("data/textury_hry/dveře_2.png").convert(),
+          "dveře_3" : pygame.image.load("data/textury_hry/dveře_3.png").convert(),
+          
+          "podlaha" : pygame.image.load("data/textury_hry/podlaha.png").convert(),
+          "void" : pygame.image.load("data/textury_hry/void.png").convert()}
+
 class zed(pygame.sprite.Sprite):
     def __init__(self,pozice,textura):
         super().__init__()
-        self.image = pygame.image.load(f"data/textury_hry/{textura}.png").convert()
+        self.image = images[textura]
         self.rect = self.image.get_rect(topleft = (pozice))
         
 class player(pygame.sprite.Sprite):
