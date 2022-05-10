@@ -5,9 +5,9 @@ pygame.init()
 #kreslení obrazovky na micromapu:
 def draw_screen(obrazovka,pos,drawing_positions):
     base = pygame.Surface((12,4))
-    base.fill("white")
+    base.fill("black")
     pixel = pygame.Surface((4,4))
-    pixel.fill("white")
+    pixel.fill("black")
     dot = pygame.Surface((4,4))
     dot.fill("lime")
     screen.blit(base,(pos[0]+4,pos[1]+4))
@@ -15,11 +15,8 @@ def draw_screen(obrazovka,pos,drawing_positions):
         if symbol == "1": screen.blit(pixel,(pos[0]+drawing_positions[str(symbol_ind)][0],pos[1]+drawing_positions[str(symbol_ind)][1]))
     if obrazovka[1]:
         screen.blit(dot,(pos[0]+8,pos[1]+4))
-        if obrazovka[1] == "master":
+        if obrazovka[1] == "main":
             dot.fill("red")
-            screen.blit(dot,(pos[0]+8,pos[1]+4))
-        elif obrazovka[1] == "main":
-            dot.fill("blue")
             screen.blit(dot,(pos[0]+8,pos[1]+4))
 
 #hledání cesty    
@@ -118,8 +115,8 @@ def main_generation():
     main_screenes = []
     main_positions = []
     master = [5,5]
-    #screen = pygame.display.set_mode((len(mapa[0])*20,len(mapa)*12))
-    screen = pygame.display.set_mode((23*32,14*32))
+    display_surface = pygame.display.set_mode((23*32,14*32))
+    screen = pygame.Surface((len(mapa[0])*20,len(mapa)*12))
 
     #generace hlavních obrazovek
     for x in range(3):
@@ -256,19 +253,6 @@ screen.fill("black")
 for line_ind,line in enumerate(mapa):
     for part_ind,part in enumerate(line):
         full = pygame.Surface((20,12))
-        full.fill((random.randint(0,250),random.randint(0,250),random.randint(0,250)))
+        full.fill((random.randint(50,230),random.randint(50,230),random.randint(50,230)))
         screen.blit(full,(part_ind*20,line_ind*12))
         if part != []: draw_screen(part,(part_ind*20,line_ind*12),drawing_positions)
-    
-#main loop(vypnutí obrazovky)
-# while True:
-#     for event in pygame.event.get():
-#         if event.type == pygame.QUIT:
-#             pygame.quit()
-#             sys.exit()
-#     keys = pygame.key.get_pressed()
-#     if keys[pygame.K_ESCAPE]:
-#             pygame.quit()
-#             sys.exit()
-#             
-#     pygame.display.update()

@@ -1,11 +1,16 @@
 import sys
 from generace_mapy import game_map,master
+from generace_mapy import screen as minimap
 from sprites import *
 
 
 #základní proměnné
 clock = pygame.time.Clock()
 
+cheat_timeout = 20
+show_minimap = False
+mimimap_pos = (width - len(game_map[0])*20,heigth - len(game_map)*12)
+ukazatel = pygame.image.load("data/textury_hrac/ukazatel_na_mapce.png").convert_alpha()
 clip = True
 hitbox = False
 player_x = 23 * 32 / 2
@@ -97,20 +102,27 @@ while True:
             pygame.quit()
             sys.exit()
     
-    #ukázka hitboxu
-    if pressed[pygame.K_j]:
+    #cheaty
+    if pressed[pygame.K_h] and cheat_timeout < 0:
         if hitbox == False:
             hitbox = True
             player_hitbox_instance.showHitBox()
-    if pressed[pygame.K_h]:
-        if hitbox == True:
+        else:
             hitbox = False
             player_hitbox_instance.hideHitBox()
+        cheat_timeout = 20
             
-    #noclip
-    if pressed[pygame.K_n]:
+    if pressed[pygame.K_n] and cheat_timeout < 0:
         if clip: clip = False
         else: clip = True
+        cheat_timeout = 20
+        
+    if pressed[pygame.K_m] and cheat_timeout < 0:
+        if show_minimap: show_minimap = False
+        else: show_minimap = True
+        cheat_timeout = 20
+        
+    cheat_timeout -= 1
     
     #pohyb
     posun_x = 0
@@ -179,6 +191,9 @@ while True:
     zdi.draw(screen)
     podlaha.draw(screen)
     dvere.draw(screen)
+    if show_minimap:
+        screen.blit(minimap,mimimap_pos)
+        screen.blit(ukazatel,(current_position[1]*20+mimimap_pos[0],current_position[0]*12+mimimap_pos[1]))
     hrac_display_grp.draw(screen)
     hrac_hitbox_grp.draw(screen)
     
