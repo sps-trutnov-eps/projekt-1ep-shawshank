@@ -1,4 +1,4 @@
-import pygame
+import pygame,random
 pygame.init()
 
 width,heigth = 23*32,14*32
@@ -28,10 +28,45 @@ images = {"zeď_0" : pygame.image.load("data/textury_hry/zeď_0.png").convert(),
           "podlaha" : pygame.image.load("data/textury_hry/podlaha.png").convert(),
           "void" : pygame.image.load("data/textury_hry/void.png").convert()}
 
+dekorace_0 = (pygame.image.load("data/decorations/missing_poster_0.png").convert(),
+              pygame.image.load("data/decorations/nástěnka_0_0.png").convert(),
+              pygame.image.load("data/decorations/nástěnka_1_0.png").convert(),
+              pygame.image.load("data/decorations/Péťa_0.png").convert(),
+              pygame.image.load("data/decorations/šipka_0.png").convert(),
+              pygame.image.load("data/decorations/trofeje_0.png").convert())
+
+dekorace_1 = (pygame.image.load("data/decorations/missing_poster_1.png").convert(),
+              pygame.image.load("data/decorations/nástěnka_0_1.png").convert(),
+              pygame.image.load("data/decorations/nástěnka_1_1.png").convert(),
+              pygame.image.load("data/decorations/Péťa_1.png").convert(),
+              pygame.image.load("data/decorations/šipka_1.png").convert(),
+              pygame.image.load("data/decorations/trofeje_1.png").convert())
+
+dekorace_2= (pygame.image.load("data/decorations/missing_poster_2.png").convert(),
+              pygame.image.load("data/decorations/nástěnka_0_2.png").convert(),
+              pygame.image.load("data/decorations/nástěnka_1_2.png").convert(),
+              pygame.image.load("data/decorations/Péťa_2.png").convert(),
+              pygame.image.load("data/decorations/šipka_2.png").convert(),
+              pygame.image.load("data/decorations/trofeje_2.png").convert())
+
+dekorace_3 = (pygame.image.load("data/decorations/missing_poster_3.png").convert(),
+              pygame.image.load("data/decorations/nástěnka_0_3.png").convert(),
+              pygame.image.load("data/decorations/nástěnka_1_3.png").convert(),
+              pygame.image.load("data/decorations/Péťa_3.png").convert(),
+              pygame.image.load("data/decorations/šipka_3.png").convert(),
+              pygame.image.load("data/decorations/trofeje_3.png").convert())
+
 class zed(pygame.sprite.Sprite):
     def __init__(self,pozice,textura):
         super().__init__()
-        self.image = images[textura]
+        if "zeď" in textura:
+            if random.randint(0,15): self.image = images[textura]
+            else:
+                if "0" in textura: self.image = random.choice(dekorace_0)
+                elif "1" in textura: self.image = random.choice(dekorace_1)
+                elif "2" in textura: self.image = random.choice(dekorace_2)
+                else: self.image = random.choice(dekorace_3)
+        else: self.image = images[textura]
         self.rect = self.image.get_rect(topleft = (pozice))
         
 class player(pygame.sprite.Sprite):

@@ -1,11 +1,12 @@
-import pygame, sys
+import sys
 from generace_mapy import game_map,master
 from sprites import *
-pygame.init()
+
 
 #základní proměnné
 clock = pygame.time.Clock()
 
+clip = True
 hitbox = False
 player_x = 23 * 32 / 2
 player_y = 14 * 32 / 2
@@ -105,6 +106,11 @@ while True:
         if hitbox == True:
             hitbox = False
             player_hitbox_instance.hideHitBox()
+            
+    #noclip
+    if pressed[pygame.K_n]:
+        if clip: clip = False
+        else: clip = True
     
     #pohyb
     posun_x = 0
@@ -122,19 +128,21 @@ while True:
     player_hitbox_instance.posun_x(posun_x)
 
     #kolize se zdmi
-    for wall in zdi:
-        if wall.rect.collidepoint(player_hitbox_instance.rect.topleft) or wall.rect.collidepoint(player_hitbox_instance.rect.bottomleft):
-            player_hitbox_instance.rect.left = wall.rect.right+1
-        if wall.rect.collidepoint(player_hitbox_instance.rect.topright) or wall.rect.collidepoint(player_hitbox_instance.rect.bottomright):
-            player_hitbox_instance.rect.right = wall.rect.left-1
-            
+    if clip:
+        for wall in zdi:
+            if wall.rect.collidepoint(player_hitbox_instance.rect.topleft) or wall.rect.collidepoint(player_hitbox_instance.rect.bottomleft):
+                player_hitbox_instance.rect.left = wall.rect.right+1
+            if wall.rect.collidepoint(player_hitbox_instance.rect.topright) or wall.rect.collidepoint(player_hitbox_instance.rect.bottomright):
+                player_hitbox_instance.rect.right = wall.rect.left-1
+                
     player_hitbox_instance.posun_y(posun_y)
-    
-    for wall in zdi:
-        if wall.rect.collidepoint(player_hitbox_instance.rect.topleft) or wall.rect.collidepoint(player_hitbox_instance.rect.topright):
-            player_hitbox_instance.rect.top = wall.rect.bottom+1
-        if wall.rect.collidepoint(player_hitbox_instance.rect.bottomleft) or wall.rect.collidepoint(player_hitbox_instance.rect.bottomright):
-            player_hitbox_instance.rect.bottom = wall.rect.top-1
+        
+    if clip:
+        for wall in zdi:
+            if wall.rect.collidepoint(player_hitbox_instance.rect.topleft) or wall.rect.collidepoint(player_hitbox_instance.rect.topright):
+                player_hitbox_instance.rect.top = wall.rect.bottom+1
+            if wall.rect.collidepoint(player_hitbox_instance.rect.bottomleft) or wall.rect.collidepoint(player_hitbox_instance.rect.bottomright):
+                player_hitbox_instance.rect.bottom = wall.rect.top-1
     
     #pohyb mezi obrazovkami
     if player_hitbox_instance.rect.left < 0:
