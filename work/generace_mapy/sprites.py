@@ -103,3 +103,13 @@ class player_hitbox(pygame.sprite.Sprite):
         if self.hitbox == True:
             self.hitbox = False
             self.image = self.hitBox
+            
+class Health_bar(pygame.sprite.Sprite):
+    def __init__(self, pozice, okno):
+        self.textura = pygame.image.load("../../data/health_bar/health_bar.png").convert_alpha()
+        self.rect = self.textura.get_rect()
+        self.rect.center = pozice
+        self.okno = okno
+        
+    def vykresleni_baru(self):
+        self.okno.blit(self.textura, self.rect)

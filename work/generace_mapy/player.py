@@ -24,6 +24,7 @@ hrac_display_grp.add(player_instance)
 player_hitbox_instance = player_hitbox(player_x, player_y)
 hrac_hitbox_grp.add(player_hitbox_instance)
 hrac_hitbox = hrac_hitbox_grp.sprites()[0]
+health_bar = Health_bar()
 
 current_position = master
 
@@ -196,6 +197,7 @@ while True:
         screen.blit(ukazatel,(current_position[1]*20+mimimap_pos[0],current_position[0]*12+mimimap_pos[1]))
     hrac_display_grp.draw(screen)
     hrac_hitbox_grp.draw(screen)
+    health_bar.vykresleni_baru()
     
     pygame.display.update()
     clock.tick(60)
