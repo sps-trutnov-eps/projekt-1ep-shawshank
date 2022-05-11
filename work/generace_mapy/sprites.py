@@ -95,7 +95,7 @@ class player(pygame.sprite.Sprite):
                          pygame.image.load("data/textury_hrac/PlayerWalking/PlayerWalking_l/PlayerWalking_l9.png").convert_alpha(),
                          pygame.image.load("data/textury_hrac/PlayerWalking/PlayerWalking_l/PlayerWalking_l10.png").convert_alpha(),)
 
-        self.leftWalk = (pygame.image.load("data/textury_hrac/PlayerWalking/PlayerWalking_r/PlayerWalking_r1.png").convert_alpha(),
+        self.rightWalk = (pygame.image.load("data/textury_hrac/PlayerWalking/PlayerWalking_r/PlayerWalking_r1.png").convert_alpha(),
                          pygame.image.load("data/textury_hrac/PlayerWalking/PlayerWalking_r/PlayerWalking_r2.png").convert_alpha(),
                          pygame.image.load("data/textury_hrac/PlayerWalking/PlayerWalking_r/PlayerWalking_r3.png").convert_alpha(),
                          pygame.image.load("data/textury_hrac/PlayerWalking/PlayerWalking_r/PlayerWalking_r4.png").convert_alpha(),
@@ -131,7 +131,7 @@ class player(pygame.sprite.Sprite):
             
         if self.rect.centerx < self.prevPosX: #pokud jde hráč do leva tak se bude přehrávat animace
             self.animStart = pygame.time.get_ticks() - self.animDiff
-            if self.animStart > 100:
+            if self.animStart > 20:
                 self.animDiff = pygame.time.get_ticks()
                 if self.walk == 0:
                    self.image = self.leftWalk[self.walk]
@@ -162,21 +162,42 @@ class player(pygame.sprite.Sprite):
                    self.walk += 1
                 elif self.walk == 9:
                    self.image = self.leftWalk[self.walk]
-                   self.walk += 1
-                elif self.walk == 10:
-                   self.image = self.leftWalk[self.walk]
-                   self.walk += 1
+                   self.walk = 0
                 self.lastMoveDiff = "player_l"       
         if self.rect.centerx > self.prevPosX:#pokud jde hráč do prava tak se bude přehrávat animace
             self.animStart = pygame.time.get_ticks() - self.animDiff
-            if self.animStart > 100:
+            if self.animStart > 20:
                 self.animDiff = pygame.time.get_ticks()
-                if self.walk:
-                   self.image = self.rightWalk[0]
-                   self.walk = False
-                else:
-                   self.image = self.rightWalk[1]
-                   self.walk = True
+                if self.walk == 0:
+                   self.image = self.rightWalk[self.walk]
+                   self.walk += 1
+                elif self.walk == 1:
+                   self.image = self.rightWalk[self.walk]
+                   self.walk += 1
+                elif self.walk == 2:
+                   self.image = self.rightWalk[self.walk]
+                   self.walk += 1
+                elif self.walk == 3:
+                   self.image = self.rightWalk[self.walk]
+                   self.walk += 1
+                elif self.walk == 4:
+                   self.image = self.rightWalk[self.walk]
+                   self.walk += 1
+                elif self.walk == 5:
+                   self.image = self.rightWalk[self.walk]
+                   self.walk += 1
+                elif self.walk == 6:
+                   self.image = self.rightWalk[self.walk]
+                   self.walk += 1
+                elif self.walk == 7:
+                   self.image = self.rightWalk[self.walk]
+                   self.walk += 1
+                elif self.walk == 8:
+                   self.image = self.rightWalk[self.walk]
+                   self.walk += 1
+                elif self.walk == 9:
+                   self.image = self.rightWalk[self.walk]
+                   self.walk = 0
                 self.lastMoveDiff = "player_r"
                 
         if self.rect.centery < self.prevPosY:#pokud jde hráč nahoru tak se bude přehrávat animace
