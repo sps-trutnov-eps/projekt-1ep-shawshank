@@ -10,3 +10,7 @@ Top-down bludišťovka s minihrami. Unikněte ze školy, než zazvoní na hodinu
 - `doc` dokumentace, návody
 - `work` work-in-progress soubory, náčrtky apod.
 
+použitý software : Thonny
+		   Tiled
+		   PixelStudio
+
