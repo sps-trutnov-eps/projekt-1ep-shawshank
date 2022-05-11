@@ -77,29 +77,74 @@ class player(pygame.sprite.Sprite):
                        pygame.image.load("data/textury_hrac/Player/Player_l.png").convert_alpha(),
                        pygame.image.load("data/textury_hrac/Player/Player_b.png").convert_alpha(),)
         
+        #textury animací
         self.frontWalk = (pygame.image.load("data/textury_hrac/PlayerWalking/PlayerWalking_f/PlayerWalking_f_1.png").convert_alpha(),
                           pygame.image.load("data/textury_hrac/PlayerWalking/PlayerWalking_f/PlayerWalking_f_2.png").convert_alpha(),)
+        self.backWalk = (pygame.image.load("data/textury_hrac/PlayerWalking/PlayerWalking_b/PlayerWalking_b_1.png").convert_alpha(),
+                          pygame.image.load("data/textury_hrac/PlayerWalking/PlayerWalking_b/PlayerWalking_b_2.png").convert_alpha(),)
+        self.leftWalk = (pygame.image.load("data/textury_hrac/PlayerWalking/PlayerWalking_l/PlayerWalking_l_1.png").convert_alpha(),
+                          pygame.image.load("data/textury_hrac/PlayerWalking/PlayerWalking_l/PlayerWalking_l_2.png").convert_alpha(),)
+        self.rightWalk = (pygame.image.load("data/textury_hrac/PlayerWalking/PlayerWalking_r/PlayerWalking_r_1.png").convert_alpha(),
+                          pygame.image.load("data/textury_hrac/PlayerWalking/PlayerWalking_r/PlayerWalking_r_2.png").convert_alpha(),)
         self.walk = True
         self.animStart = 0
         self.animDiff = 0
+        self.lastMoveDiff = "player_f"
+        
+        self.image = self.angles[0]
+        
+        self.rect = self.image.get_rect(center = (player_x, player_y))
         
         self.prevPosX = self.rect.centerx
         self.prevPosY = self.rect.centery
         
-        if imageType == "player_f":
-            self.image = self.angles[0]
-        if imageType == "player_b":
-            self.image = self.angles[3]
-        if imageType == "player_r":
-            self.image = self.angles[1]
-        if imageType == "player_l":
-            self.image = self.angles[2]
-            
-        self.rect = self.image.get_rect(center = (player_x, player_y))
-        
     def update(self, imageType, anim):
         
-        if self.rect.centery >= self.prevPosY:
+        if self.rect.center == (self.prevPosX, self.prevPosY): #pokud se hráč nehýbe tak budou aplikovány defaultní textury
+            if self.lastMoveDiff == "player_f":
+                self.image = self.angles[0]
+            if self.lastMoveDiff == "player_b":
+                self.image = self.angles[3]
+            if self.lastMoveDiff == "player_r":
+                self.image = self.angles[1]
+            if self.lastMoveDiff == "player_l":
+                self.image = self.angles[2]
+            
+        if self.rect.centerx < self.prevPosX: #pokud jde hráč do leva tak se bude přehrávat animace
+            self.animStart = pygame.time.get_ticks() - self.animDiff
+            if self.animStart > 100:
+                self.animDiff = pygame.time.get_ticks()
+                if self.walk:
+                   self.image = self.leftWalk[0]
+                   self.walk = False
+                else:
+                   self.image = self.leftWalk[1]
+                   self.walk = True
+                self.lastMoveDiff = "player_l"       
+        if self.rect.centerx > self.prevPosX:#pokud jde hráč do prava tak se bude přehrávat animace
+            self.animStart = pygame.time.get_ticks() - self.animDiff
+            if self.animStart > 100:
+                self.animDiff = pygame.time.get_ticks()
+                if self.walk:
+                   self.image = self.rightWalk[0]
+                   self.walk = False
+                else:
+                   self.image = self.rightWalk[1]
+                   self.walk = True
+                self.lastMoveDiff = "player_r"
+                
+        if self.rect.centery < self.prevPosY:#pokud jde hráč nahoru tak se bude přehrávat animace
+            self.animStart = pygame.time.get_ticks() - self.animDiff
+            if self.animStart > 100:
+                self.animDiff = pygame.time.get_ticks()
+                if self.walk:
+                   self.image = self.backWalk[0]
+                   self.walk = False
+                else:
+                   self.image = self.backWalk[1]
+                   self.walk = True
+                self.lastMoveDiff = "player_b"
+        if self.rect.centery > self.prevPosY: #pokud jde hráč dolů tak se bude přehrávat animace
             self.animStart = pygame.time.get_ticks() - self.animDiff
             if self.animStart > 100:
                 self.animDiff = pygame.time.get_ticks()
@@ -109,18 +154,7 @@ class player(pygame.sprite.Sprite):
                 else:
                    self.image = self.frontWalk[1]
                    self.walk = True
-        if self.rect.c
-        
-        if imageType == "player_f":
-            if anim:
-            else:
-                self.image = self.angles[0]
-        if imageType == "player_b":
-            self.image = self.angles[3]
-        if imageType == "player_r":
-            self.image = self.angles[1]
-        if imageType == "player_l":
-            self.image = self.angles[2]
+                self.lastMoveDiff = "player_f"
         
         self.prevPosX = self.rect.centerx
         self.prevPosY = self.rect.centery
