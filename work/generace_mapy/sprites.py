@@ -78,15 +78,34 @@ class player(pygame.sprite.Sprite):
                        pygame.image.load("data/textury_hrac/Player/Player_b.png").convert_alpha(),)
         
         #textury animací
-        self.frontWalk = (pygame.image.load("data/textury_hrac/PlayerWalking/PlayerWalking_f/PlayerWalking_f_1.png").convert_alpha(),
-                          pygame.image.load("data/textury_hrac/PlayerWalking/PlayerWalking_f/PlayerWalking_f_2.png").convert_alpha(),)
-        self.backWalk = (pygame.image.load("data/textury_hrac/PlayerWalking/PlayerWalking_b/PlayerWalking_b_1.png").convert_alpha(),
-                          pygame.image.load("data/textury_hrac/PlayerWalking/PlayerWalking_b/PlayerWalking_b_2.png").convert_alpha(),)
-        self.leftWalk = (pygame.image.load("data/textury_hrac/PlayerWalking/PlayerWalking_l/PlayerWalking_l_1.png").convert_alpha(),
-                          pygame.image.load("data/textury_hrac/PlayerWalking/PlayerWalking_l/PlayerWalking_l_2.png").convert_alpha(),)
-        self.rightWalk = (pygame.image.load("data/textury_hrac/PlayerWalking/PlayerWalking_r/PlayerWalking_r_1.png").convert_alpha(),
-                          pygame.image.load("data/textury_hrac/PlayerWalking/PlayerWalking_r/PlayerWalking_r_2.png").convert_alpha(),)
-        self.walk = True
+        self.frontWalk = (pygame.image.load("data/textury_hrac/PlayerWalking/PlayerWalking_f/PlayerWalking_f1.png").convert_alpha(),
+                          pygame.image.load("data/textury_hrac/PlayerWalking/PlayerWalking_f/PlayerWalking_f2.png").convert_alpha(),)
+
+        self.backWalk = (pygame.image.load("data/textury_hrac/PlayerWalking/PlayerWalking_b/PlayerWalking_b1.png").convert_alpha(),
+                          pygame.image.load("data/textury_hrac/PlayerWalking/PlayerWalking_b/PlayerWalking_b2.png").convert_alpha(),)
+
+        self.leftWalk = (pygame.image.load("data/textury_hrac/PlayerWalking/PlayerWalking_l/PlayerWalking_l1.png").convert_alpha(),
+                         pygame.image.load("data/textury_hrac/PlayerWalking/PlayerWalking_l/PlayerWalking_l2.png").convert_alpha(),
+                         pygame.image.load("data/textury_hrac/PlayerWalking/PlayerWalking_l/PlayerWalking_l3.png").convert_alpha(),
+                         pygame.image.load("data/textury_hrac/PlayerWalking/PlayerWalking_l/PlayerWalking_l4.png").convert_alpha(),
+                         pygame.image.load("data/textury_hrac/PlayerWalking/PlayerWalking_l/PlayerWalking_l5.png").convert_alpha(),
+                         pygame.image.load("data/textury_hrac/PlayerWalking/PlayerWalking_l/PlayerWalking_l6.png").convert_alpha(),
+                         pygame.image.load("data/textury_hrac/PlayerWalking/PlayerWalking_l/PlayerWalking_l7.png").convert_alpha(),
+                         pygame.image.load("data/textury_hrac/PlayerWalking/PlayerWalking_l/PlayerWalking_l8.png").convert_alpha(),
+                         pygame.image.load("data/textury_hrac/PlayerWalking/PlayerWalking_l/PlayerWalking_l9.png").convert_alpha(),
+                         pygame.image.load("data/textury_hrac/PlayerWalking/PlayerWalking_l/PlayerWalking_l10.png").convert_alpha(),)
+
+        self.leftWalk = (pygame.image.load("data/textury_hrac/PlayerWalking/PlayerWalking_r/PlayerWalking_r1.png").convert_alpha(),
+                         pygame.image.load("data/textury_hrac/PlayerWalking/PlayerWalking_r/PlayerWalking_r2.png").convert_alpha(),
+                         pygame.image.load("data/textury_hrac/PlayerWalking/PlayerWalking_r/PlayerWalking_r3.png").convert_alpha(),
+                         pygame.image.load("data/textury_hrac/PlayerWalking/PlayerWalking_r/PlayerWalking_r4.png").convert_alpha(),
+                         pygame.image.load("data/textury_hrac/PlayerWalking/PlayerWalking_r/PlayerWalking_r5.png").convert_alpha(),
+                         pygame.image.load("data/textury_hrac/PlayerWalking/PlayerWalking_r/PlayerWalking_r6.png").convert_alpha(),
+                         pygame.image.load("data/textury_hrac/PlayerWalking/PlayerWalking_r/PlayerWalking_r7.png").convert_alpha(),
+                         pygame.image.load("data/textury_hrac/PlayerWalking/PlayerWalking_r/PlayerWalking_r8.png").convert_alpha(),
+                         pygame.image.load("data/textury_hrac/PlayerWalking/PlayerWalking_r/PlayerWalking_r9.png").convert_alpha(),
+                         pygame.image.load("data/textury_hrac/PlayerWalking/PlayerWalking_r/PlayerWalking_r10.png").convert_alpha(),)
+        self.walk = 0
         self.animStart = 0
         self.animDiff = 0
         self.lastMoveDiff = "player_f"
@@ -114,12 +133,39 @@ class player(pygame.sprite.Sprite):
             self.animStart = pygame.time.get_ticks() - self.animDiff
             if self.animStart > 100:
                 self.animDiff = pygame.time.get_ticks()
-                if self.walk:
-                   self.image = self.leftWalk[0]
-                   self.walk = False
-                else:
-                   self.image = self.leftWalk[1]
-                   self.walk = True
+                if self.walk == 0:
+                   self.image = self.leftWalk[self.walk]
+                   self.walk += 1
+                elif self.walk == 1:
+                   self.image = self.leftWalk[self.walk]
+                   self.walk += 1
+                elif self.walk == 2:
+                   self.image = self.leftWalk[self.walk]
+                   self.walk += 1
+                elif self.walk == 3:
+                   self.image = self.leftWalk[self.walk]
+                   self.walk += 1
+                elif self.walk == 4:
+                   self.image = self.leftWalk[self.walk]
+                   self.walk += 1
+                elif self.walk == 5:
+                   self.image = self.leftWalk[self.walk]
+                   self.walk += 1
+                elif self.walk == 6:
+                   self.image = self.leftWalk[self.walk]
+                   self.walk += 1
+                elif self.walk == 7:
+                   self.image = self.leftWalk[self.walk]
+                   self.walk += 1
+                elif self.walk == 8:
+                   self.image = self.leftWalk[self.walk]
+                   self.walk += 1
+                elif self.walk == 9:
+                   self.image = self.leftWalk[self.walk]
+                   self.walk += 1
+                elif self.walk == 10:
+                   self.image = self.leftWalk[self.walk]
+                   self.walk += 1
                 self.lastMoveDiff = "player_l"       
         if self.rect.centerx > self.prevPosX:#pokud jde hráč do prava tak se bude přehrávat animace
             self.animStart = pygame.time.get_ticks() - self.animDiff
