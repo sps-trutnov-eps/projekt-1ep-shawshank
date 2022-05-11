@@ -70,14 +70,60 @@ class zed(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(topleft = (pozice))
         
 class player(pygame.sprite.Sprite):
-    def __init__(self, player_x, player_y):
+    def __init__(self, player_x, player_y, imageType):
         super().__init__()
-        self.image = pygame.image.load("data/textury_hrac/player_front.png").convert_alpha()
+        self.angles = (pygame.image.load("data/textury_hrac/Player/Player_f.png").convert_alpha(),
+                       pygame.image.load("data/textury_hrac/Player/Player_r.png").convert_alpha(),
+                       pygame.image.load("data/textury_hrac/Player/Player_l.png").convert_alpha(),
+                       pygame.image.load("data/textury_hrac/Player/Player_b.png").convert_alpha(),)
+        
+        self.frontWalk = (pygame.image.load("data/textury_hrac/PlayerWalking/PlayerWalking_f/PlayerWalking_f_1.png").convert_alpha(),
+                          pygame.image.load("data/textury_hrac/PlayerWalking/PlayerWalking_f/PlayerWalking_f_2.png").convert_alpha(),)
+        self.walk = True
+        self.animStart = 0
+        self.animDiff = 0
+        
+        self.prevPosX = self.rect.centerx
+        self.prevPosY = self.rect.centery
+        
+        if imageType == "player_f":
+            self.image = self.angles[0]
+        if imageType == "player_b":
+            self.image = self.angles[3]
+        if imageType == "player_r":
+            self.image = self.angles[1]
+        if imageType == "player_l":
+            self.image = self.angles[2]
+            
         self.rect = self.image.get_rect(center = (player_x, player_y))
         
-    def update(self, player_x, player_y):
-        self.rect.centerx = player_x
-        self.rect.centery = player_y
+    def update(self, imageType, anim):
+        
+        if self.rect.centery >= self.prevPosY:
+            self.animStart = pygame.time.get_ticks() - self.animDiff
+            if self.animStart > 100:
+                self.animDiff = pygame.time.get_ticks()
+                if self.walk:
+                   self.image = self.frontWalk[0]
+                   self.walk = False
+                else:
+                   self.image = self.frontWalk[1]
+                   self.walk = True
+        if self.rect.c
+        
+        if imageType == "player_f":
+            if anim:
+            else:
+                self.image = self.angles[0]
+        if imageType == "player_b":
+            self.image = self.angles[3]
+        if imageType == "player_r":
+            self.image = self.angles[1]
+        if imageType == "player_l":
+            self.image = self.angles[2]
+        
+        self.prevPosX = self.rect.centerx
+        self.prevPosY = self.rect.centery
         
 class player_hitbox(pygame.sprite.Sprite):
     def __init__(self, player_x, player_y):
