@@ -1,4 +1,20 @@
 import random
+import sys
+import pygame
+
+sirka_okna = 800
+vyska_okna = 600
+
+cerna = (0, 0, 0)
+bila = (255, 255, 255)
+cervena = (255, 0, 0)
+zelena = (0, 255, 0)
+modra = (0, 0, 255)
+
+pygame.init()
+okno = pygame.display.set_mode((sirka_okna, vyska_okna))
+pygame.display.set_caption("Zeměpis")
+
 
 #nacteni-otazek
 handle = open("otazky.txt", "r", encoding = "utf-8")
@@ -81,38 +97,30 @@ if spravna_odpoved5 == input() :
 else:
     print("ŠPATNĚ")      
     
-    
 #konecna-znamka    
     
 if znamka == 6 :
     print("Hodně špatný výkon, za 5 !!!")
-    
 else:
     print("Dostal si za", znamka)
     
 if znamka < 5:
     život = True
-    
 else:
     život = False
-    
-    
+      
 if život == True:
     print("Super! Neumřel jsi!!!")
-    
 if život == False:
     print("Tak tady končíme...")
+
+while True:
+    okno.fill(bila)
+    pygame.display.update()
+
+
+pygame.quit()
+sys.exit()
+
     
-    
-    
-    
-    
-
-
-
-
-
-
-
-
 
