@@ -16,6 +16,15 @@ hitbox = False
 player_x = 23 * 32 / 2
 player_y = 14 * 32 / 2
 player_speed = 3
+mozne_prechody = []
+
+default_time = 10#120
+current_time = 10#120
+font = pygame.font.SysFont("rockwellcondensedtučné",30)
+time_background = pygame.Surface((60,54))
+time_background.fill((0,28,32))
+time_outground = pygame.Surface((65,59))
+time_outground.fill("gray")
 
 hrac_display_grp = pygame.sprite.Group()
 hrac_hitbox_grp = pygame.sprite.Group()
@@ -28,7 +37,8 @@ hrac_hitbox = hrac_hitbox_grp.sprites()[0]
 current_position = master
 
 #načtení zdí specificky
-def random_zdi(mapka):
+def random_zdi(mapka,ind,door):
+    global mozne_prechody
     zdi = pygame.sprite.Group()
     for radek_ind,radek in enumerate(mapka):
         for symbol_ind,symbol in enumerate(radek):
@@ -56,6 +66,10 @@ def random_zdi(mapka):
                 zdi.add(zed((symbol_ind*32,radek_ind*32),"vnější_roh_2"))
             elif symbol == "17":
                 zdi.add(zed((symbol_ind*32,radek_ind*32),"vnější_roh_3"))
+                
+        if "1" in radek or "2" in radek or "3" in radek or "4" in radek:
+            if door == "regular_door":
+                mozne_prechody.append(ind)
     return zdi
 
 #načtení obrazovek
@@ -79,11 +93,11 @@ def urceni_sprite_group(mapa):
     return podlaha,dvere
 
 wall_map = []
-for line in game_map:
+for line_ind,line in enumerate(game_map):
     new = []
-    for something in line:
+    for something_ind,something in enumerate(line):
         if something != []:
-            new.append(random_zdi(something[0]))
+            new.append(random_zdi(something[0],[line_ind,something_ind],something[2][1]))
         else: new.append(None)
     wall_map.append(new)
     
@@ -196,6 +210,22 @@ while True:
         screen.blit(ukazatel,(current_position[1]*20+mimimap_pos[0],current_position[0]*12+mimimap_pos[1]))
     hrac_display_grp.draw(screen)
     hrac_hitbox_grp.draw(screen)
+        
+    #časomíra
+    current_time -= 0.016
+    screen.blit(time_outground,(0,0))
+    screen.blit(time_background,(0,0))
+    if current_time > 21: screen.blit(font.render(str(int(current_time)),False,"gray"),(10,10))
+    elif current_time > 0 : screen.blit(font.render(str(int(current_time)),False,"red"),(10,10))
+    else:
+        current_position = random.choice(mozne_prechody)
+        podlaha,dvere = urceni_sprite_group(game_map[current_position[0]][current_position[1]])
+        zdi = wall_map[current_position[0]][current_position[1]]
+        
+        player_hitbox_instance.rect.center = (width//2,heigth//2)
+        player_instance.rect.centerx = player_hitbox_instance.rect.centerx
+        player_instance.rect.bottom = player_hitbox_instance.rect.bottom
+        current_time = default_time
     
     pygame.display.update()
     clock.tick(60)
