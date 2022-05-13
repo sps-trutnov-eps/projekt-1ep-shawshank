@@ -16,8 +16,7 @@ hitbox = False
 player_x = 23 * 32 / 2
 player_y = 14 * 32 / 2
 player_speed = 3
-health_max = 4
-health = health_max
+health_max = health = 5
 
 hrac_display_grp = pygame.sprite.Group()
 hrac_hitbox_grp = pygame.sprite.Group()
@@ -124,7 +123,7 @@ while True:
         if show_minimap: show_minimap = False
         else: show_minimap = True
         cheat_timeout = 20
-        
+
     cheat_timeout -= 1
     
     #pohyb
@@ -200,7 +199,7 @@ while True:
     hrac_display_grp.draw(screen)
     hrac_hitbox_grp.draw(screen)
     health_bar.vykresleni_baru()
-    health_bar.vykresleni_predelu(health_max)
+    health_bar.vykresleni_predelu(health_max, health)
     health_bar.vykresleni_borderu()
     
     pygame.display.update()

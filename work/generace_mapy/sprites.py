@@ -118,14 +118,13 @@ class Health_bar(pygame.sprite.Sprite):
     def vykresleni_borderu(self):
         self.okno.blit(self.border, self.rect)    
 
-    def vykresleni_predelu(self, health_max):
+    def vykresleni_predelu(self, health_max, health):
         #health bar - výpočty segmentů
         health_bar_segments = health_max
         velikost_health_baru = self.rect.width
         jeden_segment = round(velikost_health_baru / health_bar_segments)
         x_segmentu = 268
-        x_prazdneho_mista = x_segmentu + (health_bar_segments - 1) * jeden_segment
-        #print(jeden_segment)
+        x_prazdneho_mista = 467 - jeden_segment
         
         #health bar - vykreslování předělů
         for predel in range(health_bar_segments - 1):
@@ -133,27 +132,6 @@ class Health_bar(pygame.sprite.Sprite):
             x_segmentu = x_segmentu + jeden_segment
         
         #health_bar - vykreslení prázdných míst health baru
-        if health == 5:
-            return
-        if health == 4:
-            for prazdne_misto in range(health_bar_segments - 1):
-                pygame.draw.rect(self.okno, (0, 0, 0), (x_prazdneho_mista, 12, jeden_segment, 26))
-                x_prazdneho_mista = x_prazdneho_mista - 40
-        if health == 3:
-            for prazdne_misto in range(health_bar_segments - 2):
-                pygame.draw.rect(self.okno, (0, 0, 0), (x_prazdneho_mista, 12, jeden_segment, 26))
-                x_prazdneho_mista = x_prazdneho_mista - 40
-        if health == 2:
-            for prazdne_misto in range(health_bar_segments - 3):
-                pygame.draw.rect(self.okno, (0, 0, 0), (x_prazdneho_mista, 12, jeden_segment, 26))
-                x_prazdneho_mista = x_prazdneho_mista - 40
-        if health == 1:
-            for prazdne_misto in range(health_bar_segments - 4):
-                pygame.draw.rect(self.okno, (0, 0, 0), (x_prazdneho_mista, 12, jeden_segment, 26))
-                x_prazdneho_mista = x_prazdneho_mista - 40
-        if health == 0:
-            for prazdne_misto in range(health_bar_segments):
-                pygame.draw.rect(self.okno, (0, 0, 0), (x_prazdneho_mista, 12, jeden_segment, 26))
-                x_prazdneho_mista = x_prazdneho_mista - 40
-            
-        
+        for mezera in range(health_max - health):
+            pygame.draw.rect(self.okno, (0, 0, 0), (x_prazdneho_mista, 12, jeden_segment, 26))
+            x_prazdneho_mista = x_prazdneho_mista - jeden_segment
