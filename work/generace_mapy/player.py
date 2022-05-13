@@ -16,6 +16,8 @@ hitbox = False
 player_x = 23 * 32 / 2
 player_y = 14 * 32 / 2
 player_speed = 3
+health_max = 4
+health = health_max
 
 hrac_display_grp = pygame.sprite.Group()
 hrac_hitbox_grp = pygame.sprite.Group()
@@ -24,7 +26,7 @@ hrac_display_grp.add(player_instance)
 player_hitbox_instance = player_hitbox(player_x, player_y)
 hrac_hitbox_grp.add(player_hitbox_instance)
 hrac_hitbox = hrac_hitbox_grp.sprites()[0]
-health_bar = Health_bar()
+health_bar = Health_bar((23*32/2, 24), screen)
 
 current_position = master
 
@@ -198,6 +200,8 @@ while True:
     hrac_display_grp.draw(screen)
     hrac_hitbox_grp.draw(screen)
     health_bar.vykresleni_baru()
+    health_bar.vykresleni_predelu(health_max)
+    health_bar.vykresleni_borderu()
     
     pygame.display.update()
     clock.tick(60)
