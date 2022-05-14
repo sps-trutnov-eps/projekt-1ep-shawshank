@@ -39,22 +39,26 @@ animStart = 0
 animDiff = 0
 lastMoveDiff = "player_f"
 image = playerAngles[0]
+
+sideWalkingSpeed = 20 #rychlost přehrávání animací
+updownWalkingSpeed = 100
+
 def playerAnim(posX, posY, prevPosX, prevPosY,):
     global walk, animStart, animDiff, lastMoveDiff, image
     
     if (posX, posY) == (prevPosX, prevPosY): #pokud se hráč nehýbe tak budou aplikovány defaultní textury
-        if lastMoveDiff == "player_f":
-            image = playerAngles[0]
-        if lastMoveDiff == "player_b":
-            image = playerAngles[3]
         if lastMoveDiff == "player_r":
             image = playerAngles[1]
         if lastMoveDiff == "player_l":
             image = playerAngles[2]
+        if lastMoveDiff == "player_f":
+            image = playerAngles[0]
+        if lastMoveDiff == "player_b":
+            image = playerAngles[3]
         
     if posX < prevPosX: #pokud jde hráč do leva tak se bude přehrávat animace
         animStart = pygame.time.get_ticks() - animDiff
-        if animStart > 20:
+        if animStart > sideWalkingSpeed:
             animDiff = pygame.time.get_ticks()
             if walk == 0:
                image = playerLeftWalk[walk]
@@ -89,7 +93,7 @@ def playerAnim(posX, posY, prevPosX, prevPosY,):
             lastMoveDiff = "player_l"       
     if posX > prevPosX:#pokud jde hráč do prava tak se bude přehrávat animace
         animStart = pygame.time.get_ticks() - animDiff
-        if animStart > 20:
+        if animStart > sideWalkingSpeed:
             animDiff = pygame.time.get_ticks()
             if walk == 0:
                image = playerRightWalk[walk]
@@ -125,7 +129,7 @@ def playerAnim(posX, posY, prevPosX, prevPosY,):
             
     if posY < prevPosY:#pokud jde hráč nahoru tak se bude přehrávat animace
         animStart = pygame.time.get_ticks() - animDiff
-        if animStart > 100:
+        if animStart > updownWalkingSpeed:
             animDiff = pygame.time.get_ticks()
             if walk:
                image = backWalk[0]
@@ -136,7 +140,7 @@ def playerAnim(posX, posY, prevPosX, prevPosY,):
             lastMoveDiff = "player_b"
     if posY > prevPosY: #pokud jde hráč dolů tak se bude přehrávat animace
         animStart = pygame.time.get_ticks() - animDiff
-        if animStart > 100:
+        if animStart > updownWalkingSpeed:
             animDiff = pygame.time.get_ticks()
             if walk:
                image = playerFrontWalk[0]
