@@ -153,57 +153,7 @@ def playerAnim(posX, posY, prevPosX, prevPosY,):
     return(image)
 
 
-janitorApearingFront = (pygame.image.load("data/textures_janitor/JanitorApearing/janitorApearing_f1.png").convert_alpha(),
-                        pygame.image.load("data/textures_janitor/JanitorApearing/janitorApearing_f2.png").convert_alpha(),
-                        pygame.image.load("data/textures_janitor/JanitorApearing/janitorApearing_f3.png").convert_alpha(),
-                        pygame.image.load("data/textures_janitor/JanitorApearing/janitorApearing_f4.png").convert_alpha(),
-                        pygame.image.load("data/textures_janitor/JanitorApearing/janitorApearing_f5.png").convert_alpha(),
-                        pygame.image.load("data/textures_janitor/JanitorApearing/janitorApearing_f6.png").convert_alpha(),
-                        pygame.image.load("data/textures_janitor/JanitorApearing/janitorApearing_f7.png").convert_alpha(),
-                        pygame.image.load("data/textures_janitor/JanitorApearing/janitorApearing_f9.png").convert_alpha(),
-                        pygame.image.load("data/textures_janitor/JanitorApearing/janitorApearing_f10.png").convert_alpha(),
-                        pygame.image.load("data/textures_janitor/JanitorApearing/janitorApearing_f12.png").convert_alpha(),
-                        pygame.image.load("data/textures_janitor/JanitorApearing/janitorApearing_f13.png").convert_alpha(),
-                        pygame.image.load("data/textures_janitor/JanitorApearing/janitorApearing_f14.png").convert_alpha(),
-                        pygame.image.load("data/textures_janitor/JanitorApearing/janitorApearing_f15.png").convert_alpha(),
-                        pygame.image.load("data/textures_janitor/JanitorApearing/janitorApearing_f16.png").convert_alpha(),
-                        pygame.image.load("data/textures_janitor/JanitorApearing/janitorApearing_f17.png").convert_alpha(),
-                        pygame.image.load("data/textures_janitor/JanitorApearing/janitorApearing_f18.png").convert_alpha(),
-                        pygame.image.load("data/textures_janitor/JanitorApearing/janitorApearing_f19.png").convert_alpha(),
-                        pygame.image.load("data/textures_janitor/JanitorApearing/janitorApearing_f20.png").convert_alpha(),
-                        pygame.image.load("data/textures_janitor/JanitorApearing/janitorApearing_f21.png").convert_alpha(),
-                        pygame.image.load("data/textures_janitor/JanitorApearing/janitorApearing_f22.png").convert_alpha(),
-                        pygame.image.load("data/textures_janitor/JanitorApearing/janitorApearing_f23.png").convert_alpha(),
-                        pygame.image.load("data/textures_janitor/JanitorApearing/janitorApearing_f24.png").convert_alpha(),
-                        pygame.image.load("data/textures_janitor/JanitorApearing/janitorApearing_f25.png").convert_alpha(),
-                        pygame.image.load("data/textures_janitor/JanitorApearing/janitorApearing_f26.png").convert_alpha(),
-                        pygame.image.load("data/textures_janitor/JanitorApearing/janitorApearing_f27.png").convert_alpha(),
-                        pygame.image.load("data/textures_janitor/JanitorApearing/janitorApearing_f28.png").convert_alpha(),
-                        pygame.image.load("data/textures_janitor/JanitorApearing/janitorApearing_f29.png").convert_alpha(),
-                        pygame.image.load("data/textures_janitor/JanitorApearing/janitorApearing_f30.png").convert_alpha(),
-                        pygame.image.load("data/textures_janitor/JanitorApearing/janitorApearing_f31.png").convert_alpha(),
-                        pygame.image.load("data/textures_janitor/JanitorApearing/janitorApearing_f32.png").convert_alpha(),
-                        pygame.image.load("data/textures_janitor/JanitorApearing/janitorApearing_f33.png").convert_alpha(),
-                        pygame.image.load("data/textures_janitor/JanitorApearing/janitorApearing_f34.png").convert_alpha(),
-                        pygame.image.load("data/textures_janitor/JanitorApearing/janitorApearing_f35.png").convert_alpha(),
-                        pygame.image.load("data/textures_janitor/JanitorApearing/janitorApearing_f36.png").convert_alpha(),
-                        pygame.image.load("data/textures_janitor/JanitorApearing/janitorApearing_f37.png").convert_alpha(),
-                        pygame.image.load("data/textures_janitor/JanitorApearing/janitorApearing_f38.png").convert_alpha(),
-                        pygame.image.load("data/textures_janitor/JanitorApearing/janitorApearing_f39.png").convert_alpha(),
-                        pygame.image.load("data/textures_janitor/JanitorApearing/janitorApearing_f40.png").convert_alpha(),
-                        pygame.image.load("data/textures_janitor/JanitorApearing/janitorApearing_f41.png").convert_alpha(),
-                        pygame.image.load("data/textures_janitor/JanitorApearing/janitorApearing_f42.png").convert_alpha(),
-                        pygame.image.load("data/textures_janitor/JanitorApearing/janitorApearing_f43.png").convert_alpha(),
-                        pygame.image.load("data/textures_janitor/JanitorApearing/janitorApearing_f44.png").convert_alpha(),
-                        pygame.image.load("data/textures_janitor/JanitorApearing/janitorApearing_f45.png").convert_alpha(),
-                        pygame.image.load("data/textures_janitor/JanitorApearing/janitorApearing_f46.png").convert_alpha(),
-                        pygame.image.load("data/textures_janitor/JanitorApearing/janitorApearing_f47.png").convert_alpha(),
-                        pygame.image.load("data/textures_janitor/JanitorApearing/janitorApearing_f48.png").convert_alpha(),
-                        pygame.image.load("data/textures_janitor/JanitorApearing/janitorApearing_f49.png").convert_alpha(),
-                        pygame.image.load("data/textures_janitor/JanitorApearing/janitorApearing_f50.png").convert_alpha(),
-                        pygame.image.load("data/textures_janitor/JanitorApearing/janitorApearing_f51.png").convert_alpha(),
-                        pygame.image.load("data/textures_janitor/JanitorApearing/janitorApearing_f52.png").convert_alpha(),
-                        pygame.image.load("data/textures_janitor/JanitorApearing/janitorApearing_f53.png").convert_alpha())
+janitorApearingFront = (pygame.image.load("data/textures_janitor/JanitorApearing/janitorApearing_f.png").convert_alpha())
 
 jWalk = 0
 jApear = 0
@@ -212,180 +162,49 @@ jApearDiff = 0
 jAnimStart = 0
 jAnimDiff = 0
 jLastMoveDiff = "janitor_apear"
-#jImage = playerAngles[0]
+jImage = janitorApearingFront
 
 
-jApearingAnimSpeed = 100
+jApearingAnimSpeed = 50
 jSideWalkingSpeed = 20 #rychlost přehrávání animací
 jupdownWalkingSpeed = 100
-def janitorAnim(posX, posY, prevPosX, prevPosY, apearing):
-    global jWalk, jApear, jApearStart, jApearDiff, jAnimStart, jAnimDiff, jLastMoveDiff, apearingAnimSpeed, sideWalkingSpeed, updownWalkingSpeed
+
+def janitorAnim():
+    global jImage, jWalk, jApear, jApearStart, jApearDiff, jAnimStart, jAnimDiff, jLastMoveDiff, jApearingAnimSpeed, jSideWalkingSpeed, jupdownWalkingSpeed
     
-    if apearing:
-        jApearStart = pygame.time.get_ticks() - jApearDiff
-        if jApearStart > jApearingAnimSpeed:
-            jApearDiff = pygame.time.get_ticks()
-            if jApear == 0:
-               image = janitorApearingFront[jApear]
-               jApear += 1
-            elif jApear == 1:
-               image = janitorApearingFront[jApear]
-               jApear += 1
-            elif jApear == 2:
-               image = janitorApearingFront[jApear]
-               jApear += 1
-            elif jApear == 3:
-               image = janitorApearingFront[jApear]
-               jApear += 1
-            elif jApear == 4:
-               image = janitorApearingFront[jApear]
-               jApear += 1
-            elif jApear == 5:
-               image = janitorApearingFront[jApear]
-               jApear += 1
-            elif jApear == 6:
-               image = janitorApearingFront[jApear]
-               jApear += 1
-            elif jApear == 7:
-               image = janitorApearingFront[jApear]
-               jApear += 1
-            elif jApear == 8:
-               image = janitorApearingFront[jApear]
-               jApear += 1
-            elif jApear == 9:
-               image = janitorApearingFront[jApear]
-               jApear += 1
-            elif jApear == 10:
-               image = janitorApearingFront[jApear]
-               jApear += 1
-            elif jApear == 11:
-               image = janitorApearingFront[jApear]
-               jApear += 1
-            elif jApear == 12:
-               image = janitorApearingFront[jApear]
-               jApear += 1
-            elif jApear == 13:
-               image = janitorApearingFront[jApear]
-               jApear += 1
-            elif jApear == 14:
-               image = janitorApearingFront[jApear]
-               jApear += 1
-            elif jApear == 15:
-               image = janitorApearingFront[jApear]
-               jApear += 1
-            elif jApear == 16:
-               image = janitorApearingFront[jApear]
-               jApear += 1
-            elif jApear == 17:
-               image = janitorApearingFront[jApear]
-               jApear += 1
-            elif jApear == 18:
-               image = janitorApearingFront[jApear]
-               jApear += 1
-            elif jApear == 19:
-               image = janitorApearingFront[jApear]
-               jApear += 1
-            elif jApear == 20:
-               image = janitorApearingFront[jApear]
-               jApear += 1
-            elif jApear == 21:
-               image = janitorApearingFront[jApear]
-               jApear += 1
-            elif jApear == 22:
-               image = janitorApearingFront[jApear]
-               jApear += 1
-            elif jApear == 23:
-               image = janitorApearingFront[jApear]
-               jApear += 1
-            elif jApear == 24:
-               image = janitorApearingFront[jApear]
-               jApear += 1
-            elif jApear == 25:
-               image = janitorApearingFront[jApear]
-               jApear += 1
-            elif jApear == 26:
-               image = janitorApearingFront[jApear]
-               jApear += 1
-            elif jApear == 27:
-               image = janitorApearingFront[jApear]
-               jApear += 1
-            elif jApear == 28:
-               image = janitorApearingFront[jApear]
-               jApear += 1
-            elif jApear == 29:
-               image = janitorApearingFront[jApear]
-               jApear += 1
-            elif jApear == 30:
-               image = janitorApearingFront[jApear]
-               jApear += 1
-            elif jApear == 31:
-               image = janitorApearingFront[jApear]
-               jApear += 1
-            elif jApear == 32:
-               image = janitorApearingFront[jApear]
-               jApear += 1
-            elif jApear == 33:
-               image = janitorApearingFront[jApear]
-               jApear += 1
-            elif jApear == 34:
-               image = janitorApearingFront[jApear]
-               jApear += 1
-            elif jApear == 35:
-               image = janitorApearingFront[jApear]
-               jApear += 1
-            elif jApear == 36:
-               image = janitorApearingFront[jApear]
-               jApear += 1
-            elif jApear == 37:
-               image = janitorApearingFront[jApear]
-               jApear += 1
-            elif jApear == 38:
-               image = janitorApearingFront[jApear]
-               jApear += 1
-            elif jApear == 39:
-               image = janitorApearingFront[jApear]
-               jApear += 1
-            elif jApear == 40:
-               image = janitorApearingFront[jApear]
-               jApear += 1
-            elif jApear == 41:
-               image = janitorApearingFront[jApear]
-               jApear += 1
-            elif jApear == 42:
-               image = janitorApearingFront[jApear]
-               jApear += 1
-            elif jApear == 43:
-               image = janitorApearingFront[jApear]
-               jApear += 1
-            elif jApear == 44:
-               image = janitorApearingFront[jApear]
-               jApear += 1
-            elif jApear == 45:
-               image = janitorApearingFront[jApear]
-               jApear += 1
-            elif jApear == 46:
-               image = janitorApearingFront[jApear]
-               jApear += 1
-            elif jApear == 47:
-               image = janitorApearingFront[jApear]
-               jApear += 1
-            elif jApear == 48:
-               image = janitorApearingFront[jApear]
-               jApear += 1
-            elif jApear == 49:
-               image = janitorApearingFront[jApear]
-               jApear += 1
-            elif jApear == 50:
-               image = janitorApearingFront[jApear]
-               jApear += 1
-            elif jApear == 51:
-               image = janitorApearingFront[jApear]
-               jApear += 1
-            elif jApear == 52:
-               image = janitorApearingFront[jApear]
-               jApear += 1
-            elif jApear == 53:
-               image = janitorApearingFront[jApear]
-               jApear = 0
-            lastMoveDiff = "player_l"       
-    return(image)
+    jApearStart = pygame.time.get_ticks() - jApearDiff
+    if jApearStart > jApearingAnimSpeed:
+        jApearDiff = pygame.time.get_ticks()
+        if (jApear <= 53):
+            image = pygame.Surface((42, 59))
+            image.set_colorkey((0, 0, 0))
+            image.blit(janitorApearingFront, (0, 0), (42*jApear, 0, 42, 59))
+            jApear += 1
+            jImage = image
+        else:
+            jApear = 0
+    
+    return jImage
+        
+# class janitorAnim:
+#     def __init__(self):
+#         True
+#         
+#     def get_janitorApearingAnim(posX, posY, prevPosX, prevPosY, apearing):
+#         global jImage, jWalk, jApear, jApearStart, jApearDiff, jAnimStart, jAnimDiff, jLastMoveDiff, jApearingAnimSpeed, jSideWalkingSpeed, jupdownWalkingSpeed
+#         
+#         if True:
+#             jApearStart = pygame.time.get_ticks() - jApearDiff
+#             if jApearStart > jApearingAnimSpeed:
+#                 jApearDiff = pygame.time.get_ticks()
+#                 if (jApear <= 53):
+#                     jApearSprite = pygame.Surface((42, 59))
+#                     jApearSprite.blit(janitorApearingFront, (0, 0), (42*jApear, 0, 42, 59))
+#                     jApearSprite.set_colorkey((0, 0, 0))
+#                     jImage = jApearSprite
+#                     return(jApearSprite)
+#                     jApear += 1
+#                     lastMoveDiff = "janitor_apear"
+#                     print(jApear, jImage, janitorApearingFront)
+#                 else:
+#                     jApear = 0

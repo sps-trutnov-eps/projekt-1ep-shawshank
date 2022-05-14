@@ -1,6 +1,6 @@
 import pygame,random
 
-from animations import playerAnim
+from animations import playerAnim, janitorAnim
 pygame.init()
 
 width,heigth = 23*32,14*32
@@ -78,16 +78,16 @@ class player(pygame.sprite.Sprite):
         self.prevPosX = player_x
         self.prevPosY = player_y
         
-        self.image = playerAnim(player_x, player_y, player_x, player_y)
-        
-        self.rect = self.image.get_rect(center = (player_x, player_y))
+        self.image = janitorAnim()
+        self.rect = self.image.get_rect()
+        self.rect.center = (player_y, player_x)
         
         self.prevPosX = self.rect.centerx
         self.prevPosY = self.rect.centery
         
     def update(self, imageType, anim):
         
-        self.image = playerAnim(self.rect.centerx, self.rect.centery,  self.prevPosX, self.prevPosY)
+        self.image = janitorAnim()
         
         self.prevPosX = self.rect.centerx
         self.prevPosY = self.rect.centery
