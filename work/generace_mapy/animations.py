@@ -101,37 +101,16 @@ def janitorAnim():
     
     jApearStart = pygame.time.get_ticks() - jApearDiff
     if jApearStart > jApearingAnimSpeed:
-        jApearDiff = pygame.time.get_ticks()
+        if jApear == 0 or jApear == 1 or jApear == 2 or jApear == 4 or jApear == 5 or jApear == 8 or jApear == 9 or jApear == 11 or jApear == 12:
+            jApearDiff = pygame.time.get_ticks() + 500
+        elif jApear == 15 or jApear == 52:
+            jApearDiff = pygame.time.get_ticks() + 1000
+        else:
+            jApearDiff = pygame.time.get_ticks()
         if (jApear <= 53):
-            image = pygame.Surface((42, 59))
-            image.set_colorkey((0, 0, 0))
-            image.blit(janitorApearingFront, (0, 0), (42*jApear, 0, 42, 59))
+            jImage = getImage(42*jApear, 0, 42, 59, janitorApearingFront)
             jApear += 1
-            jImage = image
         else:
             jApear = 0
     
     return jImage
-        
-# class janitorAnim:
-#     def __init__(self):
-#         True
-#         
-#     def get_janitorApearingAnim(posX, posY, prevPosX, prevPosY, apearing):
-#         global jImage, jWalk, jApear, jApearStart, jApearDiff, jAnimStart, jAnimDiff, jLastMoveDiff, jApearingAnimSpeed, jSideWalkingSpeed, jupdownWalkingSpeed
-#         
-#         if True:
-#             jApearStart = pygame.time.get_ticks() - jApearDiff
-#             if jApearStart > jApearingAnimSpeed:
-#                 jApearDiff = pygame.time.get_ticks()
-#                 if (jApear <= 53):
-#                     jApearSprite = pygame.Surface((42, 59))
-#                     jApearSprite.blit(janitorApearingFront, (0, 0), (42*jApear, 0, 42, 59))
-#                     jApearSprite.set_colorkey((0, 0, 0))
-#                     jImage = jApearSprite
-#                     return(jApearSprite)
-#                     jApear += 1
-#                     lastMoveDiff = "janitor_apear"
-#                     print(jApear, jImage, janitorApearingFront)
-#                 else:
-#                     jApear = 0
