@@ -3,7 +3,7 @@ pygame.init()
 
 def getImage(x, y, w, h, image):
     imageToReturn = pygame.Surface((w, h))
-    imageToReturn.set_colorkey((0, 0, 0))
+    imageToReturn.set_colorkey((0, 0, 0)) #!!!!!!!dá černou jako průhlednou!!!!!!!!!! (takže nepoužívat v texturách čistě černou(0, 0, 0))
     imageToReturn.blit(image, (0, 0), (x, y, w, h))
     return imageToReturn
 
