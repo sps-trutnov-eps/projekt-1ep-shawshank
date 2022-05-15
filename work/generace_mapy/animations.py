@@ -1,44 +1,19 @@
 import pygame
 pygame.init()
 
-playerAngles = (pygame.image.load("data/textury_hrac/Player/Player_f.png").convert_alpha(),
-               pygame.image.load("data/textury_hrac/Player/Player_r.png").convert_alpha(),
-               pygame.image.load("data/textury_hrac/Player/Player_l.png").convert_alpha(),
-               pygame.image.load("data/textury_hrac/Player/Player_b.png").convert_alpha())
+def getImage(x, y, w, h, image):
+    imageToReturn = pygame.Surface((w, h))
+    imageToReturn.set_colorkey((0, 0, 0))
+    imageToReturn.blit(image, (0, 0), (x, y, w, h))
+    return imageToReturn
 
-playerFrontWalk = (pygame.image.load("data/textury_hrac/PlayerWalking/PlayerWalking_f/PlayerWalking_f1.png").convert_alpha(),
-             pygame.image.load("data/textury_hrac/PlayerWalking/PlayerWalking_f/PlayerWalking_f2.png").convert_alpha())
-
-backWalk = (pygame.image.load("data/textury_hrac/PlayerWalking/PlayerWalking_b/PlayerWalking_b1.png").convert_alpha(),
-            pygame.image.load("data/textury_hrac/PlayerWalking/PlayerWalking_b/PlayerWalking_b2.png").convert_alpha())
-
-playerLeftWalk = (pygame.image.load("data/textury_hrac/PlayerWalking/PlayerWalking_l/PlayerWalking_l1.png").convert_alpha(),
-            pygame.image.load("data/textury_hrac/PlayerWalking/PlayerWalking_l/PlayerWalking_l2.png").convert_alpha(),
-            pygame.image.load("data/textury_hrac/PlayerWalking/PlayerWalking_l/PlayerWalking_l3.png").convert_alpha(),
-            pygame.image.load("data/textury_hrac/PlayerWalking/PlayerWalking_l/PlayerWalking_l4.png").convert_alpha(),
-            pygame.image.load("data/textury_hrac/PlayerWalking/PlayerWalking_l/PlayerWalking_l5.png").convert_alpha(),
-            pygame.image.load("data/textury_hrac/PlayerWalking/PlayerWalking_l/PlayerWalking_l6.png").convert_alpha(),
-            pygame.image.load("data/textury_hrac/PlayerWalking/PlayerWalking_l/PlayerWalking_l7.png").convert_alpha(),
-            pygame.image.load("data/textury_hrac/PlayerWalking/PlayerWalking_l/PlayerWalking_l8.png").convert_alpha(),
-            pygame.image.load("data/textury_hrac/PlayerWalking/PlayerWalking_l/PlayerWalking_l9.png").convert_alpha(),
-            pygame.image.load("data/textury_hrac/PlayerWalking/PlayerWalking_l/PlayerWalking_l10.png").convert_alpha())
-
-playerRightWalk = (pygame.image.load("data/textury_hrac/PlayerWalking/PlayerWalking_r/PlayerWalking_r1.png").convert_alpha(),
-             pygame.image.load("data/textury_hrac/PlayerWalking/PlayerWalking_r/PlayerWalking_r2.png").convert_alpha(),
-             pygame.image.load("data/textury_hrac/PlayerWalking/PlayerWalking_r/PlayerWalking_r3.png").convert_alpha(),
-             pygame.image.load("data/textury_hrac/PlayerWalking/PlayerWalking_r/PlayerWalking_r4.png").convert_alpha(),
-             pygame.image.load("data/textury_hrac/PlayerWalking/PlayerWalking_r/PlayerWalking_r5.png").convert_alpha(),
-             pygame.image.load("data/textury_hrac/PlayerWalking/PlayerWalking_r/PlayerWalking_r6.png").convert_alpha(),
-             pygame.image.load("data/textury_hrac/PlayerWalking/PlayerWalking_r/PlayerWalking_r7.png").convert_alpha(),
-             pygame.image.load("data/textury_hrac/PlayerWalking/PlayerWalking_r/PlayerWalking_r8.png").convert_alpha(),
-             pygame.image.load("data/textury_hrac/PlayerWalking/PlayerWalking_r/PlayerWalking_r9.png").convert_alpha(),
-             pygame.image.load("data/textury_hrac/PlayerWalking/PlayerWalking_r/PlayerWalking_r10.png").convert_alpha())
+player = pygame.image.load("data/textury_hrac/Player_sprite.png")
 
 walk = 0
 animStart = 0
 animDiff = 0
 lastMoveDiff = "player_f"
-image = playerAngles[0]
+image = getImage(0, 96, 16, 32, player)
 
 sideWalkingSpeed = 20 #rychlost přehrávání animací
 updownWalkingSpeed = 100
@@ -48,109 +23,61 @@ def playerAnim(posX, posY, prevPosX, prevPosY,):
     
     if (posX, posY) == (prevPosX, prevPosY): #pokud se hráč nehýbe tak budou aplikovány defaultní textury
         if lastMoveDiff == "player_r":
-            image = playerAngles[1]
+            image = getImage(48, 96, 16, 32, player)
         if lastMoveDiff == "player_l":
-            image = playerAngles[2]
+            image = getImage(16, 96, 16, 32, player)
         if lastMoveDiff == "player_f":
-            image = playerAngles[0]
+            image = getImage(0, 96, 16, 32, player)
         if lastMoveDiff == "player_b":
-            image = playerAngles[3]
-        
+            image = getImage(32, 96, 16, 32, player)
+    
     if posX < prevPosX: #pokud jde hráč do leva tak se bude přehrávat animace
         animStart = pygame.time.get_ticks() - animDiff
         if animStart > sideWalkingSpeed:
             animDiff = pygame.time.get_ticks()
-            if walk == 0:
-               image = playerLeftWalk[walk]
-               walk += 1
-            elif walk == 1:
-               image = playerLeftWalk[walk]
-               walk += 1
-            elif walk == 2:
-               image = playerLeftWalk[walk]
-               walk += 1
-            elif walk == 3:
-               image = playerLeftWalk[walk]
-               walk += 1
-            elif walk == 4:
-               image = playerLeftWalk[walk]
-               walk += 1
-            elif walk == 5:
-               image = playerLeftWalk[walk]
-               walk += 1
-            elif walk == 6:
-               image = playerLeftWalk[walk]
-               walk += 1
-            elif walk == 7:
-               image = playerLeftWalk[walk]
-               walk += 1
-            elif walk == 8:
-               image = playerLeftWalk[walk]
-               walk += 1
-            elif walk == 9:
-               image = playerLeftWalk[walk]
-               walk = 0
-            lastMoveDiff = "player_l"       
+            if (walk <= 9):
+                image = getImage(16*walk, 32, 16, 32, player)
+                walk += 1
+            else:
+                walk = 0
+            lastMoveDiff = "player_l"
+            
     if posX > prevPosX:#pokud jde hráč do prava tak se bude přehrávat animace
         animStart = pygame.time.get_ticks() - animDiff
         if animStart > sideWalkingSpeed:
             animDiff = pygame.time.get_ticks()
-            if walk == 0:
-               image = playerRightWalk[walk]
-               walk += 1
-            elif walk == 1:
-               image = playerRightWalk[walk]
-               walk += 1
-            elif walk == 2:
-               image = playerRightWalk[walk]
-               walk += 1
-            elif walk == 3:
-               image = playerRightWalk[walk]
-               walk += 1
-            elif walk == 4:
-               image = playerRightWalk[walk]
-               walk += 1
-            elif walk == 5:
-               image = playerRightWalk[walk]
-               walk += 1
-            elif walk == 6:
-               image = playerRightWalk[walk]
-               walk += 1
-            elif walk == 7:
-               image = playerRightWalk[walk]
-               walk += 1
-            elif walk == 8:
-               image = playerRightWalk[walk]
-               walk += 1
-            elif walk == 9:
-               image = playerRightWalk[walk]
-               walk = 0
+            if (walk <= 9):
+                image = getImage(16*walk, 0, 16, 32, player)
+                walk += 1
+            else:
+                walk = 0
             lastMoveDiff = "player_r"
             
     if posY < prevPosY:#pokud jde hráč nahoru tak se bude přehrávat animace
         animStart = pygame.time.get_ticks() - animDiff
         if animStart > updownWalkingSpeed:
             animDiff = pygame.time.get_ticks()
-            if walk:
-               image = backWalk[0]
-               walk = False
+            if (walk <= 1):
+                image = getImage(16*walk, 64, 16, 32, player)
+                walk += 1
             else:
-               image = backWalk[1]
-               walk = True
+                walk = 0
             lastMoveDiff = "player_b"
+            
     if posY > prevPosY: #pokud jde hráč dolů tak se bude přehrávat animace
         animStart = pygame.time.get_ticks() - animDiff
         if animStart > updownWalkingSpeed:
             animDiff = pygame.time.get_ticks()
-            if walk:
-               image = playerFrontWalk[0]
-               walk = False
+            if (walk <= 1):
+                image = getImage(16*walk+32, 64, 16, 32, player)
+                walk += 1
             else:
-               image = playerFrontWalk[1]
-               walk = True
+                walk = 0
             lastMoveDiff = "player_f"
             
     return(image)
+
+
 
 
 janitorApearingFront = (pygame.image.load("data/textures_janitor/JanitorApearing/janitorApearing_f.png").convert_alpha())
