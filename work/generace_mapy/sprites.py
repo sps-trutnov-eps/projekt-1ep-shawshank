@@ -78,16 +78,18 @@ class player(pygame.sprite.Sprite):
         self.prevPosX = player_x
         self.prevPosY = player_y
         
-        self.image = janitorAnim() #playerAnim(player_x, player_y, self.prevPosX, self.prevPosY)
+        self.image = playerAnim(player_x, player_y, self.prevPosX, self.prevPosY)
+        #self.image = janitorAnim(player_x, player_y, self.prevPosX, self.prevPosY)
         self.rect = self.image.get_rect()
         self.rect.center = (player_y, player_x)
         
         self.prevPosX = self.rect.centerx
         self.prevPosY = self.rect.centery
         
-    def update(self, imageType, anim):
+    def update(self):
         
-        self.image = janitorAnim() #playerAnim(self.rect.centerx, self.rect.centery, self.prevPosX, self.prevPosY)
+        self.image = playerAnim(self.rect.centerx, self.rect.centery, self.prevPosX, self.prevPosY)
+        #self.image = janitorAnim(self.rect.centerx, self.rect.centery, self.prevPosX, self.prevPosY)
         
         self.prevPosX = self.rect.centerx
         self.prevPosY = self.rect.centery

@@ -184,8 +184,8 @@ while True:
         zdi = wall_map[current_position[0]][current_position[1]]
     
     #zbytek pohybu
-    player_instance.rect.centerx = player_hitbox_instance.rect.centerx
-    player_instance.rect.bottom = player_hitbox_instance.rect.bottom
+    player_instance.rect.centerx = player_hitbox_instance.rect.centerx - 4
+    player_instance.rect.bottom = player_hitbox_instance.rect.bottom + 3
         
     #kolize s dvermi
     if pygame.sprite.spritecollide(hrac_hitbox, dvere, False):
@@ -199,10 +199,7 @@ while True:
     if show_minimap:
         screen.blit(minimap,mimimap_pos)
         screen.blit(ukazatel,(current_position[1]*20+mimimap_pos[0],current_position[0]*12+mimimap_pos[1]))
-    if pressed[pygame.K_s]: # or pressed[pygame.K_w] or pressed[pygame.K_a] or pressed[pygame.K_d]
-        hrac_display_grp.update(image, True)
-    else:
-        hrac_display_grp.update(image, False)
+    hrac_display_grp.update()
     hrac_display_grp.draw(screen)
     hrac_hitbox_grp.draw(screen)
     
