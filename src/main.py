@@ -2,6 +2,7 @@ import sys
 from generace_mapy import game_map,master
 from generace_mapy import screen as minimap
 from sprites import *
+from inventory import inventoryHasKey, inventoryHasBoots
 
 
 #základní proměnné
@@ -34,6 +35,14 @@ hrac_display_grp.add(player_instance)
 player_hitbox_instance = player_hitbox(player_x, player_y)
 hrac_hitbox_grp.add(player_hitbox_instance)
 hrac_hitbox = hrac_hitbox_grp.sprites()[0]
+
+#inventář
+inventoryKey_grp = pygame.sprite.Group()
+inventoryKey_grp.add(inventoryHasKey(23*32-16, 16))
+inventoryBoots_grp = pygame.sprite.Group()
+inventoryBoots_grp.add(inventoryHasBoots(23*32-32-16, 16))
+inventoryCanGoOut_grp = pygame.sprite.Group()
+inventoryCanGoOut_grp.add(inventoryHasKey(23*32-16, 16))
 
 current_position = master
 
@@ -138,6 +147,15 @@ while True:
         cheat_timeout = 20
         
     cheat_timeout -= 1
+
+    #test inventáře
+    if pressed[pygame.K_2] and cheat_timeout < 0:
+        inventoryKey_grp.update()
+        cheat_timeout = 20
+
+    if pressed[pygame.K_1] and cheat_timeout < 0:
+        inventoryBoots_grp.update()
+        cheat_timeout = 20
     
     #pohyb
     posun_x = 0
@@ -216,6 +234,8 @@ while True:
     hrac_display_grp.update()
     hrac_display_grp.draw(screen)
     hrac_hitbox_grp.draw(screen)
+    inventoryKey_grp.draw(screen)
+    inventoryBoots_grp.draw(screen)
         
     #časomíra
     current_time -= 0.016
