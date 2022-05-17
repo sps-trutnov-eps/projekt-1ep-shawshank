@@ -1,12 +1,10 @@
-255 : 5
-48 : 4
-94  + 24
-5665 - 984
-998 + 594
-1785 * 3
-454 : 2
-888 : 444
-6 * 50
-80 * 8
-443 - 74
-798 - 789
+Kdy začala druhá světová válka?
+Kdy vzniklo Československo?
+Kdo postavil Karlštejn?
+Jak se jmenoval konkurenční rod Přemyslovců?
+Jak se jmenoval poslední Přemyslovec?
+Kdo byl prezidentem USA během občanské války?
+V jakém roce vznikl Sovětský svaz?
+Kdo byl první prezident České republiky?
+Kde byl upálen Jan Hus?
+Na jakého panovníka byl spáchán atentát v Sarajevu?
