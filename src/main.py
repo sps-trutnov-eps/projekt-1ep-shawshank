@@ -3,7 +3,6 @@ from generace_mapy import game_map,master
 from generace_mapy import screen as minimap
 from sprites import *
 
-
 #základní proměnné
 clock = pygame.time.Clock()
 
@@ -54,29 +53,29 @@ def random_zdi(mapka,ind,door):
     for radek_ind,radek in enumerate(mapka):
         for symbol_ind,symbol in enumerate(radek):
             if symbol == "6":
-                zdi.add(zed((symbol_ind*32,radek_ind*32),"zeď_0"))
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"zeď_0",mapka[2][1]))
             elif symbol == "9":
-                zdi.add(zed((symbol_ind*32,radek_ind*32),"zeď_1"))
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"zeď_1",mapka[2][1]))
             elif symbol == "12":
-                zdi.add(zed((symbol_ind*32,radek_ind*32),"zeď_2"))
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"zeď_2",mapka[2][1]))
             elif symbol == "15":
-                zdi.add(zed((symbol_ind*32,radek_ind*32),"zeď_3")) 
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"zeď_3",mapka[2][1])) 
             elif symbol == "7":
-                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnitřní_roh_0")) 
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnitřní_roh_0",mapka[2][1])) 
             elif symbol == "10":
-                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnitřní_roh_1"))
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnitřní_roh_1",mapka[2][1]))
             elif symbol == "13":
-                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnitřní_roh_2")) 
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnitřní_roh_2",mapka[2][1])) 
             elif symbol == "16":
-                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnitřní_roh_3"))  
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnitřní_roh_3",mapka[2][1]))  
             elif symbol == "8":
-                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnější_roh_0"))  
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnější_roh_0",mapka[2][1]))  
             elif symbol == "11":
-                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnější_roh_1"))  
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnější_roh_1",mapka[2][1]))  
             elif symbol == "14":
-                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnější_roh_2"))
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnější_roh_2",mapka[2][1]))
             elif symbol == "17":
-                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnější_roh_3"))
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnější_roh_3",mapka[2][1]))
                 
         if "1" in radek or "2" in radek or "3" in radek or "4" in radek:
             if door == "regular_door":
@@ -90,17 +89,17 @@ def urceni_sprite_group(mapa):
     for radek_ind,radek in enumerate(mapa[0]):
         for symbol_ind,symbol in enumerate(radek):
             if symbol == "18":
-                podlaha.add(zed((symbol_ind*32,radek_ind*32),"void"))
+                podlaha.add(zed((symbol_ind*32,radek_ind*32),"void",mapa[2][1]))
             elif symbol == "5":
-                podlaha.add(zed((symbol_ind*32,radek_ind*32),"podlaha"))
+                podlaha.add(zed((symbol_ind*32,radek_ind*32),"podlaha",mapa[2][1]))
             elif symbol == "1":
-                dvere.add(zed((symbol_ind*32,radek_ind*32),"dveře_0"))
+                dvere.add(zed((symbol_ind*32,radek_ind*32),"dveře_0",mapa[2][1]))
             elif symbol == "2":
-                dvere.add(zed((symbol_ind*32,radek_ind*32),"dveře_1"))
+                dvere.add(zed((symbol_ind*32,radek_ind*32),"dveře_1",mapa[2][1]))
             elif symbol == "3":
-                dvere.add(zed((symbol_ind*32,radek_ind*32),"dveře_2"))
+                dvere.add(zed((symbol_ind*32,radek_ind*32),"dveře_2",mapa[2][1]))
             elif symbol == "4":
-                dvere.add(zed((symbol_ind*32,radek_ind*32),"dveře_3"))
+                dvere.add(zed((symbol_ind*32,radek_ind*32),"dveře_3",mapa[2][1]))
     return podlaha,dvere
 
 wall_map = []
@@ -213,7 +212,7 @@ while True:
         
     #kolize s dvermi
     if pygame.sprite.spritecollide(hrac_hitbox, dvere, False):
-        print(dvere.sprites().index(pygame.sprite.spritecollide(hrac_hitbox, dvere, False)[0]))
+        for door in dvere: print(door.door_type)
     
     #vykreslování
     screen.fill("black")
