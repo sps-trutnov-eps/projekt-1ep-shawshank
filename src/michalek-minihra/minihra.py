@@ -9,9 +9,17 @@ pg.init()
 def mminihra():
     BARVA_POZADI = (0, 20, 0)
     okno = pg.display.set_mode((736,448))
-    pg.display.set_caption("Minihra Martina Michálka")
+    pg.display.set_caption("Vypočti Diskriminant")
 
-    seznam_zadani = {"1 + 1 =":"2", "5 - 4 =":"1", "2*2":"4","28/4":"7","7*3":"21"}
+    seznam_zadani = {"2x² - 11x + 14 = 0":"620",
+                     "3x² + 6x + 5 = 0":"-111",
+                     "x² + 4x - 16 = 0":"257",
+                     "4x² - 8x - 87 = 0":"-2800",
+                     "2x² + 5x -4 = 0":"84",
+                     "5x² - 12x + 58 = 0":"2809",
+                     "x² + 7x + 5 = 0":"139",
+                     "3x² - 8x + 5 = 0":"169",
+                     }
     klice = list(seznam_zadani)
     notazek = random.randint(1, 5)
 
