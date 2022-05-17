@@ -211,9 +211,9 @@ while True:
 
 #vytvoření mapky pro Vojtu
     
-correct_map = 0
-while correct_map != 3:
-    correct_map = 0
+correct_map = []
+while len(correct_map) != 3 or not "KEY_ROOM" in correct_map or not "LOCKER_ROOM" in correct_map or not "EXIT" in correct_map:
+    correct_map = []
     game_map = []
     mains = ("KEY_ROOM","LOCKER_ROOM","EXIT")
     main_ind = 0
@@ -245,7 +245,7 @@ while correct_map != 3:
     for line in game_map:
         for part in line:
             if part != []:
-                if part[2][1] != "regular_door" and part[2][1] != "master" and part[2][1] != None: correct_map += 1
+                if part[2][1] != "regular_door" and part[2][1] != "master" and part[2][1] != None: correct_map.append(part[2][1])
 
 #vykreslování obrazovky
 drawing_positions = {"0" : (4,0),
