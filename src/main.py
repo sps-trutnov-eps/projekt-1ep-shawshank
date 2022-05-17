@@ -16,11 +16,11 @@ hitbox = False
 player_x = 23 * 32 / 2
 player_y = 14 * 32 / 2
 player_speed = 3
-image = "player_f"
+health_max = health = 5
 mozne_prechody = []
 
-default_time = 10#120
-current_time = 10#120
+default_time = 120
+current_time = 120
 font = pygame.font.SysFont("rockwellcondensedtučné",30)
 time_background = pygame.Surface((60,54))
 time_background.fill((0,28,32))
@@ -29,13 +29,23 @@ time_outground.fill("gray")
 
 hrac_display_grp = pygame.sprite.Group()
 hrac_hitbox_grp = pygame.sprite.Group()
-player_instance = player(player_x, player_y, image)
+player_instance = player(player_x, player_y)
 hrac_display_grp.add(player_instance)
 player_hitbox_instance = player_hitbox(player_x, player_y)
 hrac_hitbox_grp.add(player_hitbox_instance)
 hrac_hitbox = hrac_hitbox_grp.sprites()[0]
+health_bar = Health_bar((23*32/2, 24), screen)
 
 current_position = master
+
+#výstup ze dveří
+def vystup(pos):
+    for line_ind,line in enumerate(game_map[pos[0]][pos[1]][0]):
+        for symbol_ind,symbol in enumerate(line):
+            if symbol == "1": return (symbol_ind*32+16,(line_ind+1)*32+16)
+            elif symbol == "2": return ((symbol_ind-1)*32+16,line_ind*32+16)
+            elif symbol == "3": return (symbol_ind*32+16,(line_ind-1)*32+16)
+            elif symbol == "4": return ((symbol_ind+1)*32+16,line_ind*32+16)
 
 #načtení zdí specificky
 def random_zdi(mapka,ind,door):
@@ -198,8 +208,8 @@ while True:
         zdi = wall_map[current_position[0]][current_position[1]]
     
     #zbytek pohybu
-    player_instance.rect.centerx = player_hitbox_instance.rect.centerx - 4
-    player_instance.rect.bottom = player_hitbox_instance.rect.bottom + 3
+    player_instance.rect.centerx = player_hitbox_instance.rect.centerx+4 - 4
+    player_instance.rect.bottom = player_hitbox_instance.rect.bottom-2 + 3
         
     #kolize s dvermi
     if pygame.sprite.spritecollide(hrac_hitbox, dvere, False):
@@ -216,7 +226,10 @@ while True:
     hrac_display_grp.update()
     hrac_display_grp.draw(screen)
     hrac_hitbox_grp.draw(screen)
-        
+    health_bar.vykresleni_baru()
+    health_bar.vykresleni_predelu(health_max, health)
+    health_bar.vykresleni_borderu()
+    
     #časomíra
     current_time -= 0.016
     screen.blit(time_outground,(0,0))
@@ -228,9 +241,9 @@ while True:
         podlaha,dvere = urceni_sprite_group(game_map[current_position[0]][current_position[1]])
         zdi = wall_map[current_position[0]][current_position[1]]
         
-        player_hitbox_instance.rect.center = (width//2,heigth//2)
-        player_instance.rect.centerx = player_hitbox_instance.rect.centerx
-        player_instance.rect.bottom = player_hitbox_instance.rect.bottom
+        player_hitbox_instance.rect.center = vystup(current_position)
+        player_instance.rect.centerx = player_hitbox_instance.rect.centerx+4
+        player_instance.rect.bottom = player_hitbox_instance.rect.bottom-2
         current_time = default_time
     
     pygame.display.update()

@@ -72,7 +72,7 @@ class zed(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(topleft = (pozice))
         
 class player(pygame.sprite.Sprite):
-    def __init__(self, player_x, player_y, imageType):
+    def __init__(self, player_x, player_y):
         super().__init__()
         
         self.prevPosX = player_x
@@ -118,3 +118,35 @@ class player_hitbox(pygame.sprite.Sprite):
         if self.hitbox == True:
             self.hitbox = False
             self.image = self.hitBox
+            
+class Health_bar(pygame.sprite.Sprite):
+    def __init__(self, pozice, okno):
+        self.textura = pygame.image.load("../data/health_bar/health_bar.png").convert_alpha()
+        self.rect = self.textura.get_rect()
+        self.rect.center = pozice
+        self.okno = okno
+        self.border = pygame.image.load("../data/health_bar/health_bar_border.png").convert_alpha()
+        
+    def vykresleni_baru(self):
+        self.okno.blit(self.textura, self.rect)
+        
+    def vykresleni_borderu(self):
+        self.okno.blit(self.border, self.rect)    
+
+    def vykresleni_predelu(self, health_max, health):
+        #health bar - výpočty segmentů
+        health_bar_segments = health_max
+        velikost_health_baru = self.rect.width
+        jeden_segment = round(velikost_health_baru / health_bar_segments)
+        x_segmentu = 268
+        x_prazdneho_mista = 467 - jeden_segment
+        
+        #health bar - vykreslování předělů
+        for predel in range(health_bar_segments - 1):
+            pygame.draw.line(self.okno, (0, 0, 0), ((x_segmentu + jeden_segment),(12)),((x_segmentu + jeden_segment),(12+24)), 2)
+            x_segmentu = x_segmentu + jeden_segment
+        
+        #health_bar - vykreslení prázdných míst health baru
+        for mezera in range(health_max - health):
+            pygame.draw.rect(self.okno, (0, 0, 0), (x_prazdneho_mista, 12, jeden_segment, 26))
+            x_prazdneho_mista = x_prazdneho_mista - jeden_segment
