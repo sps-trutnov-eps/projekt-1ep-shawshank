@@ -117,6 +117,9 @@ def main_generation():
     master = [5,5]
     display_surface = pygame.display.set_mode((23*32,14*32))
     screen = pygame.Surface((len(mapa[0])*20,len(mapa)*12))
+    loading = pygame.font.SysFont("Courier New",30).render("Loading...",False,"white")
+    display_surface.blit(loading,(20,10))
+    pygame.display.update()
 
     #generace hlavních obrazovek
     for x in range(3):
@@ -236,12 +239,7 @@ for line_ind,line in enumerate(mapa):
                 main_ind += 1
             else: new[2][1] = part[1]
             game_map[line_ind][part_ind] = new
-#print(game_map)
 
-
-loading = pygame.font.SysFont("Courier New",30).render("Loading...",False,"white")
-screen.blit(loading,(20,10))
-pygame.display.update()
 #vykreslování obrazovky
 drawing_positions = {"0" : (4,0),
                      "1" : (12,0),
