@@ -118,3 +118,7 @@ class player_hitbox(pygame.sprite.Sprite):
         if self.hitbox == True:
             self.hitbox = False
             self.image = self.hitBox
+            
+class inventory(pygame.sprite.Sprite):
+    def __init__(self, pos_x, pos_y):
+        
