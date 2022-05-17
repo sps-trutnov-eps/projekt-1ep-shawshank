@@ -16,6 +16,7 @@ hitbox = False
 player_x = 23 * 32 / 2
 player_y = 14 * 32 / 2
 player_speed = 3
+image = "player_f"
 mozne_prechody = []
 
 default_time = 10#120
@@ -28,7 +29,7 @@ time_outground.fill("gray")
 
 hrac_display_grp = pygame.sprite.Group()
 hrac_hitbox_grp = pygame.sprite.Group()
-player_instance = player(player_x, player_y)
+player_instance = player(player_x, player_y, image)
 hrac_display_grp.add(player_instance)
 player_hitbox_instance = player_hitbox(player_x, player_y)
 hrac_hitbox_grp.add(player_hitbox_instance)
@@ -142,14 +143,18 @@ while True:
     posun_x = 0
     posun_y = 0
     
-    if pressed[pygame.K_w]:
-        posun_y -= player_speed
-    if pressed[pygame.K_s]:
-        posun_y += player_speed
     if pressed[pygame.K_a]:
         posun_x -= player_speed
+        image = "player_l"
     if pressed[pygame.K_d]:
         posun_x += player_speed
+        image = "player_r"
+    if pressed[pygame.K_w]:
+        posun_y -= player_speed
+        image = "player_b"
+    if pressed[pygame.K_s]:
+        posun_y += player_speed
+        image = "player_f"
     
     player_hitbox_instance.posun_x(posun_x)
 
@@ -193,8 +198,8 @@ while True:
         zdi = wall_map[current_position[0]][current_position[1]]
     
     #zbytek pohybu
-    player_instance.rect.centerx = player_hitbox_instance.rect.centerx
-    player_instance.rect.bottom = player_hitbox_instance.rect.bottom
+    player_instance.rect.centerx = player_hitbox_instance.rect.centerx - 4
+    player_instance.rect.bottom = player_hitbox_instance.rect.bottom + 3
         
     #kolize s dvermi
     if pygame.sprite.spritecollide(hrac_hitbox, dvere, False):
@@ -208,6 +213,7 @@ while True:
     if show_minimap:
         screen.blit(minimap,mimimap_pos)
         screen.blit(ukazatel,(current_position[1]*20+mimimap_pos[0],current_position[0]*12+mimimap_pos[1]))
+    hrac_display_grp.update()
     hrac_display_grp.draw(screen)
     hrac_hitbox_grp.draw(screen)
         
