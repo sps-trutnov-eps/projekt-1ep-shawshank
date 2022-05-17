@@ -103,11 +103,11 @@ while True:
     udalosti = pygame.event.get()
     stisknuto = pygame.key.get_pressed()
     m_x,m_y = pygame.mouse.get_pos()
+    bg = pygame.image.load("a.jpg")
     
     if pokus < 5 and je_otazka == "false":
         #tvorba odpovedi a otazky
         otazka = tvorba_otazky()
-        print(list_otazky)
         odpoved = kontrola_kod(odpovedi,otazka,"kod")
         otazka = otazka['udalost']
         #tvorba spatnych odpovedi
@@ -148,7 +148,6 @@ while True:
                     a = 1
                     pokus += 1
                     je_otazka = "false"
-                print(pokus)
                 
     
     if stisknuto[pygame.K_ESCAPE]:
@@ -163,13 +162,20 @@ while True:
             spatne += 1
         a = 0
     if pokus >=5:
-        if spatne == 0:
+        if spatne <= 1:
             znamka = "1"
+        elif spatne == 2:
+            znamka = "2"
+        elif spatne == 3:
+            znamka = "3"
+        elif spatne == 4:
+            znamka = "4"
         elif spatne == 5:
             znamka = "5"
-        znamka,znamka_center = datum_souradnice('1',font_znamka,x_znamka,y_znamka,(255,0,0))
+        znamka,znamka_center = datum_souradnice(znamka,font_znamka,x_znamka,y_znamka,(255,0,0))
    
-    okno.fill(pozadi_barva)    
+    okno.fill(pozadi_barva)
+    okno.blit(bg,(0,0))
     pygame.draw.rect(okno, (255, 255, 255), (x_pap,y_pap,w_pap,h_pap))
     pygame.draw.rect(okno, (0, 0, 0), (x1,y_odp,w_odp,h_odp), (5))
     pygame.draw.rect(okno, (0, 0, 0), (x2,y_odp,w_odp,h_odp), (5))
