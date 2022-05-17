@@ -5,12 +5,13 @@
 Top-down bludišťovka s minihrami. Unikněte ze školy, než zazvoní na hodinu!
 
 **Struktura repozitáře**
-- `src` zdrojové soubory v Pythonu
 - `data` assety hry
 - `doc` dokumentace, návody
+- `src` zdrojové soubory v Pythonu
 - `work` work-in-progress soubory, náčrtky apod.
 
-použitý software : Thonny
-		   Tiled
-		   PixelStudio
-
+**Použitý software**
+- Thonny
+- Tiled
+- PixelStudio
+- Aseprite
