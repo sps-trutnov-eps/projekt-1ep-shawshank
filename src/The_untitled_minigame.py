@@ -2,11 +2,10 @@ import pygame,random,sys
 pygame.init()
 
 class obsticle(pygame.sprite.Sprite):
-    def __init__(self,pos,w,h,floor):
+    def __init__(self,pos,w,h,floor,texture):
         super().__init__()
-        self.image = pygame.Surface((w,h))
-        self.image.fill("red")
-        self.rect = self.image.get_rect()
+        self.image = texture
+        self.rect = pygame.Rect(0,0,w,h) 
         self.rect.midbottom = (pos-64,floor)
         
 def create(amount):
@@ -17,7 +16,8 @@ def create(amount):
     return line
 
 def The_game():
-    #základní veličiny
+    #základní proměnné
+    
     width,heigth = 23*32,14*32
     screen = pygame.display.set_mode((width,heigth))
     clock = pygame.time.Clock()
@@ -31,8 +31,21 @@ def The_game():
     jump_timeout = 0
     jump_timeout_base = 38
     
-    win_image = pygame.Surface((64,64))
-    win_image.fill("gold")
+    grass = pygame.transform.rotozoom(pygame.image.load("../data/textury_hry/I_touched_grass.jpg").convert(),90,0.5).convert()
+    grass_rect = grass.get_rect()
+    grass_rect.bottomright = (width,heigth)
+    grass_fliped = pygame.transform.flip(grass,True,False).convert()
+    grass_fliped_rect = grass_fliped.get_rect()
+    grass_fliped_rect.bottomright = grass_rect.bottomleft
+    
+    t_0 = pygame.image.load("../data/textury_hry/kvetinka.png").convert_alpha()
+    t_1 = pygame.image.load("../data/textury_hry/not_spon.png").convert_alpha()
+    t_2 = pygame.image.load("../data/textury_hry/vosäk.png").convert_alpha()
+    texture_mix_1 = (t_0,t_1,t_2)
+    texture_mix_2 = (t_0,t_1,pygame.transform.flip(t_2,True,False).convert_alpha())
+    
+    
+    win_image = pygame.image.load("../data/textury_hry/křída.png").convert_alpha()
     win_rect = win_image.get_rect()
     
     play_line = create(19)
@@ -49,8 +62,8 @@ def The_game():
     obsticles = pygame.sprite.Group()
     waiting = pygame.sprite.Group()
     for symbol_ind,symbol in enumerate(play_line):
-        if symbol == "O": obsticles.add(obsticle(-symbol_ind*64,32,64,floor))
-        elif symbol == "E": waiting.add(obsticle(-symbol_ind*64,70,600,floor))
+        if symbol == "O": obsticles.add(obsticle(-symbol_ind*64,32,64,floor,random.choice(texture_mix_1)))
+        elif symbol == "E": waiting.add(obsticle(-symbol_ind*64,70,600,floor,random.choice(texture_mix_1)))
         elif symbol == "W": win_rect.center = (-symbol_ind*64,floor-32)
 
     while True:
@@ -80,16 +93,23 @@ def The_game():
             player_rect.y -= gravity
             if player_rect.bottom > floor: player_rect.bottom = floor
             
-            if win_rect.center[0] < player_rect.center[0]:
+            if win_rect.right+20 < player_rect.left:
                 for thing in obsticles,waiting:
                     for instance in thing: instance.rect.x += 5
                 win_rect.x += 5
+                grass_rect.x += 5
+                grass_fliped_rect.x += 5
             else:
-                pygame.time.wait(333)
+                pygame.time.wait(1000)
                 game_state = "midstage"
+                
+            if grass_rect.left > width: grass_rect.right = grass_fliped_rect.left-1
+            elif grass_fliped_rect.left > width: grass_fliped_rect.right = grass_rect.left-1
         
             #draw
             screen.fill("black")
+            screen.blit(grass,grass_rect)
+            screen.blit(grass_fliped,grass_fliped_rect)
             screen.blit(win_image,win_rect)
             obsticles.draw(screen)
             screen.blit(win_image,win_rect)
@@ -106,7 +126,7 @@ def The_game():
                         lives_indicator = info_font.render(f"{lives} × <3",False,"red")
                         invurnability = 50
                         if lives == 0:
-                            pygame.time.wait(333)
+                            pygame.time.wait(1000)
                             game_state = "bad_ending"
             
         #stage between rounds
@@ -119,11 +139,12 @@ def The_game():
             obsticles = pygame.sprite.Group()
             waiting = pygame.sprite.Group()
             for symbol_ind,symbol in enumerate(play_line):
-                if symbol == "O": obsticles.add(obsticle(width+symbol_ind*64,32,64,floor))
-                elif symbol == "E": waiting.add(obsticle(width+symbol_ind*64,70,600,floor))
+                if symbol == "O": obsticles.add(obsticle(width+symbol_ind*64,32,64,floor,random.choice(texture_mix_2)))
+                elif symbol == "E": waiting.add(obsticle(width+symbol_ind*64,70,600,floor,random.choice(texture_mix_2)))
                 elif symbol == "W": win_rect.center = (width+symbol_ind*64,floor-32)
             player_rect.midbottom = (128,floor)
             jump_timeout_base = 40
+            win_image = pygame.image.load("../data/textury_hry/cil.png").convert_alpha()
             info_text = info_font.render("Press ||SEMICOLON|| to secret.",False,"green")
         
         #druhé kolo hry
@@ -153,9 +174,14 @@ def The_game():
                 for thing in obsticles,waiting:
                     for instance in thing: instance.rect.x -= 5
                 win_rect.x -= 5
+                grass_rect.x -= 5
+                grass_fliped_rect.x -= 5
             else:
-                pygame.time.wait(333)
+                pygame.time.wait(1000)
                 game_state = "ˇ-ˇ"
+                
+            if grass_rect.right < 0: grass_rect.left = grass_fliped_rect.right+1
+            elif grass_fliped_rect.right < 0: grass_fliped_rect.left = grass_rect.right+1
             
             #životy
             invurnability -= 1
@@ -166,12 +192,13 @@ def The_game():
                         lives_indicator = info_font.render(f"{lives} × <3",False,"red")
                         invurnability = 50
                         if lives == 0:
-                            pygame.time.wait(333)
+                            pygame.time.wait(1000)
                             game_state = "bad_ending"
                     
         
             #draw
-            screen.fill("black")
+            screen.blit(grass,grass_rect)
+            screen.blit(grass_fliped,grass_fliped_rect)
             screen.blit(win_image,win_rect)
             obsticles.draw(screen)
             screen.blit(win_image,win_rect)

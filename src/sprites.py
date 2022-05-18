@@ -5,6 +5,7 @@ pygame.init()
 
 width,heigth = 23*32,14*32
 screen = pygame.display.set_mode((width,heigth))
+pygame.display.set_caption("¤Útěk ze střední průmyslové Shawshank¤")
 
 images = {"zeď_0" : pygame.image.load("../data/textury_hry/zeď_0.png").convert(),
           "zeď_1" : pygame.image.load("../data/textury_hry/zeď_1.png").convert(),
