@@ -35,7 +35,7 @@ def The_game():
     win_image.fill("gold")
     win_rect = win_image.get_rect()
     
-    play_line = create(1)#19)
+    play_line = create(19)
     play_line += "EEEEW"
     
     player_texture = pygame.Surface((32,64))
