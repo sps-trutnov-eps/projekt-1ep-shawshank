@@ -163,7 +163,7 @@ def The_game():
                 for instance in obsticles:
                     if instance.rect.colliderect(player_rect):
                         lives -= 1
-                        lives_indicator = info_font.render(f"{lives} x <3",False,"red")
+                        lives_indicator = info_font.render(f"{lives} × <3",False,"red")
                         invurnability = 50
                         if lives == 0:
                             pygame.time.wait(333)
@@ -181,7 +181,7 @@ def The_game():
         
         #prohra
         elif game_state == "bad_ending":
-            game_state = "ˇ-ˇ"
+            return(False)
         #konec
         else:
             return(True)
