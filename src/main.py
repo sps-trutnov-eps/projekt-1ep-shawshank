@@ -47,6 +47,15 @@ def vystup(pos):
             elif symbol == "3": return (symbol_ind*32+16,(line_ind-1)*32+16)
             elif symbol == "4": return ((symbol_ind+1)*32+16,line_ind*32+16)
 
+#vytvoření textu
+def text(text_size, text, center_x, center_y, text_color, text_font):
+    arcade = pygame.font.Font(text_font, text_size)
+    text = arcade.render(text, True, text_color)
+    text_rect = text.get_rect(center=(center_x, center_y))
+    screen.blit(text, text_rect) #23*32/2, 14*32/2
+
+    
+    
 #načtení zdí specificky
 def random_zdi(mapka,ind,door):
     global mozne_prechody
@@ -139,6 +148,8 @@ while True:
             sys.exit()
     
     if inGame:
+        health = health_max
+        
         #cheaty
         if pressed[pygame.K_h] and cheat_timeout < 0:
             if hitbox == False:
@@ -269,16 +280,20 @@ while True:
                 screen.blit(fade, (0, 0))
                 pygame.display.update()
                 pygame.time.wait(fade_speed)
-                print(pruhlednost)
             else:
                 health = -1
                 inGame = False
                 gameOver = True
+                pruhlednost = 0
 
             
     if gameOver:
         screen.fill("black")
-        print("GAME OVER")
-        
+        text(125, "GAME OVER", 23*32/2, 14*32/2, (255, 0, 0), "../data/fonts/ARCADECLASSIC.TTF")
+        text(50, "PRESS ENTER TO RESET", 23*32/2, 14*32/2 + 75, (100, 0, 0),  "../data/fonts/ARCADECLASSIC.TTF")
+        if pressed[pygame.K_RETURN]:
+            gameOver = False
+            inGame = True
+            
     pygame.display.update()
     clock.tick(60)
