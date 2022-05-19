@@ -15,6 +15,56 @@ def create(amount):
         for s in range(random.randint(2,3)): line += "_"
     return line
 
+def speak(text,pos,screen):
+    font = pygame.font.SysFont("Courier New",17)
+    writing = ""
+    for symbol in text:
+        writing += symbol
+        screen.blit(font.render(writing,False,"black"),(pos[0]+20,pos[1]+20))
+        pygame.display.update()
+        pygame.time.wait(100)
+        
+class speaker_class():
+    def __init__(self,screen):
+        self.screen = screen
+        self.bc0 = pygame.image.load("../data/textury_hry/I_touched_grass.jpg")
+        self.textbox = pygame.Surface((620,100))
+        self.textbox.fill("limegreen")
+        extra_surface = pygame.Surface((600,90))
+        extra_surface.fill("olivedrab2")
+        self.textbox.blit(extra_surface,(10,10))
+        self.textbox_rect = self.textbox.get_rect()
+        self.textbox_rect.midbottom = (23*16,14*32)
+        self.progress = 0
+    def next(self):
+        self.progress += 1
+        if self.progress == 1:
+            self.screen.blit(self.bc0,(0,0))
+            pygame.display.update()
+            pygame.time.wait(500)
+            self.screen.blit(self.textbox,self.textbox_rect)
+            speak("!!jhk,n.cmlcfkl,hmfhvfgmnvngf!!",self.textbox_rect.topleft,self.screen)
+            return(False)
+        elif self.progress == 2:
+            self.screen.blit(self.bc0,(0,0))
+            self.screen.blit(self.textbox,self.textbox_rect)
+            speak("!!testing_testing!!",self.textbox_rect.topleft,self.screen)
+            return(False)
+        elif self.progress == 3:
+            self.screen.blit(self.bc0,(0,0))
+            self.screen.blit(self.textbox,self.textbox_rect)
+            speak("toto je další text",self.textbox_rect.topleft,self.screen)
+            return(False)
+        elif self.progress == 4:
+            self.screen.blit(self.bc0,(0,0))
+            self.screen.blit(self.textbox,self.textbox_rect)
+            speak("nyní hra započne",self.textbox_rect.topleft,self.screen)
+            return(False)
+        elif self.progress == 5:
+            return(True)
+            
+            
+
 def The_game():
     #základní proměnné
     
@@ -30,6 +80,9 @@ def The_game():
     invurnability = 0
     jump_timeout = 0
     jump_timeout_base = 38
+    speaker = speaker_class(screen)
+    over = True
+    space_fix = True
     
     grass = pygame.transform.rotozoom(pygame.image.load("../data/textury_hry/I_touched_grass.jpg").convert(),90,0.5).convert()
     grass_rect = grass.get_rect()
@@ -88,7 +141,19 @@ def The_game():
         
         #počátek
         if game_state == "intro":
-            game_state = "play_one"
+            if over:
+                over = False
+                over = speaker.next()
+                
+            if pressed[pygame.K_SPACE] or pressed[pygame.K_RETURN] or pressed[pygame.K_KP_ENTER]:
+                if space_fix:
+                    over = speaker.next()
+                    space_fix = False
+                else: space_fix = True
+                
+            if over:
+                pygame.time.wait(500)
+                game_state = "play_one"
         
         #první kolo hry
         elif game_state == "play_one":
