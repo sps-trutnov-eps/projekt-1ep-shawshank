@@ -24,7 +24,7 @@ def The_game():
     speed = 10
     gravity = 0
     floor = heigth-128
-    game_state = "play_one"
+    game_state = "intro"
     lives = 3
     end_countdown = 20
     invurnability = 0
@@ -37,6 +37,8 @@ def The_game():
     grass_fliped = pygame.transform.flip(grass,True,False).convert()
     grass_fliped_rect = grass_fliped.get_rect()
     grass_fliped_rect.bottomright = grass_rect.bottomleft
+    
+    player_sheet = pygame.transform.scale2x(pygame.image.load("../data/textury_hrac/Player_sprite.png")).convert()
     
     t_0 = pygame.image.load("../data/textury_hry/kvetinka.png").convert_alpha()
     t_1 = pygame.image.load("../data/textury_hry/not_spon.png").convert_alpha()
@@ -52,9 +54,14 @@ def The_game():
     play_line += "EEEEW"
     
     player_texture = pygame.Surface((32,64))
-    player_texture.fill("cyan")
+    player_texture.set_colorkey("black")
     player_rect = player_texture.get_rect()
+    player_texture_ind = 2
+    player_texture_countdown = 1
     player_rect.midbottom = (width-128,floor)
+    player_jump_texture = pygame.Surface((32,64))
+    player_jump_texture.set_colorkey("black")
+    player_jump_texture.blit(player_sheet,(-160,-64))
     info_font = pygame.font.SysFont("Courier New",30)
     info_text = info_font.render("Press ||SPACE|| to jump.",False,"green")
     lives_indicator = info_font.render(f"{lives} × <3",False,"red")
@@ -64,7 +71,9 @@ def The_game():
     for symbol_ind,symbol in enumerate(play_line):
         if symbol == "O": obsticles.add(obsticle(-symbol_ind*64,32,64,floor,random.choice(texture_mix_1)))
         elif symbol == "E": waiting.add(obsticle(-symbol_ind*64,70,600,floor,random.choice(texture_mix_1)))
-        elif symbol == "W": win_rect.center = (-symbol_ind*64,floor-32)
+        elif symbol == "W":
+            waiting.add(obsticle(-symbol_ind*64,70,600,floor,random.choice(texture_mix_1)))
+            win_rect.center = (-symbol_ind*64,floor-32)
 
     while True:
         #vypnutí
@@ -77,8 +86,12 @@ def The_game():
                 pygame.quit()
                 sys.exit()
         
+        #počátek
+        if game_state == "intro":
+            game_state = "play_one"
+        
         #první kolo hry
-        if game_state == "play_one":
+        elif game_state == "play_one":
             #pohyb
             jump = True
             for instance in waiting:
@@ -103,8 +116,16 @@ def The_game():
                 pygame.time.wait(1000)
                 game_state = "midstage"
                 
+            #textury
             if grass_rect.left > width: grass_rect.right = grass_fliped_rect.left-1
             elif grass_fliped_rect.left > width: grass_fliped_rect.right = grass_rect.left-1
+            
+            player_texture_countdown -=1
+            if player_texture_countdown == 0:
+                player_texture.blit(player_sheet,(-player_texture_ind*32,-64))
+                player_texture_countdown = 4
+                player_texture_ind += 1
+                if player_texture_ind == 9: player_texture_ind = 0
         
             #draw
             screen.fill("black")
@@ -115,7 +136,8 @@ def The_game():
             screen.blit(win_image,win_rect)
             screen.blit(info_text,(32,32))
             screen.blit(lives_indicator,(32,96))
-            screen.blit(player_texture,player_rect)
+            if player_rect.bottom == floor: screen.blit(player_texture,player_rect)
+            else: screen.blit(player_jump_texture,player_rect)
             
             #životy
             invurnability -= 1
@@ -141,11 +163,14 @@ def The_game():
             for symbol_ind,symbol in enumerate(play_line):
                 if symbol == "O": obsticles.add(obsticle(width+symbol_ind*64,32,64,floor,random.choice(texture_mix_2)))
                 elif symbol == "E": waiting.add(obsticle(width+symbol_ind*64,70,600,floor,random.choice(texture_mix_2)))
-                elif symbol == "W": win_rect.center = (width+symbol_ind*64,floor-32)
+                elif symbol == "W":
+                    waiting.add(obsticle(width+symbol_ind*64,70,600,floor,random.choice(texture_mix_2)))
+                    win_rect.center = (width+symbol_ind*64,floor-32)
             player_rect.midbottom = (128,floor)
             jump_timeout_base = 40
             win_image = pygame.image.load("../data/textury_hry/cil.png").convert_alpha()
             info_text = info_font.render("Press ||SEMICOLON|| to secret.",False,"green")
+            player_jump_texture.blit(player_sheet,(-160,0))
         
         #druhé kolo hry
         elif game_state == "play_two":
@@ -180,8 +205,16 @@ def The_game():
                 pygame.time.wait(1000)
                 game_state = "ˇ-ˇ"
                 
+            #textury
             if grass_rect.right < 0: grass_rect.left = grass_fliped_rect.right+1
             elif grass_fliped_rect.right < 0: grass_fliped_rect.left = grass_rect.right+1
+            
+            player_texture_countdown -=1
+            if player_texture_countdown == 0:
+                player_texture.blit(player_sheet,(-player_texture_ind*32,0))
+                player_texture_countdown = 4
+                player_texture_ind += 1
+                if player_texture_ind == 9: player_texture_ind = 0
             
             #životy
             invurnability -= 1
@@ -204,7 +237,8 @@ def The_game():
             screen.blit(win_image,win_rect)
             screen.blit(info_text,(32,32))
             screen.blit(lives_indicator,(32,96))
-            screen.blit(player_texture,player_rect)
+            if player_rect.bottom == floor: screen.blit(player_texture,player_rect)
+            else: screen.blit(player_jump_texture,player_rect)
         
         #prohra
         elif game_state == "bad_ending":
