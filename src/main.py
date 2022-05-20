@@ -21,7 +21,6 @@ mozne_prechody = []
 
 default_time = 120
 current_time = 120
-font = pygame.font.SysFont("rockwellcondensedtučné",30)
 time_background = pygame.Surface((60,54))
 time_background.fill((0,28,32))
 time_outground = pygame.Surface((65,59))
@@ -49,11 +48,17 @@ def vystup(pos):
 
 #vytvoření textu
 def text(text_size, text, center_x, center_y, text_color, text_font):
-    arcade = pygame.font.Font(text_font, text_size)
-    text = arcade.render(text, True, text_color)
+    font = pygame.font.Font(text_font, text_size)
+    text = font.render(text, True, text_color)
     text_rect = text.get_rect(center=(center_x, center_y))
-    screen.blit(text, text_rect) #23*32/2, 14*32/2
+    screen.blit(text, text_rect)
 
+
+def sysfont_text(text_size, text, center_x, center_y, text_color, text_font):
+    font = pygame.font.SysFont(text_font, text_size)
+    text = font.render(text, True, text_color)
+    text_rect = text.get_rect(center=(center_x, center_y))
+    screen.blit(text, text_rect)
     
     
 #načtení zdí specificky
@@ -260,8 +265,8 @@ while True:
         current_time -= 0.016
         screen.blit(time_outground,(0,0))
         screen.blit(time_background,(0,0))
-        if current_time > 21: screen.blit(font.render(str(int(current_time)),False,"gray"),(10,10))
-        elif current_time > 0 : screen.blit(font.render(str(int(current_time)),False,"red"),(10,10))
+        if current_time > 21: sysfont_text(30, (str(int(current_time))), 25, 25, "gray", "rockwellcondensedtučné")
+        elif current_time > 0 : sysfont_text(30, (str(int(current_time))), 25, 25, "red", "rockwellcondensedtučné")
         else:
             current_position = random.choice(mozne_prechody)
             podlaha,dvere = urceni_sprite_group(game_map[current_position[0]][current_position[1]])
@@ -290,7 +295,7 @@ while True:
     if gameOver:
         screen.fill("black")
         text(125, "GAME OVER", 23*32/2, 14*32/2, (255, 0, 0), "../data/fonts/ARCADECLASSIC.TTF")
-        text(50, "PRESS ENTER TO RESET", 23*32/2, 14*32/2 + 75, (100, 0, 0),  "../data/fonts/ARCADECLASSIC.TTF")
+        text(50, "PRESS   ENTER", 23*32/2, 14*32/2 + 75, (100, 0, 0),  "../data/fonts/ARCADECLASSIC.TTF")
         if pressed[pygame.K_RETURN]:
             gameOver = False
             inGame = True
