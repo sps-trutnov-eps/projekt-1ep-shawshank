@@ -21,11 +21,20 @@ def create(amount):
 def speak(text,pos,screen):
     font = pygame.font.SysFont("Courier New",17)
     writing = ""
-    for symbol in text:
+    text = text.split("\n")
+    for symbol in text[0]:
         writing += symbol
         screen.blit(font.render(writing,False,"black"),(pos[0]+20,pos[1]+20))
         pygame.display.update()
         pygame.time.wait(65)
+    try:
+        writing = ""
+        for symbol in text[1]:
+            writing += symbol
+            screen.blit(font.render(writing,False,"black"),(pos[0]+20,pos[1]+40))
+            pygame.display.update()
+            pygame.time.wait(65)
+    except: pass
    
 #panely dialogu
 class speaker_class():
@@ -33,7 +42,8 @@ class speaker_class():
         self.screen = screen
         self.bc0 = pygame.Surface((23*32,14*32))
         self.bc0.blit(pygame.transform.rotozoom(pygame.image.load("../data/textury_hry/Classroom.jpg").convert(),0,1/6),(0,-120))
-        self.bc1 = pygame.image.load("../data/textury_hry/I_touched_grass.jpg").convert()
+        self.bc1 = pygame.Surface((23*32,14*32))
+        self.bc1.blit(pygame.transform.rotozoom(pygame.image.load("../data/textury_hry/Nature.jpg").convert(),0,1/6),(0,-120))
         self.textbox = pygame.Surface((620,74))
         self.textbox.fill("limegreen")
         extra_surface = pygame.Surface((600,74))
@@ -42,6 +52,16 @@ class speaker_class():
         self.textbox_rect = self.textbox.get_rect()
         self.textbox_rect.midbottom = (23*16,14*32)
         self.progress = 0
+        #věc, co mi nešla přez os modul
+        try:
+            GetUserNameEx = ctypes.windll.secur32.GetUserNameExW
+            size = ctypes.pointer(ctypes.c_ulong(0))
+            GetUserNameEx(3, None, size)
+            nameBuffer = ctypes.create_unicode_buffer(size.contents.value)
+            GetUserNameEx(3, nameBuffer, size)
+            self.username = nameBuffer.value
+        except:
+            self.username = os.getlogin()
     def next(self):
         self.progress += 1
         #první dialog
@@ -83,30 +103,12 @@ class speaker_class():
             speak("It's ",self.textbox_rect.topleft,self.screen)
             return(False)
         elif self.progress == 8:
-            #věc, co mi nešla přez os modul
-            try:
-                GetUserNameEx = ctypes.windll.secur32.GetUserNameExW
-                size = ctypes.pointer(ctypes.c_ulong(0))
-                GetUserNameEx(3, None, size)
-                nameBuffer = ctypes.create_unicode_buffer(size.contents.value)
-                GetUserNameEx(3, nameBuffer, size)
-                speak("It's "+nameBuffer.value+".",self.textbox_rect.topleft,self.screen)
-            except:
-                speak("It's "+os.getlogin()+".",self.textbox_rect.topleft,self.screen)
+            speak("It's "+self.username+".",self.textbox_rect.topleft,self.screen)
             return(False)
         elif self.progress == 9:
             self.screen.blit(self.bc0,(0,0))
             self.screen.blit(self.textbox,self.textbox_rect)
-            #věc, co mi nešla přez os modul
-            try:
-                GetUserNameEx = ctypes.windll.secur32.GetUserNameExW
-                size = ctypes.pointer(ctypes.c_ulong(0))
-                GetUserNameEx(3, None, size)
-                nameBuffer = ctypes.create_unicode_buffer(size.contents.value)
-                GetUserNameEx(3, nameBuffer, size)
-                speak("OK "+nameBuffer.value+", go get ÞE CHALK!!",self.textbox_rect.topleft,self.screen)
-            except:
-                speak("OK "+os.getlogin()+", go get ÞE CHALK!!",self.textbox_rect.topleft,self.screen)
+            speak("OK "+self.username+", go get ÞE CHALK!!",self.textbox_rect.topleft,self.screen)
             return(False)
         elif self.progress == 10:
             return(True)
@@ -114,6 +116,8 @@ class speaker_class():
         #druhý dialog
         elif self.progress == 11:
             self.screen.blit(self.bc1,(0,0))
+            pygame.display.update()
+            pygame.time.wait(500)
             self.screen.blit(self.textbox,self.textbox_rect)
             speak("Hey...",self.textbox_rect.topleft,self.screen)
             return(False)
@@ -133,6 +137,78 @@ class speaker_class():
             speak("Also, under any circumstances, don't ",self.textbox_rect.topleft,self.screen)
             return(True)
         
+        #dobrý konec
+        elif self.progress == 15:
+            self.screen.blit(self.bc0,(0,0))
+            pygame.display.update()
+            pygame.time.wait(500)
+            self.screen.blit(self.textbox,self.textbox_rect)
+            speak("AAAAAA, you're back...",self.textbox_rect.topleft,self.screen)
+            return(False)
+        elif self.progress == 16:
+            self.screen.blit(self.bc0,(0,0))
+            self.screen.blit(self.textbox,self.textbox_rect)
+            speak("GOOD",self.textbox_rect.topleft,self.screen)
+            return(False)
+        elif self.progress == 17:
+            self.screen.blit(self.bc0,(0,0))
+            self.screen.blit(self.textbox,self.textbox_rect)
+            speak("I guess we can start now.",self.textbox_rect.topleft,self.screen)
+            return(False)
+        elif self.progress == 18:
+            self.screen.blit(self.bc0,(0,0))
+            self.screen.blit(self.textbox,self.textbox_rect)
+            speak("So, todays theme is...",self.textbox_rect.topleft,self.screen)
+            return(False)
+        elif self.progress == 19:
+            self.screen.blit(self.bc0,(0,0))
+            self.screen.blit(self.textbox,self.textbox_rect)
+            speak("Þe infinite chaos beyond the stars, far away from\nour understanding...",self.textbox_rect.topleft,self.screen)
+            return(False)
+        elif self.progress == 20:
+            self.screen.blit(self.bc0,(0,0))
+            self.screen.blit(self.textbox,self.textbox_rect)
+            speak("Þe relms both beyond and inside our own...",self.textbox_rect.topleft,self.screen)
+            return(False)
+        elif self.progress == 21:
+            self.screen.blit(self.bc0,(0,0))
+            self.screen.blit(self.textbox,self.textbox_rect)
+            speak("Þe infinite possibilities of human mind and\nhalucinogenic substances from þe ",self.textbox_rect.topleft,self.screen)
+            return(True)
+        
+        #špatný konec
+        elif self.progress == 22:
+            self.screen.blit(self.bc1,(0,0))
+            pygame.display.update()
+            pygame.time.wait(500)
+            self.screen.blit(self.textbox,self.textbox_rect)
+            speak("ha...",self.textbox_rect.topleft,self.screen)
+            return(False)
+        elif self.progress == 23:
+            self.screen.blit(self.bc1,(0,0))
+            self.screen.blit(self.textbox,self.textbox_rect)
+            speak("HA...",self.textbox_rect.topleft,self.screen)
+            return(False)
+        elif self.progress == 24:
+            self.screen.blit(self.bc1,(0,0))
+            self.screen.blit(self.textbox,self.textbox_rect)
+            speak("HAHAHA HA HA  HA  HA    Ha",self.textbox_rect.topleft,self.screen)
+            return(False)
+        elif self.progress == 25:
+            self.screen.blit(self.bc1,(0,0))
+            self.screen.blit(self.textbox,self.textbox_rect)
+            speak("You Failed Miserably.",self.textbox_rect.topleft,self.screen)
+            return(False)
+        elif self.progress == 26:
+            self.screen.blit(self.bc1,(0,0))
+            self.screen.blit(self.textbox,self.textbox_rect)
+            speak("ButYouWillFailNoMore...",self.textbox_rect.topleft,self.screen)
+            return(False)
+        elif self.progress == 27:
+            self.screen.blit(self.bc1,(0,0))
+            self.screen.blit(self.textbox,self.textbox_rect)
+            speak("ZDE BUDE COOL ANIMACE___",self.textbox_rect.topleft,self.screen)
+            return(True)
             
             
 #hra samotná
@@ -142,15 +218,16 @@ def The_game():
     width,heigth = 23*32,14*32
     screen = pygame.display.set_mode((width,heigth))
     clock = pygame.time.Clock()
+    speaker = speaker_class(screen)
     speed = 10
     gravity = 0
     floor = heigth-128
     game_state = "intro"
+    #speaker.progress = 14
     lives = 3
     invurnability = 0
     jump_timeout = 0
     jump_timeout_base = 38
-    speaker = speaker_class(screen)
     over = True
     space_fix = True
     
@@ -398,10 +475,47 @@ def The_game():
         
         #prohra
         elif game_state == "bad_ending":
-            return(False)
+            if over:
+                speaker.progress = 21
+                over = False
+                over = speaker.next()
+                
+            if pressed[pygame.K_SPACE] or pressed[pygame.K_RETURN] or pressed[pygame.K_KP_ENTER]:
+                if space_fix:
+                    over = speaker.next()
+                    space_fix = False
+                else: space_fix = True
+                
+            if over:
+                win_text = info_font.render("YOU HAS LOST SUCCSESSFULY",False,"red2")
+                win_rect = win_text.get_rect()
+                win_rect.center = (width//2,heigth//2)
+                screen.fill("black")
+                screen.blit(win_text,win_rect)
+                pygame.display.update()
+                pygame.time.wait(2000)
+                return(False)
         #konec
         else:
-            return(True)
+            if over:
+                over = False
+                over = speaker.next()
+                
+            if pressed[pygame.K_SPACE] or pressed[pygame.K_RETURN] or pressed[pygame.K_KP_ENTER]:
+                if space_fix:
+                    over = speaker.next()
+                    space_fix = False
+                else: space_fix = True
+                
+            if over:
+                win_text = info_font.render("YOU HAS WON SUCCSESSFULY",False,"green")
+                win_rect = win_text.get_rect()
+                win_rect.center = (width//2,heigth//2)
+                screen.fill("black")
+                screen.blit(win_text,win_rect)
+                pygame.display.update()
+                pygame.time.wait(2000)
+                return(True)
             
         pygame.display.update()
         clock.tick(60)
