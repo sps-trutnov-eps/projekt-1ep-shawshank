@@ -1,20 +1,23 @@
-import pygame,random,sys
+import pygame,random,sys,ctypes
 pygame.init()
 
+#překážky
 class obsticle(pygame.sprite.Sprite):
     def __init__(self,pos,w,h,floor,texture):
         super().__init__()
         self.image = texture
         self.rect = pygame.Rect(0,0,w,h) 
         self.rect.midbottom = (pos-64,floor)
-        
+     
+#generace cesty
 def create(amount):
-    line = "_____"
+    line = "___________"
     for number in range(amount):
         line += "O"
         for s in range(random.randint(2,3)): line += "_"
     return line
 
+#postupné vykreslování dialogu
 def speak(text,pos,screen):
     font = pygame.font.SysFont("Courier New",17)
     writing = ""
@@ -22,15 +25,18 @@ def speak(text,pos,screen):
         writing += symbol
         screen.blit(font.render(writing,False,"black"),(pos[0]+20,pos[1]+20))
         pygame.display.update()
-        pygame.time.wait(100)
-        
+        pygame.time.wait(65)
+   
+#panely dialogu
 class speaker_class():
     def __init__(self,screen):
         self.screen = screen
-        self.bc0 = pygame.image.load("../data/textury_hry/I_touched_grass.jpg")
-        self.textbox = pygame.Surface((620,100))
+        self.bc0 = pygame.Surface((23*32,14*32))
+        self.bc0.blit(pygame.transform.rotozoom(pygame.image.load("../data/textury_hry/Classroom.jpg").convert(),0,1/6),(0,-120))
+        self.bc1 = pygame.image.load("../data/textury_hry/I_touched_grass.jpg").convert()
+        self.textbox = pygame.Surface((620,74))
         self.textbox.fill("limegreen")
-        extra_surface = pygame.Surface((600,90))
+        extra_surface = pygame.Surface((600,74))
         extra_surface.fill("olivedrab2")
         self.textbox.blit(extra_surface,(10,10))
         self.textbox_rect = self.textbox.get_rect()
@@ -38,33 +44,98 @@ class speaker_class():
         self.progress = 0
     def next(self):
         self.progress += 1
+        #první dialog
         if self.progress == 1:
             self.screen.blit(self.bc0,(0,0))
             pygame.display.update()
             pygame.time.wait(500)
             self.screen.blit(self.textbox,self.textbox_rect)
-            speak("!!jhk,n.cmlcfkl,hmfhvfgmnvngf!!",self.textbox_rect.topleft,self.screen)
+            speak("Welcome mere human beings!",self.textbox_rect.topleft,self.screen)
             return(False)
         elif self.progress == 2:
             self.screen.blit(self.bc0,(0,0))
             self.screen.blit(self.textbox,self.textbox_rect)
-            speak("!!testing_testing!!",self.textbox_rect.topleft,self.screen)
+            speak("Today, we will discuss...",self.textbox_rect.topleft,self.screen)
             return(False)
         elif self.progress == 3:
             self.screen.blit(self.bc0,(0,0))
             self.screen.blit(self.textbox,self.textbox_rect)
-            speak("toto je další text",self.textbox_rect.topleft,self.screen)
+            speak("...",self.textbox_rect.topleft,self.screen)
             return(False)
         elif self.progress == 4:
             self.screen.blit(self.bc0,(0,0))
             self.screen.blit(self.textbox,self.textbox_rect)
-            speak("nyní hra započne",self.textbox_rect.topleft,self.screen)
+            speak("wait!",self.textbox_rect.topleft,self.screen)
             return(False)
         elif self.progress == 5:
+            self.screen.blit(self.bc0,(0,0))
+            self.screen.blit(self.textbox,self.textbox_rect)
+            speak("Where's þe chalk‽",self.textbox_rect.topleft,self.screen)
+            return(False)
+        elif self.progress == 6:
+            self.screen.blit(self.bc0,(0,0))
+            self.screen.blit(self.textbox,self.textbox_rect)
+            speak("What ever! The Class slave- I mean service, will get it.",self.textbox_rect.topleft,self.screen)
+            return(False)
+        elif self.progress == 7:
+            self.screen.blit(self.bc0,(0,0))
+            self.screen.blit(self.textbox,self.textbox_rect)
+            speak("It's ",self.textbox_rect.topleft,self.screen)
+            return(False)
+        elif self.progress == 8:
+            #věc, co mi nešla přez os modul
+            try:
+                GetUserNameEx = ctypes.windll.secur32.GetUserNameExW
+                size = ctypes.pointer(ctypes.c_ulong(0))
+                GetUserNameEx(3, None, size)
+                nameBuffer = ctypes.create_unicode_buffer(size.contents.value)
+                GetUserNameEx(3, nameBuffer, size)
+                speak("It's "+nameBuffer.value+".",self.textbox_rect.topleft,self.screen)
+            except:
+                speak("It's "+os.getlogin()+".",self.textbox_rect.topleft,self.screen)
+            return(False)
+        elif self.progress == 9:
+            self.screen.blit(self.bc0,(0,0))
+            self.screen.blit(self.textbox,self.textbox_rect)
+            #věc, co mi nešla přez os modul
+            try:
+                GetUserNameEx = ctypes.windll.secur32.GetUserNameExW
+                size = ctypes.pointer(ctypes.c_ulong(0))
+                GetUserNameEx(3, None, size)
+                nameBuffer = ctypes.create_unicode_buffer(size.contents.value)
+                GetUserNameEx(3, nameBuffer, size)
+                speak("OK "+nameBuffer.value+", go get ÞE CHALK!!",self.textbox_rect.topleft,self.screen)
+            except:
+                speak("OK "+os.getlogin()+", go get ÞE CHALK!!",self.textbox_rect.topleft,self.screen)
+            return(False)
+        elif self.progress == 10:
             return(True)
+        
+        #druhý dialog
+        elif self.progress == 11:
+            self.screen.blit(self.bc1,(0,0))
+            self.screen.blit(self.textbox,self.textbox_rect)
+            speak("Hey...",self.textbox_rect.topleft,self.screen)
+            return(False)
+        elif self.progress == 12:
+            self.screen.blit(self.bc1,(0,0))
+            self.screen.blit(self.textbox,self.textbox_rect)
+            speak("You got þe chalk... Good job!",self.textbox_rect.topleft,self.screen)
+            return(False)
+        elif self.progress == 13:
+            self.screen.blit(self.bc1,(0,0))
+            self.screen.blit(self.textbox,self.textbox_rect)
+            speak("Now just bring it back to our relm, so we can use it.",self.textbox_rect.topleft,self.screen)
+            return(False)
+        elif self.progress == 14:
+            self.screen.blit(self.bc1,(0,0))
+            self.screen.blit(self.textbox,self.textbox_rect)
+            speak("Also, under any circumstances, don't ",self.textbox_rect.topleft,self.screen)
+            return(True)
+        
             
             
-
+#hra samotná
 def The_game():
     #základní proměnné
     
@@ -76,7 +147,6 @@ def The_game():
     floor = heigth-128
     game_state = "intro"
     lives = 3
-    end_countdown = 20
     invurnability = 0
     jump_timeout = 0
     jump_timeout_base = 38
@@ -84,6 +154,9 @@ def The_game():
     over = True
     space_fix = True
     
+    spin = pygame.transform.rotozoom(pygame.image.load("../data/textury_hry/weeee.jpg"),90,1/4).convert()
+    spin_rect = spin.get_rect()
+    spin_rect.topleft = (0,-40)
     grass = pygame.transform.rotozoom(pygame.image.load("../data/textury_hry/I_touched_grass.jpg").convert(),90,0.5).convert()
     grass_rect = grass.get_rect()
     grass_rect.bottomright = (width,heigth)
@@ -152,6 +225,12 @@ def The_game():
                 else: space_fix = True
                 
             if over:
+                spin_speed = 15
+                while spin_rect.right > width:
+                    screen.blit(spin,spin_rect)
+                    pygame.display.update()
+                    spin_rect.x -= spin_speed
+                    clock.tick(60)
                 pygame.time.wait(500)
                 game_state = "play_one"
         
@@ -218,24 +297,37 @@ def The_game():
             
         #stage between rounds
         elif game_state == "midstage":
-            #přenastavení proměnných
-            end_countdown = 20
-            game_state = "play_two"
-            play_line = create(25)
-            play_line += "EEEEW"
-            obsticles = pygame.sprite.Group()
-            waiting = pygame.sprite.Group()
-            for symbol_ind,symbol in enumerate(play_line):
-                if symbol == "O": obsticles.add(obsticle(width+symbol_ind*64,32,64,floor,random.choice(texture_mix_2)))
-                elif symbol == "E": waiting.add(obsticle(width+symbol_ind*64,70,600,floor,random.choice(texture_mix_2)))
-                elif symbol == "W":
-                    waiting.add(obsticle(width+symbol_ind*64,70,600,floor,random.choice(texture_mix_2)))
-                    win_rect.center = (width+symbol_ind*64,floor-32)
-            player_rect.midbottom = (128,floor)
-            jump_timeout_base = 40
-            win_image = pygame.image.load("../data/textury_hry/cil.png").convert_alpha()
-            info_text = info_font.render("Press ||SEMICOLON|| to secret.",False,"green")
-            player_jump_texture.blit(player_sheet,(-160,0))
+            #dialog
+            if over:
+                over = False
+                over = speaker.next()
+                
+            if pressed[pygame.K_SPACE] or pressed[pygame.K_RETURN] or pressed[pygame.K_KP_ENTER]:
+                if space_fix:
+                    over = speaker.next()
+                    space_fix = False
+                else: space_fix = True
+                
+            if over:
+                game_state = "play_two"
+                
+                #přenastavení proměnných
+                play_line = create(25)
+                play_line += "EEEEW"
+                obsticles = pygame.sprite.Group()
+                waiting = pygame.sprite.Group()
+                for symbol_ind,symbol in enumerate(play_line):
+                    if symbol == "O": obsticles.add(obsticle(width+symbol_ind*64,32,64,floor,random.choice(texture_mix_2)))
+                    elif symbol == "E": waiting.add(obsticle(width+symbol_ind*64,70,600,floor,random.choice(texture_mix_2)))
+                    elif symbol == "W":
+                        waiting.add(obsticle(width+symbol_ind*64,70,600,floor,random.choice(texture_mix_2)))
+                        win_rect.center = (width+symbol_ind*64,floor-32)
+                player_rect.midbottom = (128,floor)
+                jump_timeout_base = 40
+                win_image = pygame.image.load("../data/textury_hry/cil.png").convert_alpha()
+                info_text = info_font.render("Press ||SEMICOLON|| to secret.",False,"green")
+                player_jump_texture.blit(player_sheet,(-160,0))
+                jump_timeout = 2
         
         #druhé kolo hry
         elif game_state == "play_two":
@@ -244,7 +336,6 @@ def The_game():
             if pressed[pygame.K_SEMICOLON]:
                 pygame.time.wait(666)
                 game_state = "ˇ-ˇ"
-                
             
             #pohyb
             jump = True
