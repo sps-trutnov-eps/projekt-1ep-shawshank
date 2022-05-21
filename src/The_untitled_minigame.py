@@ -52,6 +52,25 @@ class speaker_class():
         self.textbox_rect = self.textbox.get_rect()
         self.textbox_rect.midbottom = (23*16,14*32)
         self.progress = 0
+        
+        self.normal_stand = pygame.transform.rotozoom(pygame.image.load("../data/textury_hry/normal_stand.png").convert_alpha(),0,1/6)
+        self.less_normal_stand = pygame.transform.rotozoom(pygame.image.load("../data/textury_hry/less_normal_stand.png").convert_alpha(),0,1/6)
+        self.hahaha = pygame.transform.rotozoom(pygame.image.load("../data/textury_hry/hahaha.png").convert_alpha(),0,1/4)
+        self.muhahaha = pygame.transform.rotozoom(pygame.image.load("../data/textury_hry/muhahaha.png").convert_alpha(),0,1/4)
+        self.reading = pygame.transform.rotozoom(pygame.image.load("../data/textury_hry/reading.png").convert_alpha(),0,1/5)
+        self.gun_0 = pygame.transform.rotozoom(pygame.image.load("../data/textury_hry/gun_0.png").convert_alpha(),0,1/6)
+        self.gun_1 = pygame.transform.rotozoom(pygame.image.load("../data/textury_hry/gun_1.png").convert_alpha(),0,1/4)
+        self.gun_2 = pygame.transform.rotozoom(pygame.image.load("../data/textury_hry/gun_2.png").convert_alpha(),0,1/6)
+        self.gun_3 = pygame.transform.rotozoom(pygame.image.load("../data/textury_hry/gun_3.png").convert_alpha(),0,1/6)
+        
+        self.anim_0 = pygame.Surface((23*32,14*32))
+        self.anim_0.blit(pygame.transform.rotozoom(pygame.image.load("../data/textury_hry/animation_0.jpg").convert(),0,1/2),(0,-120))
+        self.anim_1 = pygame.Surface((23*32,14*32))
+        self.anim_1.blit(pygame.transform.rotozoom(pygame.image.load("../data/textury_hry/animation_1.jpg").convert(),0,1/2),(0,-120))
+        self.anim_2 = pygame.Surface((23*32,14*32))
+        self.anim_2.blit(pygame.transform.rotozoom(pygame.image.load("../data/textury_hry/animation_2.jpg").convert(),0,1/2),(0,-120))
+        self.anim_3 = pygame.Surface((23*32,14*32))
+        self.anim_3.blit(pygame.transform.rotozoom(pygame.image.load("../data/textury_hry/animation_3.jpg").convert(),0,1/2),(0,-120))
         #věc, co mi nešla přez os modul
         try:
             GetUserNameEx = ctypes.windll.secur32.GetUserNameExW
@@ -69,36 +88,43 @@ class speaker_class():
             self.screen.blit(self.bc0,(0,0))
             pygame.display.update()
             pygame.time.wait(500)
+            self.screen.blit(self.hahaha,(150,90))
             self.screen.blit(self.textbox,self.textbox_rect)
             speak("Welcome mere human beings!",self.textbox_rect.topleft,self.screen)
             return(False)
         elif self.progress == 2:
             self.screen.blit(self.bc0,(0,0))
+            self.screen.blit(self.normal_stand,(300,90))
             self.screen.blit(self.textbox,self.textbox_rect)
             speak("Today, we will discuss...",self.textbox_rect.topleft,self.screen)
             return(False)
         elif self.progress == 3:
             self.screen.blit(self.bc0,(0,0))
+            self.screen.blit(self.normal_stand,(300,90))
             self.screen.blit(self.textbox,self.textbox_rect)
             speak("...",self.textbox_rect.topleft,self.screen)
             return(False)
         elif self.progress == 4:
             self.screen.blit(self.bc0,(0,0))
+            self.screen.blit(self.normal_stand,(300,90))
             self.screen.blit(self.textbox,self.textbox_rect)
             speak("wait!",self.textbox_rect.topleft,self.screen)
             return(False)
         elif self.progress == 5:
             self.screen.blit(self.bc0,(0,0))
+            self.screen.blit(self.normal_stand,(300,90))
             self.screen.blit(self.textbox,self.textbox_rect)
             speak("Where's þe chalk‽",self.textbox_rect.topleft,self.screen)
             return(False)
         elif self.progress == 6:
             self.screen.blit(self.bc0,(0,0))
+            self.screen.blit(self.hahaha,(150,90))
             self.screen.blit(self.textbox,self.textbox_rect)
             speak("What ever! The Class slave- I mean service, will get it.",self.textbox_rect.topleft,self.screen)
             return(False)
         elif self.progress == 7:
             self.screen.blit(self.bc0,(0,0))
+            self.screen.blit(self.reading,(150,90))
             self.screen.blit(self.textbox,self.textbox_rect)
             speak("It's ",self.textbox_rect.topleft,self.screen)
             return(False)
@@ -107,6 +133,7 @@ class speaker_class():
             return(False)
         elif self.progress == 9:
             self.screen.blit(self.bc0,(0,0))
+            self.screen.blit(self.hahaha,(150,90))
             self.screen.blit(self.textbox,self.textbox_rect)
             speak("OK "+self.username+", go get ÞE CHALK!!",self.textbox_rect.topleft,self.screen)
             return(False)
@@ -118,21 +145,25 @@ class speaker_class():
             self.screen.blit(self.bc1,(0,0))
             pygame.display.update()
             pygame.time.wait(500)
+            self.screen.blit(self.hahaha,(150,90))
             self.screen.blit(self.textbox,self.textbox_rect)
             speak("Hey...",self.textbox_rect.topleft,self.screen)
             return(False)
         elif self.progress == 12:
             self.screen.blit(self.bc1,(0,0))
+            self.screen.blit(self.normal_stand,(300,90))
             self.screen.blit(self.textbox,self.textbox_rect)
             speak("You got þe chalk... Good job!",self.textbox_rect.topleft,self.screen)
             return(False)
         elif self.progress == 13:
             self.screen.blit(self.bc1,(0,0))
+            self.screen.blit(self.normal_stand,(300,90))
             self.screen.blit(self.textbox,self.textbox_rect)
             speak("Now just bring it back to our relm, so we can use it.",self.textbox_rect.topleft,self.screen)
             return(False)
         elif self.progress == 14:
             self.screen.blit(self.bc1,(0,0))
+            self.screen.blit(self.less_normal_stand,(300,90))
             self.screen.blit(self.textbox,self.textbox_rect)
             speak("Also, under any circumstances, don't ",self.textbox_rect.topleft,self.screen)
             return(True)
@@ -142,36 +173,43 @@ class speaker_class():
             self.screen.blit(self.bc0,(0,0))
             pygame.display.update()
             pygame.time.wait(500)
+            self.screen.blit(self.hahaha,(150,90))
             self.screen.blit(self.textbox,self.textbox_rect)
             speak("AAAAAA, you're back...",self.textbox_rect.topleft,self.screen)
             return(False)
         elif self.progress == 16:
             self.screen.blit(self.bc0,(0,0))
+            self.screen.blit(self.less_normal_stand,(300,90))
             self.screen.blit(self.textbox,self.textbox_rect)
             speak("GOOD",self.textbox_rect.topleft,self.screen)
             return(False)
         elif self.progress == 17:
             self.screen.blit(self.bc0,(0,0))
+            self.screen.blit(self.normal_stand,(300,90))
             self.screen.blit(self.textbox,self.textbox_rect)
             speak("I guess we can start now.",self.textbox_rect.topleft,self.screen)
             return(False)
         elif self.progress == 18:
             self.screen.blit(self.bc0,(0,0))
+            self.screen.blit(self.normal_stand,(300,90))
             self.screen.blit(self.textbox,self.textbox_rect)
             speak("So, todays theme is...",self.textbox_rect.topleft,self.screen)
             return(False)
         elif self.progress == 19:
             self.screen.blit(self.bc0,(0,0))
+            self.screen.blit(self.muhahaha,(150,90))
             self.screen.blit(self.textbox,self.textbox_rect)
             speak("Þe infinite chaos beyond the stars, far away from\nour understanding...",self.textbox_rect.topleft,self.screen)
             return(False)
         elif self.progress == 20:
             self.screen.blit(self.bc0,(0,0))
+            self.screen.blit(self.hahaha,(150,90))
             self.screen.blit(self.textbox,self.textbox_rect)
             speak("Þe relms both beyond and inside our own...",self.textbox_rect.topleft,self.screen)
             return(False)
         elif self.progress == 21:
             self.screen.blit(self.bc0,(0,0))
+            self.screen.blit(self.hahaha,(150,90))
             self.screen.blit(self.textbox,self.textbox_rect)
             speak("Þe infinite possibilities of human mind and\nhalucinogenic substances from þe ",self.textbox_rect.topleft,self.screen)
             return(True)
@@ -181,33 +219,69 @@ class speaker_class():
             self.screen.blit(self.bc1,(0,0))
             pygame.display.update()
             pygame.time.wait(500)
+            self.screen.blit(self.muhahaha,(150,90))
             self.screen.blit(self.textbox,self.textbox_rect)
             speak("ha...",self.textbox_rect.topleft,self.screen)
             return(False)
         elif self.progress == 23:
             self.screen.blit(self.bc1,(0,0))
+            self.screen.blit(self.hahaha,(150,90))
             self.screen.blit(self.textbox,self.textbox_rect)
             speak("HA...",self.textbox_rect.topleft,self.screen)
             return(False)
         elif self.progress == 24:
             self.screen.blit(self.bc1,(0,0))
+            self.screen.blit(self.hahaha,(150,90))
             self.screen.blit(self.textbox,self.textbox_rect)
             speak("HAHAHA HA HA  HA  HA    Ha",self.textbox_rect.topleft,self.screen)
             return(False)
         elif self.progress == 25:
             self.screen.blit(self.bc1,(0,0))
+            self.screen.blit(self.muhahaha,(150,90))
             self.screen.blit(self.textbox,self.textbox_rect)
             speak("You Failed Miserably.",self.textbox_rect.topleft,self.screen)
             return(False)
         elif self.progress == 26:
             self.screen.blit(self.bc1,(0,0))
+            self.screen.blit(self.less_normal_stand,(300,90))
             self.screen.blit(self.textbox,self.textbox_rect)
             speak("ButYouWillFailNoMore...",self.textbox_rect.topleft,self.screen)
             return(False)
         elif self.progress == 27:
             self.screen.blit(self.bc1,(0,0))
-            self.screen.blit(self.textbox,self.textbox_rect)
-            speak("ZDE BUDE COOL ANIMACE___",self.textbox_rect.topleft,self.screen)
+            self.screen.blit(self.gun_0,(300,90))
+            pygame.display.update()
+            pygame.time.wait(350)
+            self.screen.blit(self.bc1,(0,0))
+            self.screen.blit(self.gun_1,(150,100))
+            pygame.display.update()
+            pygame.time.wait(350)
+            self.screen.blit(self.bc1,(0,0))
+            self.screen.blit(self.gun_2,(300,100))
+            pygame.display.update()
+            pygame.time.wait(350)
+            self.screen.blit(self.bc1,(0,0))
+            self.screen.blit(self.gun_3,(290,100))
+            pygame.display.update()
+            pygame.time.wait(450)
+            self.screen.fill("white")
+            pygame.display.update()
+            pygame.time.wait(700)
+            self.screen.blit(self.bc1,(0,0))
+            pygame.display.update()
+            pygame.time.wait(1200)
+            self.screen.blit(self.anim_0,(0,0))
+            pygame.display.update()
+            pygame.time.wait(450)
+            self.screen.blit(self.anim_1,(0,0))
+            pygame.display.update()
+            pygame.time.wait(450)
+            self.screen.blit(self.anim_2,(0,0))
+            pygame.display.update()
+            pygame.time.wait(450)
+            self.screen.blit(self.anim_3,(0,0))
+            pygame.display.update()
+            pygame.time.wait(2000)
             return(True)
             
             
@@ -223,7 +297,6 @@ def The_game():
     gravity = 0
     floor = heigth-128
     game_state = "intro"
-    #speaker.progress = 14
     lives = 3
     invurnability = 0
     jump_timeout = 0
@@ -253,7 +326,7 @@ def The_game():
     win_image = pygame.image.load("../data/textury_hry/křída.png").convert_alpha()
     win_rect = win_image.get_rect()
     
-    play_line = create(19)
+    play_line = create(25)
     play_line += "EEEEW"
     
     player_texture = pygame.Surface((32,64))
@@ -389,7 +462,7 @@ def The_game():
                 game_state = "play_two"
                 
                 #přenastavení proměnných
-                play_line = create(25)
+                play_line = create(32)
                 play_line += "EEEEW"
                 obsticles = pygame.sprite.Group()
                 waiting = pygame.sprite.Group()
@@ -412,7 +485,7 @@ def The_game():
             #"secret"
             if pressed[pygame.K_SEMICOLON]:
                 pygame.time.wait(666)
-                game_state = "ˇ-ˇ"
+                game_state = "bad_ending"
             
             #pohyb
             jump = True
@@ -487,10 +560,9 @@ def The_game():
                 else: space_fix = True
                 
             if over:
-                win_text = info_font.render("YOU HAS LOST SUCCSESSFULY",False,"red2")
+                win_text = info_font.render("YOU HAVE LOST SUCCSESSFULY",False,"red2")
                 win_rect = win_text.get_rect()
                 win_rect.center = (width//2,heigth//2)
-                screen.fill("black")
                 screen.blit(win_text,win_rect)
                 pygame.display.update()
                 pygame.time.wait(2000)
@@ -508,7 +580,7 @@ def The_game():
                 else: space_fix = True
                 
             if over:
-                win_text = info_font.render("YOU HAS WON SUCCSESSFULY",False,"green")
+                win_text = info_font.render("YOU HAVE WON SUCCSESSFULY",False,"green")
                 win_rect = win_text.get_rect()
                 win_rect.center = (width//2,heigth//2)
                 screen.fill("black")
@@ -519,7 +591,3 @@ def The_game():
             
         pygame.display.update()
         clock.tick(60)
-        
-print(The_game())
-pygame.quit()
-sys.exit()
