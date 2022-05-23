@@ -2,6 +2,8 @@ import sys
 from generace_mapy import game_map,master
 from generace_mapy import screen as minimap
 from sprites import *
+from minihry.The_untitled_minigame import Kuba_minigame
+from minihry.michalek import mminihra
 
 #základní proměnné
 clock = pygame.time.Clock()
@@ -18,8 +20,8 @@ player_speed = 3
 health_max = health = 5
 mozne_prechody = []
 
-default_time = 120
-current_time = 120
+default_time = 60
+current_time = 60
 font = pygame.font.SysFont("rockwellcondensedtučné",30)
 time_background = pygame.Surface((60,54))
 time_background.fill((0,28,32))
@@ -45,6 +47,16 @@ def vystup(pos):
             elif symbol == "2": return ((symbol_ind-1)*32+16,line_ind*32+16)
             elif symbol == "3": return (symbol_ind*32+16,(line_ind-1)*32+16)
             elif symbol == "4": return ((symbol_ind+1)*32+16,line_ind*32+16)
+##aktivace miniher
+def play_minigame():
+    number = random.randint(0,1)
+    if number == 0: outcome = Kuba_minigame()
+    elif number == 1: outcome = mminihra()
+    player_hitbox_instance.rect.center = vystup(current_position)
+    player_instance.rect.centerx = player_hitbox_instance.rect.centerx+4
+    player_instance.rect.bottom = player_hitbox_instance.rect.bottom-2
+    if outcome: return health
+    else: return health-1
 
 #načtení zdí specificky
 def random_zdi(mapka,ind,door):
@@ -212,7 +224,12 @@ while True:
         
     #kolize s dvermi
     if pygame.sprite.spritecollide(hrac_hitbox, dvere, False):
-        for door in dvere: print(door.door_type)
+        for door in dvere:
+            if door.door_type == "regular_door":
+                health = play_minigame()
+                current_time = default_time
+            else:
+                print(door.door_type)
     
     #vykreslování
     screen.fill("black")
@@ -240,9 +257,7 @@ while True:
         podlaha,dvere = urceni_sprite_group(game_map[current_position[0]][current_position[1]])
         zdi = wall_map[current_position[0]][current_position[1]]
         
-        player_hitbox_instance.rect.center = vystup(current_position)
-        player_instance.rect.centerx = player_hitbox_instance.rect.centerx+4
-        player_instance.rect.bottom = player_hitbox_instance.rect.bottom-2
+        health = play_minigame()
         current_time = default_time
     
     pygame.display.update()

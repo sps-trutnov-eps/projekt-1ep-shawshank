@@ -72,6 +72,4 @@ def mminihra():
             pg.display.update()
         time.sleep(0.5)
         notazek = notazek - 1
-    pg.quit()
-    sys.exit()
     return vysledek

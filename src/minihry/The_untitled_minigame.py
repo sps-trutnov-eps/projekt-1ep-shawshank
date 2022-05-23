@@ -1,4 +1,4 @@
-import pygame,random,sys,ctypes
+import pygame,random,sys,ctypes,os
 pygame.init()
 
 #překážky
@@ -41,7 +41,7 @@ class speaker_class():
     def __init__(self,screen):
         self.screen = screen
         self.bc0 = pygame.Surface((23*32,14*32))
-        self.bc0.blit(pygame.transform.rotozoom(pygame.image.load("../data/textury_hry/Classroom.jpg").convert(),0,1/6),(0,-120))
+        self.bc0.blit(pygame.transform.rotozoom(pygame.image.load("../data/textury_hry/classroom.jpg").convert(),0,1/6),(0,-120))
         self.bc1 = pygame.Surface((23*32,14*32))
         self.bc1.blit(pygame.transform.rotozoom(pygame.image.load("../data/textury_hry/Nature.jpg").convert(),0,1/6),(0,-120))
         self.textbox = pygame.Surface((620,74))
@@ -286,11 +286,12 @@ class speaker_class():
             
             
 #hra samotná
-def The_game():
+def Kuba_minigame():
     #základní proměnné
-    
     width,heigth = 23*32,14*32
     screen = pygame.display.set_mode((width,heigth))
+    screen.blit(pygame.font.SysFont("Courier New",30).render("Loading...",False,"white"),(10,20))
+    pygame.display.update()
     clock = pygame.time.Clock()
     speaker = speaker_class(screen)
     speed = 10
