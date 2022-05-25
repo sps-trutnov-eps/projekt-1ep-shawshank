@@ -52,6 +52,8 @@ def play_minigame():
     number = random.randint(0,1)
     if number == 0: outcome = Kuba_minigame()
     elif number == 1: outcome = mminihra()
+    screen = pygame.display.set_mode((width,heigth))
+    pygame.display.set_caption("¤Útěk ze střední průmyslové Shawshank¤")
     player_hitbox_instance.rect.center = vystup(current_position)
     player_instance.rect.centerx = player_hitbox_instance.rect.centerx+4
     player_instance.rect.bottom = player_hitbox_instance.rect.bottom-2

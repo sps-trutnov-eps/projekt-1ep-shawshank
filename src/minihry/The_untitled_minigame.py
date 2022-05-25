@@ -290,6 +290,7 @@ def Kuba_minigame():
     #základní proměnné
     width,heigth = 23*32,14*32
     screen = pygame.display.set_mode((width,heigth))
+    pygame.display.set_caption("¤___¤")
     screen.blit(pygame.font.SysFont("Courier New",30).render("Loading...",False,"white"),(10,20))
     pygame.display.update()
     clock = pygame.time.Clock()
