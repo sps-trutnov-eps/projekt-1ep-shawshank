@@ -9,6 +9,7 @@ hrac_score=0
 pocitac_score=0
 hrac_volba=""
 pocitac_volba=""
+vysledek=""
 
 #cisla, volby
 def volba_to_cislo(volba):
@@ -30,18 +31,18 @@ def result(clovek_volba,comp_volba):
     hrac=volba_to_cislo(clovek_volba)
     pocitac=volba_to_cislo(comp_volba)
     if (hrac==pocitac):
-        print("remíza")
+        vysledek="remíza"
     elif((hrac-pocitac)%3==1):
-        print("vyhráváš")
+        vysledek="vyhráváš"
         hrac_score +=1
     else:
-        print("prohráváš")
+        vysledek="prohráváš"
         pocitac_score +=1
     rozliseni_tabulky=tk.Text(master=okno,width=75,height=15,bg="#FFFF99")
     rozliseni_tabulky.grid(row=6,column=50)
     answer="tvá volba: {uc} \nvolba počítače: {cc} \nvýsledek: {uu} \ntvé skóre: {u}" \
            "\nskóre počítače: {c}".format(uc=hrac_volba,cc=pocitac_volba
-                                      ,u=hrac_score,c=pocitac_score,uu=result)
+                                      ,u=hrac_score,c=pocitac_score,uu=vysledek)
     rozliseni_tabulky.insert(tk.END,answer)
 
 #funkčnost tlačítek
