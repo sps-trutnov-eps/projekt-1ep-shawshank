@@ -159,7 +159,7 @@ class speaker_class():
             self.screen.blit(self.bc1,(0,0))
             self.screen.blit(self.normal_stand,(300,90))
             self.screen.blit(self.textbox,self.textbox_rect)
-            speak("Now just bring it back to our relm, so we can use it.",self.textbox_rect.topleft,self.screen)
+            speak("Now just bring it back to our realm, so we can use it.",self.textbox_rect.topleft,self.screen)
             return(False)
         elif self.progress == 14:
             self.screen.blit(self.bc1,(0,0))
@@ -205,7 +205,7 @@ class speaker_class():
             self.screen.blit(self.bc0,(0,0))
             self.screen.blit(self.hahaha,(150,90))
             self.screen.blit(self.textbox,self.textbox_rect)
-            speak("Þe relms both beyond and inside our own...",self.textbox_rect.topleft,self.screen)
+            speak("Þe realms both beyond and inside our own...",self.textbox_rect.topleft,self.screen)
             return(False)
         elif self.progress == 21:
             self.screen.blit(self.bc0,(0,0))
