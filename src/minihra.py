@@ -1,8 +1,10 @@
-import pygame
+import pygame as pg
 import random
+import sys
+import time
 
-sirka_okno = 800
-vyska_okno = 600
+sirka_okno = 776
+vyska_okno = 448
 
 pygame.init() 
 okno = pygame.display.set_mode((sirka_okno, vyska_okno)) 
@@ -14,6 +16,26 @@ fialova = (0,0,128)
 bila = (255,255,255)
 cerna = (0,0,0)
 ruzova = (255,200,200)
+
+
+otazky = ["Kdy začala druhá světová válka?";
+          "Kdy vzniklo Československo?",
+          "Kdo postavil Karlštejn?",
+          "Jak se jmenoval konkurenční rod Přemyslovců?",
+          "Jak se jmenoval poslední Přemyslovec?",
+          "Kdo byl prezidentem USA během občanské války?",
+          "V jakém roce vznikl Sovětský svaz?",
+          "Kdo byl první prezident České republiky?",
+          "Kde byl upálen Jan Hus?",
+          "Na jakého panovníka byl spáchán atentát v Sarajevu?"
+          ]
+
+ data = list(otazky)
+ otazka = random.randit  (1, 6)
+ 
+
+otazky = random.choice(data)
+        data.remove(otazky)
 
 
 maly_font = pygame.font.SysFont("timesnewroman", 25)
@@ -37,38 +59,13 @@ def zprava_na_obrazovce(zprava, barva, y_displace = 0, velikost = "malá"):
     okno.blit(textSurf, textRect)
 
 while True:
-    zprava_na_obrazovce("Počítání příkladů", zelena, -230)
-    zprava_na_obrazovce("Máš 3 životy, pokud je ztratíš tak si prohrál", zelena, -200)
-    zprava_na_obrazovce("Stiskněte ENTER pro zapnutí hry", zelena, -30)
+    zprava_na_obrazovce("Ustní zkoušení", zelena, -230)
+    zprava_na_obrazovce(otazky (1, 10), zelena, -100)
+    zprava_na_obrazovce("", zelena, 130)
     pygame.display.update()
     
-handle = open("příklady.txt","r", encoding = "utf-8")
-priklady = handle.read()
-print(priklady)
-handle.close()
 
-
-handle = open("výsledky.txt","r", encoding = "utf-8")
-vysledky = handle.read()
-handle.close()
-
-
-spravne_vysledky = vysledky.strip().split("\n")
-vsechny_priklady = priklady.strip().split("\n")
-
-nahodny_priklad1 = random.choice(vsechny_priklady)
-print(nahodny_priklad1)
-poradi_prikladu1 = vsechny_priklady.index(nahodny_priklad1)
-spravny_vysledek1 = vysledky[poradi_prikladu1]
-if spravny_vysledek1 == input ():
-    print ("Správně")
-    
-else:
-    print ("Špatně")  
-okno.fill(255, 255, 255)
-pygame.display.update()
  
-
 
 
 
