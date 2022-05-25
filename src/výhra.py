@@ -1,5 +1,6 @@
 import pygame as pg
 import sys
+import time
 
 pg.init()
 
@@ -21,8 +22,20 @@ def vyhrals(vyhral):
                 if u.type == pg.QUIT:
                     pg.quit()
                     sys.exit()
+                elif u.type == pg.KEYDOWN:
+                    if u.key == pg.K_q:
+                        return vyhral
+                    if u.key == pg.K_m:
+                        return "menu"
+             
+            time.sleep(0.5)
             
-            vyhra = font.render(zprava, True, (255, 255, 255))
+            if vyhral:
+                barva_textu = (0, 255, 0)
+            else:
+                barva_textu = (255, 0, 0)
+            
+            vyhra = font.render(zprava, True, barva_textu)
             okno.fill(BARVA_POZADI)
             okno.blit(vyhra, (0,0))
             
