@@ -7,9 +7,13 @@ import time
 pg.init()
 
 def mminihra():
+    UKOL="Vzpočti Diskriminant"
     BARVA_POZADI = (0, 20, 0)
     okno = pg.display.set_mode((736,448))
-    pg.display.set_caption("Vypočti Diskriminant")
+    pg.display.set_caption(UKOL)
+    ukol_barva = (255, 255, 0)
+    ukol_barva_alt = (255, 0, 0)
+    ub = ukol_barva
 
     seznam_zadani = {"2x² - 11x + 14 = 0":"620",
                      "3x² + 6x + 5 = 0":"-111",
@@ -57,13 +61,21 @@ def mminihra():
                     spravneb = (255, 0, 0)
                     vysledek = False
                     
+            if ub == ukol_barva:
+                ub = ukol_barva_alt
+            else:
+                ub = ukol_barva
+                    
+            
             font = pg.font.SysFont("Comic Sans MS", 42)
             uloha = font.render(zadani, True, (255, 255, 255))
             odpovedin = font.render(odpoved, True, (255, 255, 255))
             spravneout = font.render(spravne, True, (spravneb))
             zbotazky = font.render(str(notazek), True, (255, 255, 0))
+            ukol = font.render(UKOL, True, ub)
             
             okno.fill(BARVA_POZADI)
+            okno.blit(ukol, (0, 380))
             okno.blit(uloha, (0,0))
             okno.blit(odpovedin, (0, 50))
             okno.blit(spravneout, (0, 108))
