@@ -47,18 +47,34 @@ def vystup(pos):
             elif symbol == "4": return ((symbol_ind+1)*32+16,line_ind*32+16)
 
 #vytvoření textu
-def text(text_size, text, center_x, center_y, text_color, text_font):
-    font = pygame.font.Font(text_font, text_size)
+def text(text_size, text, x, y, text_color, text_font, align, sysfont):
+    if sysfont:
+        font = pygame.font.SysFont(text_font, text_size)
+    else:        
+        font = pygame.font.Font(text_font, text_size)
     text = font.render(text, True, text_color)
-    text_rect = text.get_rect(center=(center_x, center_y))
+    text_rect = text.get_rect()
+    if align == "topleft":
+        text_rect.topleft = (x,y)
+    if align == "midtop":
+        text_rect.midtop = (x,y)
+    if align == "topright":
+        text_rect.topright = (x,y)
+    if align == "midleft":
+        text_rect.midleft = (x,y)
+    if align == "center":
+        text_rect.center = (x,y)
+    if align == "midright":
+        text_rect.midright = (x,y)
+    if align == "bottomleft":
+        text_rect.bottomleft = (x,y)
+    if align == "midbottom":
+        text_rect.midbottom = (x,y)
+    if align == "midright":
+        text_rect.midright = (x,y)
+        
     screen.blit(text, text_rect)
-
-
-def sysfont_text(text_size, text, center_x, center_y, text_color, text_font):
-    font = pygame.font.SysFont(text_font, text_size)
-    text = font.render(text, True, text_color)
-    text_rect = text.get_rect(center=(center_x, center_y))
-    screen.blit(text, text_rect)
+    return text_rect
     
     
 #načtení zdí specificky
@@ -137,8 +153,9 @@ podlaha,dvere = urceni_sprite_group(game_map[current_position[0]][current_positi
 zdi = wall_map[current_position[0]][current_position[1]]
 
 #gamestates
-inGame = True
+inGame = False
 gameOver = False
+inMenu = True
 
 #main loop
 while True:
@@ -151,6 +168,28 @@ while True:
         if pressed[pygame.K_ESCAPE]:
             pygame.quit()
             sys.exit()
+    
+    if inMenu:
+        screen.fill("black")
+        txt_bg = pygame.image.load("../data/menu/text_bg.png").convert_alpha()
+        txt_bg_rect = txt_bg.get_rect(topright=(23*32, 0))
+        start_highlight = pygame.image.load("../data/menu/start_highlight.png").convert_alpha()
+        start_highlight_rect = start_highlight.get_rect(topleft=(23*32 - 255, 100))
+        credits_highlight = pygame.image.load("../data/menu/credits_highlight.png").convert_alpha()
+        credits_highlight_rect = credits_highlight.get_rect(topleft=(23*32 - 225, 200))
+        exit_highlight = pygame.image.load("../data/menu/exit_highlight.png").convert_alpha()
+        exit_highlight_rect = exit_highlight.get_rect(topleft=(23*32 - 225, 300))
+        screen.blit(txt_bg, txt_bg_rect)
+        text(50, "START", 23*32 - 225, 100, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False)
+        text(50, "CREDITS", 23*32 - 225, 200, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False)
+        text(50, "EXIT", 23*32 - 225, 300, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False)
+        
+        if text(50, "START", 23*32 - 225, 100, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()):
+            screen.blit(start_highlight, start_highlight_rect)
+        
+        if pressed[pygame.K_p]:
+            inMenu = False
+            inGame = True
     
     if inGame:
         health = health_max
@@ -265,8 +304,8 @@ while True:
         current_time -= 0.016
         screen.blit(time_outground,(0,0))
         screen.blit(time_background,(0,0))
-        if current_time > 21: sysfont_text(30, (str(int(current_time))), 25, 25, "gray", "rockwellcondensedtučné")
-        elif current_time > 0 : sysfont_text(30, (str(int(current_time))), 25, 25, "red", "rockwellcondensedtučné")
+        if current_time > 21: text(30, (str(int(current_time))), 25, 25, "gray", "rockwellcondensedtučné", "center", True)
+        elif current_time > 0 : text(30, (str(int(current_time))), 25, 25, "red", "rockwellcondensedtučné", "center", True)
         else:
             current_position = random.choice(mozne_prechody)
             podlaha,dvere = urceni_sprite_group(game_map[current_position[0]][current_position[1]])
@@ -294,11 +333,11 @@ while True:
             
     if gameOver:
         screen.fill("black")
-        text(125, "GAME OVER", 23*32/2, 14*32/2, (255, 0, 0), "../data/fonts/ARCADECLASSIC.TTF")
-        text(50, "PRESS   ENTER", 23*32/2, 14*32/2 + 75, (100, 0, 0),  "../data/fonts/ARCADECLASSIC.TTF")
+        text(125, "GAME OVER", 23*32/2, 14*32/2, (255, 0, 0), "../data/fonts/ARCADECLASSIC.TTF", "center", False)
+        text(50, "PRESS   ENTER", 23*32/2, 14*32/2 + 75, (100, 0, 0),  "../data/fonts/ARCADECLASSIC.TTF", "center", False)
         if pressed[pygame.K_RETURN]:
             gameOver = False
-            inGame = True
+            inMenu = True
             
     pygame.display.update()
     clock.tick(60)
