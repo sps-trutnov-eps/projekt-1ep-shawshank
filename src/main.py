@@ -3,6 +3,7 @@ from generace_mapy import game_map,master
 from generace_mapy import screen as minimap
 from sprites import *
 
+pygame.init()
 
 #základní proměnné
 clock = pygame.time.Clock()
@@ -171,25 +172,43 @@ while True:
     
     if inMenu:
         screen.fill("black")
+        
+        #povrchy
         txt_bg = pygame.image.load("../data/menu/text_bg.png").convert_alpha()
         txt_bg_rect = txt_bg.get_rect(topright=(23*32, 0))
         start_highlight = pygame.image.load("../data/menu/start_highlight.png").convert_alpha()
-        start_highlight_rect = start_highlight.get_rect(topleft=(23*32 - 255, 100))
+        start_highlight_rect = start_highlight.get_rect(topright=(23*32 - 8, 8))
         credits_highlight = pygame.image.load("../data/menu/credits_highlight.png").convert_alpha()
-        credits_highlight_rect = credits_highlight.get_rect(topleft=(23*32 - 225, 200))
+        credits_highlight_rect = credits_highlight.get_rect(topright=(23*32 - 10, 13))
         exit_highlight = pygame.image.load("../data/menu/exit_highlight.png").convert_alpha()
-        exit_highlight_rect = exit_highlight.get_rect(topleft=(23*32 - 225, 300))
+        exit_highlight_rect = exit_highlight.get_rect(topright=(23*32 - 15, 15))
+        
+        #vykreslování
         screen.blit(txt_bg, txt_bg_rect)
         text(50, "START", 23*32 - 225, 100, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False)
         text(50, "CREDITS", 23*32 - 225, 200, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False)
         text(50, "EXIT", 23*32 - 225, 300, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False)
         
+        #kolize myši s tlačítky v menu
         if text(50, "START", 23*32 - 225, 100, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()):
             screen.blit(start_highlight, start_highlight_rect)
-        
-        if pressed[pygame.K_p]:
+            
+        if text(50, "CREDITS", 23*32 - 225, 200, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()):
+            screen.blit(credits_highlight, credits_highlight_rect)
+            
+        if text(50, "EXIT", 23*32 - 225, 300, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()):
+            screen.blit(exit_highlight, exit_highlight_rect)
+            
+        if text(50, "START", 23*32 - 225, 100, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:
             inMenu = False
             inGame = True
+        
+        if text(50, "CREDITS", 23*32 - 225, 200, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:
+            print("Zde budou kredity")
+        
+        if text(50, "EXIT", 23*32 - 225, 300, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:
+            pygame.quit()
+            sys.exit()
     
     if inGame:
         health = health_max
