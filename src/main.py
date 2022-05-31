@@ -1,6 +1,5 @@
 import sys
-from generace_mapy import game_map,master
-from generace_mapy import screen as minimap
+from generace_mapy import generate
 from sprites import *
 import time
 from minihry.polak import Kuba_minigame
@@ -10,6 +9,8 @@ from minihry.svoboda import křídní_minihra
 pygame.init()
 
 #základní proměnné
+game_map,master,minimap = generate()
+
 clock = pygame.time.Clock()
 
 cheat_timeout = 20
@@ -42,6 +43,7 @@ health_bar = Health_bar((23*32/2, 24), screen)
 
 current_position = master
 
+door_check = 0
 #výstup ze dveří
 def vystup(pos):
     for line_ind,line in enumerate(game_map[pos[0]][pos[1]][0]):
@@ -151,14 +153,6 @@ def urceni_sprite_group(mapa):
                 dvere.add(zed((symbol_ind*32,radek_ind*32),"dveře_3",mapa[2][1]))
     return podlaha,dvere
 
-#kód pro ztmavení obrazovky
-fade = pygame.Surface((23*32, 14*32))
-fade.fill("black")
-pruhlednost = 0
-pruhlednost_textu = 0
-fade.set_alpha(pruhlednost)
-fade_speed = 10
-
 wall_map = []
 for line_ind,line in enumerate(game_map):
     new = []
@@ -170,6 +164,33 @@ for line_ind,line in enumerate(game_map):
     
 podlaha,dvere = urceni_sprite_group(game_map[current_position[0]][current_position[1]])
 zdi = wall_map[current_position[0]][current_position[1]]
+
+#restart
+def restart():
+    global current_position,podlaha,dvere,zdi,minimap,game_map,wall_map,master
+    game_map,master,minimap = generate()
+    current_position = master
+    player_hitbox_instance.rect.center = (width//2,heigth//2)
+    
+    wall_map = []
+    for line_ind,line in enumerate(game_map):
+        new = []
+        for something_ind,something in enumerate(line):
+            if something != []:
+                new.append(random_zdi(something[0],[line_ind,something_ind],something[2][1]))
+            else: new.append(None)
+        wall_map.append(new)
+        
+    podlaha,dvere = urceni_sprite_group(game_map[current_position[0]][current_position[1]])
+    zdi = wall_map[current_position[0]][current_position[1]]
+
+#kód pro ztmavení obrazovky
+fade = pygame.Surface((23*32, 14*32))
+fade.fill("black")
+pruhlednost = 0
+pruhlednost_textu = 0
+fade.set_alpha(pruhlednost)
+fade_speed = 10
 
 #gamestates
 inGame = False
@@ -253,6 +274,28 @@ while True:
         if pressed[pygame.K_g]:
             health = 0
             cheat_timeout = 20
+            
+        if pressed[pygame.K_c]:
+            print(door_check)
+            cheat_timeout = 20
+        
+        if pressed[pygame.K_t]:
+            current_time = default_time
+            cheat_timeout = 20
+            
+        if pressed[pygame.K_1]:
+            door_check = 1
+            cheat_timeout = 20
+            
+        if pressed[pygame.K_2]:
+            door_check = 2
+            cheat_timeout = 20
+            
+        if pressed[pygame.K_3]:
+            inGame = False
+            vyhra = True
+            door_check = 0
+            cheat_timeout = 20
         
         cheat_timeout -= 1
         
@@ -324,8 +367,12 @@ while True:
                 if door.door_type == "regular_door":
                     health = play_minigame()
                     current_time = default_time
-                else:
-                    print(door.door_type)
+                elif door.door_type == "KEY_ROOM" and door_check == 0: door_check = 1
+                elif door.door_type == "LOCKER_ROOM" and door_check == 1: door_check = 2
+                elif door.door_type == "EXIT" and door_check == 2:
+                    inGame = False
+                    vyhra = True
+                    door_check = 0
         
         #vykreslování
         screen.fill("black")
@@ -394,6 +441,9 @@ while True:
         if pressed[pygame.K_RETURN]:
             gameOver = False
             inMenu = True
+            restart()
+            current_time = default_time
+            health = health_max
             
     if vyhra:
         BARVA_POZADI = (0, 0, 0)
@@ -412,7 +462,7 @@ while True:
             
         nabidka = "q - odejít   m - \"menu\""
             
-        while True:
+        while vyhra:
             udalost = pygame.event.get()
             stisknuto = pygame.key.get_pressed()
             for u in udalost:
@@ -421,36 +471,34 @@ while True:
                     sys.exit()
                 elif u.type == pygame.KEYDOWN:
                     if u.key == pygame.K_q:
-                        print("Konec")
+                        pygame.quit()
+                        sys.exit()
                     if u.key == pygame.K_m:
                         inMenu = True
-             
+                        vyhra = False
+                        
             time.sleep(0.05)
             
-            if vyhral:
-                if barva_zpravy == (0, 255, 0):
-                    barva_zpravy = (255, 255, 0)
-                else:
-                    barva_zpravy = (0, 255, 0)
+            if barva_zpravy == (0, 255, 0):
+                barva_zpravy = (255, 255, 0)
             else:
-                if barva_zpravy == (255, 0, 0):
-                    barva_zpravy = (255, 255, 0)
-                else:
-                    barva_zpravy = (255, 0, 0)
-                    
+                barva_zpravy = (0, 255, 0)  
             if barva_textu == (255, 255, 255):
                 barva_textu = (255, 255, 0)
             else:
                 barva_textu = (255, 255, 255)
             
-            vyhra = font.render(zprava, True, barva_zpravy)
-            text = font.render(nabidka, True, barva_textu)
+            vyhra_text = font.render(zprava, True, barva_zpravy)
+            text_vyhra = font.render(nabidka, True, barva_textu)
             
             okno.fill(BARVA_POZADI)
-            okno.blit(vyhra, (0,0))
-            okno.blit(text, (0,50))
+            okno.blit(vyhra_text, (0,0))
+            okno.blit(text_vyhra, (0,50))
             
             pygame.display.update()
-            
+        else:
+            restart()
+            current_time = default_time
+            health = health_max
     pygame.display.update()
     clock.tick(60)

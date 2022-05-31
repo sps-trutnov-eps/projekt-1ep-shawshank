@@ -1,0 +1,9 @@
+h - vypíná a zapíná vizualizaci hitboxu
+n - vypíná a zapíná kolize
+m - vypíná a zapíná micromapu
+g - prohraje hru
+c - vypíše stav progresu ve zbírání dveří
+t - doplní čas
+1 (ne kp_1) - nastaví progres sbírání dveří na 1
+2 (ne kp_2) - nastaví progres sbírání dveří na 2
+3 (ne kp_3) - vyhraje hru

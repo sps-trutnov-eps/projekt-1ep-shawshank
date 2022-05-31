@@ -2,8 +2,11 @@ import random,pygame,sys
 from list_obrazovek import screens_with_doors,screens_without_doors
 pygame.init()
 
+screen = None
+
 #kreslení obrazovky na micromapu:
 def draw_screen(obrazovka,pos,drawing_positions):
+    global screen
     base = pygame.Surface((12,4))
     base.fill("black")
     pixel = pygame.Surface((4,4))
@@ -196,68 +199,72 @@ def main_generation():
         
     return mapa,screen,master
 
-#možné opakování gemerace
-while True:
-    mapa,screen,master = main_generation()
-    počet_všech = 0
-    počet_prázdných = 0
-    for line in mapa:
-        for obrazovka in line:
-            počet_všech += 1
-            if obrazovka == []:
-                počet_prázdných += 1
-    if počet_prázdných < počet_všech/4:
-        break
+def generate():
+    global screen
+    #možné opakování gemerace
+    while True:
+        mapa,screen,master = main_generation()
+        počet_všech = 0
+        počet_prázdných = 0
+        for line in mapa:
+            for obrazovka in line:
+                počet_všech += 1
+                if obrazovka == []:
+                    počet_prázdných += 1
+        if počet_prázdných < počet_všech/4:
+            break
 
-#vytvoření mapky pro Vojtu
-    
-correct_map = []
-while len(correct_map) != 3 or not "KEY_ROOM" in correct_map or not "LOCKER_ROOM" in correct_map or not "EXIT" in correct_map:
+    #vytvoření mapky pro Vojtu
+        
     correct_map = []
-    game_map = []
-    mains = ("KEY_ROOM","LOCKER_ROOM","EXIT")
-    main_ind = 0
-    for line in mapa: game_map.append([])
-    for row in mapa[0]:
-        for line in game_map:
-            line.append([])
+    while len(correct_map) != 3 or not "KEY_ROOM" in correct_map or not "LOCKER_ROOM" in correct_map or not "EXIT" in correct_map:
+        correct_map = []
+        game_map = []
+        mains = ("KEY_ROOM","LOCKER_ROOM","EXIT")
+        main_ind = 0
+        for line in mapa: game_map.append([])
+        for row in mapa[0]:
+            for line in game_map:
+                line.append([])
 
+        for line_ind,line in enumerate(mapa):
+            for part_ind,part in enumerate(line):
+                if part != []:
+                    possibilities = []
+                    if part[1]:
+                        for possibility in screens_with_doors:
+                            if possibility[1] == part[0]:
+                                possibilities.append(possibility)
+                    else:
+                        for possibility in screens_without_doors:
+                            if possibility[1] == part[0]:
+                                possibilities.append(possibility)
+                    new = random.choice(possibilities)
+                    if part[1] == "main":
+                        new[2][1] = mains[main_ind]
+                        main_ind += 1
+                    else:
+                        new[2][1] = part[1]
+                    game_map[line_ind][part_ind] = new
+                    
+        for line in game_map:
+            for part in line:
+                if part != []:
+                    if part[2][1] != "regular_door" and part[2][1] != "master" and part[2][1] != None: correct_map.append(part[2][1])
+
+    #vykreslování obrazovky
+    drawing_positions = {"0" : (4,0),
+                         "1" : (12,0),
+                         "2" : (16,4),
+                         "3" : (12,8),
+                         "4" : (4,8),
+                         "5" : (0,4)}
+    screen.fill("black")
     for line_ind,line in enumerate(mapa):
         for part_ind,part in enumerate(line):
-            if part != []:
-                possibilities = []
-                if part[1]:
-                    for possibility in screens_with_doors:
-                        if possibility[1] == part[0]:
-                            possibilities.append(possibility)
-                else:
-                    for possibility in screens_without_doors:
-                        if possibility[1] == part[0]:
-                            possibilities.append(possibility)
-                new = random.choice(possibilities)
-                if part[1] == "main":
-                    new[2][1] = mains[main_ind]
-                    main_ind += 1
-                else:
-                    new[2][1] = part[1]
-                game_map[line_ind][part_ind] = new
-                
-    for line in game_map:
-        for part in line:
-            if part != []:
-                if part[2][1] != "regular_door" and part[2][1] != "master" and part[2][1] != None: correct_map.append(part[2][1])
-
-#vykreslování obrazovky
-drawing_positions = {"0" : (4,0),
-                     "1" : (12,0),
-                     "2" : (16,4),
-                     "3" : (12,8),
-                     "4" : (4,8),
-                     "5" : (0,4)}
-screen.fill("black")
-for line_ind,line in enumerate(mapa):
-    for part_ind,part in enumerate(line):
-        full = pygame.Surface((20,12))
-        full.fill((random.randint(50,230),random.randint(50,230),random.randint(50,230)))
-        screen.blit(full,(part_ind*20,line_ind*12))
-        if part != []: draw_screen(part,(part_ind*20,line_ind*12),drawing_positions)
+            full = pygame.Surface((20,12))
+            full.fill((random.randint(50,230),random.randint(50,230),random.randint(50,230)))
+            screen.blit(full,(part_ind*20,line_ind*12))
+            if part != []: draw_screen(part,(part_ind*20,line_ind*12),drawing_positions)
+    
+    return game_map,master,screen
