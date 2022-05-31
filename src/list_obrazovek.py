@@ -1,9 +1,13 @@
 import os
 
 #určení základních proměných + cesty k "projekt-1ep-shawshank"
-path = os.path.join(os.getcwd()+"\\..\\data\\tiles")
-
-list_of_screens = os.listdir(path)
+try:
+    path = os.path.join(os.getcwd()+"\\..\\data\\tiles")
+    list_of_screens = os.listdir(path)
+except:
+    path = os.path.join(os.getcwd()+"/../data/tiles")
+    list_of_screens = os.listdir(path)
+    
 screens_with_doors = []
 screens_without_doors = []
 
@@ -12,7 +16,10 @@ for screen_ind,screen in enumerate(list_of_screens):
     new = ["map","binary",[None,"sem_příjde_třída"],["prozatím_nepoužitá_kolonka_pro_bullyho"]]
     
     #mapka
-    file = open(path+"\\"+screen,"r",encoding = "utf8")
+    try:
+        file = open(path+"\\"+screen,"r",encoding = "utf8")
+    except:
+        file = open(path+"/"+screen,"r",encoding = "utf8")
     mapka = file.read()
     file.close()
     mapka = mapka.split("\n</data>")[0].split("<data encoding=\"csv\">\n")[1].split("\n")
