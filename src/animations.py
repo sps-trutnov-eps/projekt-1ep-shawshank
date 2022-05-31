@@ -1,6 +1,8 @@
 import pygame
 pygame.init()
 
+screen = pygame.display.set_mode((23*32,14*32))
+
 def getImage(x, y, w, h, image):
     imageToReturn = pygame.Surface((w, h))
     imageToReturn.set_colorkey((0, 0, 0)) #!!!!!!!dá černou jako průhlednou!!!!!!!!!! (takže nepoužívat v texturách čistě černou(0, 0, 0))
@@ -88,8 +90,9 @@ jApearStart = 0
 jApearDiff = 0
 jAnimStart = 0
 jAnimDiff = 0
-jLastMoveDiff = "janitor_f"
+jLastMoveDiff = "janitor_apear"
 jImage = janitor
+completed = False
 
 
 jApearingAnimSpeed = 50
@@ -97,25 +100,30 @@ jSideWalkingSpeed = 20 #rychlost přehrávání animací
 jupdownWalkingSpeed = 100
 
 def janitorAnim(posX, posY, prevPosX, prevPosY):
-    global jImage, jWalk, jApear, jApearStart, jApearDiff, jAnimStart, jAnimDiff, jLastMoveDiff, jApearingAnimSpeed, jSideWalkingSpeed, jupdownWalkingSpeed
+    global jImage, jWalk, jApear, jApearStart, jApearDiff, jAnimStart, jAnimDiff, jLastMoveDiff, jApearingAnimSpeed, jSideWalkingSpeed, jupdownWalkingSpeed, completed
     
     if jLastMoveDiff == "janitor_apear":
         jApearStart = pygame.time.get_ticks() - jApearDiff
         if jApearStart > jApearingAnimSpeed:
-            if jApear == 0 or jApear == 1 or jApear == 2 or jApear == 4 or jApear == 5 or jApear == 8 or jApear == 9 or jApear == 11 or jApear == 12:
+            if jApear in [0, 1, 2, 4, 5, 8, 9, 11, 12]:
                 jApearDiff = pygame.time.get_ticks() + 500
-            elif jApear == 15 or jApear == 52:
+            elif jApear == 15:
                 jApearDiff = pygame.time.get_ticks() + 1000
+            elif jApear == 52:
+                jApearDiff = pygame.time.get_ticks() + 10000
+                completed = True
             else:
                 jApearDiff = pygame.time.get_ticks()
-            if (jApear <= 53):
+            
+            jApear += 1
+            
+            if jApear <= 53:
                 jImage = getImage(42*jApear, 0, 42, 59, janitor)
-                jApear += 1
             else:
-                jLastMoveDiff == "janitor_f"
+                completed = False
                 jApear = 0
     else:    
-        if (posX, posY) == (prevPosX, prevPosY): #pokud se hráč školník tak budou aplikovány defaultní textury
+        if (posX, posY) == (prevPosX, prevPosY): #pokud se školník nehýbe tak budou aplikovány defaultní textury
             if jLastMoveDiff == "janitor_r":
                 jImage = getImage(84, 177, 42, 59, janitor)
             if jLastMoveDiff == "janitor_l":
@@ -169,4 +177,4 @@ def janitorAnim(posX, posY, prevPosX, prevPosY):
                     jWalk = 0
                 jLastMoveDiff = "janitor_f"
                 
-    return jImage
+    return jImage, completed
