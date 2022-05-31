@@ -1,0 +1,4 @@
+h = Zobrazení / Skrytí hitboxu hráče
+n = Zapnutí / Vypnutí noclipu (Procházení přes zdi)
+m = Zapnutí / Vypnutí minimapy
+g = Vynucení prohry
