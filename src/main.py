@@ -138,6 +138,7 @@ def urceni_sprite_group(mapa):
 fade = pygame.Surface((23*32, 14*32))
 fade.fill("black")
 pruhlednost = 0
+pruhlednost_textu = 0
 fade.set_alpha(pruhlednost)
 fade_speed = 10
 
@@ -337,23 +338,37 @@ while True:
         
         #prohra
         if health == 0:
-            while pruhlednost <= 10:
+            g_over_font = pygame.font.Font("../data/fonts/ARCADECLASSIC.TTF", 125)
+            return_font = pygame.font.Font("../data/fonts/ARCADECLASSIC.TTF", 50)
+            g_over_font_render = g_over_font.render("GAME OVER", True, (255, 0, 0))
+            return_font_render = return_font.render("PRESS   ENTER", True, (100, 0, 0))
+            g_over_font_rect = g_over_font_render.get_rect(center=(23*32/2, 14*32/2))
+            return_font_rect = return_font_render.get_rect(center=(23*32/2, 14*32/2 + 75))
+            g_over_font_render.set_alpha(0)
+            return_font_render.set_alpha(0)
+            
+            while pruhlednost <= 12:
                 pruhlednost += 0.1
+                pruhlednost_textu += 1.5
                 fade.set_alpha(pruhlednost)
+                g_over_font_render.set_alpha(pruhlednost_textu)
+                return_font_render.set_alpha(pruhlednost_textu)
                 screen.blit(fade, (0, 0))
+                screen.blit(g_over_font_render, g_over_font_rect)
+                screen.blit(return_font_render, return_font_rect)
                 pygame.display.update()
                 pygame.time.wait(fade_speed)
-            else:
-                health = -1
-                inGame = False
-                gameOver = True
-                pruhlednost = 0
-
+            
+            health = -1
+            inGame = False
+            gameOver = True
+            pruhlednost = 255
+            fade.set_alpha(pruhlednost)
+            g_over_font_render.set_alpha(pruhlednost)
+            return_font_render.set_alpha(pruhlednost)
             
     if gameOver:
-        screen.fill("black")
-        text(125, "GAME OVER", 23*32/2, 14*32/2, (255, 0, 0), "../data/fonts/ARCADECLASSIC.TTF", "center", False)
-        text(50, "PRESS   ENTER", 23*32/2, 14*32/2 + 75, (100, 0, 0),  "../data/fonts/ARCADECLASSIC.TTF", "center", False)
+        pruhlednost = 0
         if pressed[pygame.K_RETURN]:
             gameOver = False
             inMenu = True
