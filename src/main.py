@@ -4,6 +4,7 @@ from generace_mapy import screen as minimap
 from sprites import *
 from minihry.The_untitled_minigame import Kuba_minigame
 from minihry.michalek import mminihra
+from minihry.MINIHRA import křídní_minihra
 
 #základní proměnné
 clock = pygame.time.Clock()
@@ -49,9 +50,10 @@ def vystup(pos):
             elif symbol == "4": return ((symbol_ind+1)*32+16,line_ind*32+16)
 ##aktivace miniher
 def play_minigame():
-    number = random.randint(0,1)
+    number = random.randint(0,2)
     if number == 0: outcome = Kuba_minigame()
     elif number == 1: outcome = mminihra()
+    elif number == 2: outcome = křídní_minihra()
     screen = pygame.display.set_mode((width,heigth))
     pygame.display.set_caption("¤Útěk ze střední průmyslové Shawshank¤")
     player_hitbox_instance.rect.center = vystup(current_position)

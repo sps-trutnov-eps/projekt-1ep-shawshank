@@ -32,14 +32,13 @@ def křídní_minihra():
     text_rect.center = (1280//2, 720//2)
     skore = 0
     SCORE_FONT = pygame.font.SysFont("comicsans", 50)
-    krida = pygame.image.load("krida.png")
-    libor = pygame.image.load("libor.png")
-    lavice = pygame.image.load("lavice.png")
-    tabule = pygame.image.load("tabule.png")
-    vyhled = pygame.image.load("okno.png")
-    hrac = pygame.image.load("hrac.png")
-
-
+    krida = pygame.image.load("../data/textury_miniher/krida.png")
+    libor = pygame.image.load("../data/textury_miniher/libor.png")
+    lavice = pygame.image.load("../data/textury_miniher/lavice.png")
+    tabule = pygame.image.load("../data/textury_miniher/tabule.png")
+    vyhled = pygame.image.load("../data/textury_miniher/okno.png")
+    hrac = pygame.image.load("../data/textury_miniher/hrac.png")
+    
     run = True
     while run:
         score_text = font1.render("SCORE: " + str(skore), True, (0, 0, 0))
@@ -79,10 +78,10 @@ def křídní_minihra():
         #hra
         if stav_hry == "zivot":
             keys = pygame.key.get_pressed()
-        if keys[pygame.K_LEFT] and hx>200:
+        if keys[pygame.K_a] and hx>200:
             hx -= hr
         
-        if keys[pygame.K_RIGHT] and hx<970-hw:
+        if keys[pygame.K_d] and hx<970-hw:
             hx += hr
 
        
@@ -121,5 +120,3 @@ def křídní_minihra():
             return False
                   
         pygame.display.update()
-        
-print(křídní_minihra())
