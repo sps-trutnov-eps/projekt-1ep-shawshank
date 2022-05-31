@@ -1,8 +1,22 @@
 import random
+
+
+
 opakovat = 0
 znamka = 1
+vyhra = False
+
+
+
+print("Výtej v minihře, ve které budeš muset napsat prvočíslo ve vybraném rozmezí")
+print("Čekají na tebe čryři cvičení")
+print("Maximálně můžeš udělat dvě chyby")
+print("Jdeme na to!")
+
+
 
 while opakovat < 4:
+    
     rnd = (random.randint(1,10))
     
     opakovat = opakovat + 1
@@ -14,19 +28,20 @@ while opakovat < 4:
         print()
         print()
         print()
+        
         akce1 = int(input("Napiš prvočíslo od 0 do 10: "))
         
         
     
         if akce1 == 2:
             print("Správná odpověd ")
-
+            
         elif akce1 == 3:
             print("Správná odpověd ")
             
         elif akce1 == 5:
             print("Správná odpověd ")
-                
+            
         elif akce1 == 7:
             print("Správná odpověd ")
 
@@ -56,6 +71,7 @@ while opakovat < 4:
         print()
         print()
         print()
+        
         akce1 = int(input("Napiš prvočíslo od 10 do 20: "))
         
         
@@ -98,6 +114,7 @@ while opakovat < 4:
         print()
         print()
         print()
+        
         akce1 = int(input("Napiš prvočíslo od 20 do 30: "))
         
         
@@ -136,6 +153,7 @@ while opakovat < 4:
         print()
         print()
         print()
+        
         akce1 = int(input("Napiš prvočíslo od 30 do 40: "))
         
         
@@ -174,6 +192,7 @@ while opakovat < 4:
         print()
         print()
         print()
+        
         akce1 = int(input("Napiš prvočíslo od 40 do 50: "))
         
         
@@ -215,6 +234,7 @@ while opakovat < 4:
         print()
         print()
         print()
+        
         akce1 = int(input("Napiš prvočíslo od 50 do 60: "))
         
         
@@ -253,6 +273,7 @@ while opakovat < 4:
         print()
         print()
         print()
+        
         akce1 = int(input("Napiš prvočíslo od 60 do 70: "))
         
         
@@ -291,6 +312,7 @@ while opakovat < 4:
         print()
         print()
         print()
+        
         akce1 = int(input("Napiš prvočíslo od 70 do 80: "))
         
         
@@ -332,6 +354,7 @@ while opakovat < 4:
         print()
         print()
         print()
+        
         akce1 = int(input("Napiš prvočíslo od 80 do 90: "))
         
         
@@ -368,6 +391,7 @@ while opakovat < 4:
         print()
         print()
         print()
+        
         akce1 = int(input("Napiš prvočíslo od 90 do 100: "))
         
         
@@ -401,6 +425,28 @@ else:
     print()
     print()
     print()
+    
     print("Známka: ")
-          
     print(znamka)
+    
+    
+    
+if znamka == 1:
+    print("Výborně, úspěšně jsi dokončil minihru s plným počtem bodů!")
+    vyhra = True
+
+if znamka == 2:
+    vyhra = True
+    print("Výborně, úspěšně jsi dokončil minihru!")
+    
+if znamka == 3:
+    vyhra = False
+    print("Bohužel, k výhře ti chyběl jeden bod")
+    
+if znamka == 4:
+    vyhra = False
+    print("Bohužel, ale to ti stačit nebude")
+
+if znamka == 5:
+    vyhra = False
+    print("To se ti nepovedlo, nezískal jsi ani jeden bod")
