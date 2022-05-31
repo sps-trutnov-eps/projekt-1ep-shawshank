@@ -191,6 +191,7 @@ while True:
             
         if pressed[pygame.K_g]:
             health = 0
+            cheat_timeout = 20
         
         cheat_timeout -= 1
         
@@ -294,19 +295,18 @@ while True:
         health = play_minigame()
         current_time = default_time
     
-        #prohra
-        if health == 0:
-            while pruhlednost <= 10:
-                pruhlednost += 0.1
-                fade.set_alpha(pruhlednost)
-                screen.blit(fade, (0, 0))
-                pygame.display.update()
-                pygame.time.wait(fade_speed)
-            else:
-                health = -1
-                inGame = False
-                gameOver = True
-                pruhlednost = 0
+    #prohra
+    if health <= 0:
+        while pruhlednost <= 10:
+            pruhlednost += 0.1
+            fade.set_alpha(pruhlednost)
+            screen.blit(fade, (0, 0))
+            pygame.display.update()
+            pygame.time.wait(fade_speed)
+        else:
+            health = -1
+            inGame = False
+            gameOver = True
 
             
     if gameOver:
@@ -316,6 +316,7 @@ while True:
         if pressed[pygame.K_RETURN]:
             gameOver = False
             inGame = True
+            health = health_max
             
     pygame.display.update()
     clock.tick(60)
