@@ -361,7 +361,9 @@ while True:
                 player_movable = False
             else:
                 player_movable = True
-                play_minigame()
+                skolnik.completed = False
+                health = play_minigame()
+                current_time = default_time
         
         #prohra
         if health == 0:
