@@ -143,6 +143,27 @@ class player_hitbox(pygame.sprite.Sprite):
             self.hitbox = False
             self.image = self.hitBox
             
+class janitor(pygame.sprite.Sprite):
+    def __init__(self, janitor_x, janitor_y):
+        super().__init__()
+        
+        self.prevPosX = janitor_x
+        self.prevPosY = janitor_y
+        
+        self.image = janitorAnim(janitor_x, janitor_y, self.prevPosX, self.prevPosY)
+        self.rect = self.image.get_rect()
+        self.rect.center = (janitor_y, janitor_x)
+        
+        self.prevPosX = self.rect.centerx
+        self.prevPosY = self.rect.centery
+        
+    def update(self):
+        
+        self.image = janitorAnim(self.rect.centerx, self.rect.centery, self.prevPosX, self.prevPosY)
+        
+        self.prevPosX = self.rect.centerx
+        self.prevPosY = self.rect.centery
+            
 class Health_bar(pygame.sprite.Sprite):
     def __init__(self, pozice, okno):
         self.textura = pygame.image.load("../data/health_bar/health_bar.png").convert_alpha()
