@@ -169,8 +169,6 @@ while True:
             sys.exit()
     
     if inGame:
-        health = health_max
-        
         #cheaty
         if pressed[pygame.K_h] and cheat_timeout < 0:
             if hitbox == False:
@@ -253,15 +251,19 @@ while True:
             current_position[0] +=1
             podlaha,dvere = urceni_sprite_group(game_map[current_position[0]][current_position[1]])
             zdi = wall_map[current_position[0]][current_position[1]]
+            
+        #zbytek pohybu
+        player_instance.rect.centerx = player_hitbox_instance.rect.centerx
+        player_instance.rect.bottom = player_hitbox_instance.rect.bottom+1
         
-    #kolize s dvermi
-    if pygame.sprite.spritecollide(hrac_hitbox, dvere, False):
-        for door in dvere:
-            if door.door_type == "regular_door":
-                health = play_minigame()
-                current_time = default_time
-            else:
-                print(door.door_type)
+        #kolize s dvermi
+        if pygame.sprite.spritecollide(hrac_hitbox, dvere, False):
+            for door in dvere:
+                if door.door_type == "regular_door":
+                    health = play_minigame()
+                    current_time = default_time
+                else:
+                    print(door.door_type)
     
     #vykreslování
     screen.fill("black")
