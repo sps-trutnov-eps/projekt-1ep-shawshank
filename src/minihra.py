@@ -2,8 +2,8 @@ import random
 import sys
 import pygame
 
-sirka_okna = 800
-vyska_okna = 600
+sirka_okna = 736
+vyska_okna = 448
 
 cerna = (0, 0, 0)
 bila = (255, 255, 255)
@@ -12,9 +12,11 @@ zelena = (0, 255, 0)
 modra = (0, 0, 255)
 
 pygame.init()
-okno = pygame.display.set_mode((sirka_okna, vyska_okna))
-pygame.display.set_caption("Zeměpis")
+pygame.font.init()
+screen = pygame.display.set_mode((sirka_okna, vyska_okna))
 
+moznostiPozice = (12, sirka_okna/3+9, sirka_okna/3*2+6, 300) #poziceX možnosti 1, poziceX možnosti 2, poziceX možnosti 3, poziceY všechny možnosti
+moznostiSirka = (sirka_okna/3-18, 125)
 
 #nacteni-otazek
 handle = open("otazky.txt", "r", encoding = "utf-8")
@@ -30,8 +32,40 @@ handle.close()
 spravne_odpovedi = vsechny_odpovedi.strip().split("\n")
 otazky= vsechny_otazky.strip().split("\n")
 
-#otázky
+font = pygame.font.SysFont("Consolas", 20)
+text = font.render(random.choice(otazky), True, (255, 255, 255))
 
+vyplneneTlacitko = random.choice(range(0,3))
+print(vyplneneTlacitko)
+
+while(True):
+    udalosti = pygame.event.get()
+    
+    for u in udalosti:
+        if u.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+    screen.fill((50, 141, 176))
+    
+    if u.type == pygame.MOUSEBUTTONDOWN and u.button == 1:
+        if vyplneneTlacitko == 0 and pygame.mouse.get_pos()[0] > moznostiPozice[0] and pygame.mouse.get_pos()[0] < moznostiPozice[0] + moznostiSirka[0] and pygame.mouse.get_pos()[1] > moznostiPozice[3] and pygame.mouse.get_pos()[1] < moznostiPozice[3] + moznostiSirka[1]:
+            print("Správně")
+        if vyplneneTlacitko == 1 and pygame.mouse.get_pos()[0] > moznostiPozice[1] and pygame.mouse.get_pos()[0] < moznostiPozice[1] + moznostiSirka[0] and pygame.mouse.get_pos()[1] > moznostiPozice[3] and pygame.mouse.get_pos()[1] < moznostiPozice[3] + moznostiSirka[1]:
+            print("Správně")
+        if vyplneneTlacitko == 2 and pygame.mouse.get_pos()[0] > moznostiPozice[2] and pygame.mouse.get_pos()[0] < moznostiPozice[2] + moznostiSirka[0] and pygame.mouse.get_pos()[1] > moznostiPozice[3] and pygame.mouse.get_pos()[1] < moznostiPozice[3] + moznostiSirka[1]:
+            print("Správně")
+    
+    #otázka
+    pygame.draw.rect(screen, (20, 121, 160), pygame.Rect(0, 0, sirka_okna, 100))
+    #možnosti
+    pygame.draw.rect(screen, (20, 121, 160), pygame.Rect(moznostiPozice[0], moznostiPozice[3], moznostiSirka[0], moznostiSirka[1]))
+    pygame.draw.rect(screen, (20, 121, 160), pygame.Rect(moznostiPozice[1], moznostiPozice[3], moznostiSirka[0], moznostiSirka[1]))
+    pygame.draw.rect(screen, (20, 121, 160), pygame.Rect(moznostiPozice[2], moznostiPozice[3], moznostiSirka[0], moznostiSirka[1]))
+    screen.blit(text, (0,40))
+    pygame.display.update()
+
+#otázky
+               
 print("Vítejte u ustního zkoušení ze zěměpisu")
 print("Tak začneme")
 znamka = 6
@@ -48,6 +82,8 @@ if spravna_odpoved1 == input() :
     
 else:
     print("ŠPATNĚ")
+    
+  
     
 print("Otázka 2:")
 nahodna_otazka2 = random.choice(otazky)
@@ -113,10 +149,6 @@ if život == True:
     print("Super! Neumřel jsi!!!")
 if život == False:
     print("Tak tady končíme...")
-
-while True:
-    okno.fill(bila)
-    pygame.display.update()
 
 
 pygame.quit()
