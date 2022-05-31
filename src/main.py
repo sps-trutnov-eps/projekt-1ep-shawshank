@@ -329,24 +329,22 @@ while True:
         zprava = "Vyhráls."
             
         pygame.display.set_caption(zprava)
-
-            
-        nabidka = "q - odejít   m - \"menu\""
-            
-    
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            sys.exit()
-
-        if pressed[pygame.K_q]:
-            pygame.quit()
-            sys.exit()
-
-        if pressed[pygame.K_m]:
-            vyhra = False
-            inMenu = True
+   
+        nabidka = "q - odejít   m - \"menu\""          
         
         while vyhra:
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+            if pressed[pygame.K_q]:
+                pygame.quit()
+                sys.exit()
+
+            if pressed[pygame.K_m]:
+                vyhra = False
+                inMenu = True
+            
             time.sleep(0.05)
             
             if barva_zpravy == (0, 255, 0):
