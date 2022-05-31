@@ -194,6 +194,9 @@ while True:
         if pressed[pygame.K_g]:
             health = 0
             cheat_timeout = 20
+            
+        if pressed[pygame.K_v]:
+            vyhra = True
         
         cheat_timeout -= 1
         
