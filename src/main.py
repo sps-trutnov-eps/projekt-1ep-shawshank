@@ -24,8 +24,8 @@ player_speed = 3
 health_max = health = 5
 mozne_prechody = []
 
-default_time = 60
-current_time = 60
+default_time = 10
+current_time = 10
 time_background = pygame.Surface((60,54))
 time_background.fill((0,28,32))
 time_outground = pygame.Surface((65,59))
@@ -349,6 +349,11 @@ while True:
         if current_time > 21: text(30, (str(int(current_time))), 25, 25, "gray", "rockwellcondensedtučné", "center", True)
         elif current_time > 0 : text(30, (str(int(current_time))), 25, 25, "red", "rockwellcondensedtučné", "center", True)
         else:
+            x_hrace = player_instance.prevPosX
+            y_hrace = player_instance.prevPosY
+            skolnik = janitor(x_hrace, y_hrace)
+            while not skolnik.completed:
+                skolnik.update()
             current_position = random.choice(mozne_prechody)
             podlaha,dvere = urceni_sprite_group(game_map[current_position[0]][current_position[1]])
             zdi = wall_map[current_position[0]][current_position[1]]
@@ -388,6 +393,12 @@ while True:
             fade.set_alpha(pruhlednost)
             g_over_font_render.set_alpha(pruhlednost)
             return_font_render.set_alpha(pruhlednost)
+            
+        #školník
+        if current_time == 0:
+            x_hrace = player_instance.prevPosX
+            y_hrace = player_instance.prevPosY
+            janitor(x_hrace, y_hrace)
             
     if gameOver:
         pruhlednost = 0
