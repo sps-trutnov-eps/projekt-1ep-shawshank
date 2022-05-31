@@ -9,13 +9,15 @@ def vyhrals(vyhral):
         barva_zpravy = (0, 0, 0)
         barva_textu = (0, 0, 0)
         okno = pg.display.set_mode((736,448))
-        pg.display.set_caption("Vyhráls")
         font = pg.font.SysFont("Comic Sans MS", 42)
         
         if vyhral:
-            zprava = "Vzhráls."
+            zprava = "Vyhráls."
         else:
             zprava = "Nevyhráls."
+            
+        pg.display.set_caption(zprava)
+
             
         nabidka = "q - odejít   m - \"menu\""
             
@@ -32,6 +34,7 @@ def vyhrals(vyhral):
                     if u.key == pg.K_m:
                         return "menu"
              
+            time.sleep(0.05)
             
             if vyhral:
                 if barva_zpravy == (0, 255, 0):
