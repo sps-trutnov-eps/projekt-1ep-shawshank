@@ -150,7 +150,7 @@ class janitor(pygame.sprite.Sprite):
         self.prevPosX = janitor_x
         self.prevPosY = janitor_y
         
-        self.image = janitorAnim(janitor_x, janitor_y, self.prevPosX, self.prevPosY)
+        self.image, self.completed = janitorAnim(janitor_x, janitor_y, self.prevPosX, self.prevPosY)
         self.rect = self.image.get_rect()
         self.rect.center = (janitor_y, janitor_x)
         
@@ -159,7 +159,7 @@ class janitor(pygame.sprite.Sprite):
         
     def update(self):
         
-        self.image = janitorAnim(self.rect.centerx, self.rect.centery, self.prevPosX, self.prevPosY)
+        self.image, self.completed = janitorAnim(self.rect.centerx, self.rect.centery, self.prevPosX, self.prevPosY)
         
         self.prevPosX = self.rect.centerx
         self.prevPosY = self.rect.centery
