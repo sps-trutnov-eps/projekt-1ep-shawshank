@@ -11,8 +11,7 @@ Top-down bludišťovka s minihrami. Unikněte ze školy, než zazvoní na hodinu
 - `work` work-in-progress soubory, náčrtky apod.
 
 **Použitý software**
-- Thonny
-- Tiled
-- PixelStudio
-- Aseprite
-- PhotoLayers
+- [Thonny](https://thonny.org/)
+- [Tiled](https://www.mapeditor.org/)
+- [Pixel Studio](https://com-pixelstudio.en.uptodown.com/android)
+- [Aseprite](https://www.aseprite.org/)

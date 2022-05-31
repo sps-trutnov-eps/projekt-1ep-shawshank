@@ -62,6 +62,21 @@ def play_minigame():
     if outcome: return health
     else: return health-1
 
+#vytvoření textu
+def text(text_size, text, center_x, center_y, text_color, text_font):
+    font = pygame.font.Font(text_font, text_size)
+    text = font.render(text, True, text_color)
+    text_rect = text.get_rect(center=(center_x, center_y))
+    screen.blit(text, text_rect)
+
+
+def sysfont_text(text_size, text, center_x, center_y, text_color, text_font):
+    font = pygame.font.SysFont(text_font, text_size)
+    text = font.render(text, True, text_color)
+    text_rect = text.get_rect(center=(center_x, center_y))
+    screen.blit(text, text_rect)
+    
+    
 #načtení zdí specificky
 def random_zdi(mapka,ind,door):
     global mozne_prechody
@@ -118,6 +133,13 @@ def urceni_sprite_group(mapa):
                 dvere.add(zed((symbol_ind*32,radek_ind*32),"dveře_3",mapa[2][1]))
     return podlaha,dvere
 
+#kód pro ztmavení obrazovky
+fade = pygame.Surface((23*32, 14*32))
+fade.fill("black")
+pruhlednost = 0
+fade.set_alpha(pruhlednost)
+fade_speed = 10
+
 wall_map = []
 for line_ind,line in enumerate(game_map):
     new = []
@@ -129,6 +151,10 @@ for line_ind,line in enumerate(game_map):
     
 podlaha,dvere = urceni_sprite_group(game_map[current_position[0]][current_position[1]])
 zdi = wall_map[current_position[0]][current_position[1]]
+
+#gamestates
+inGame = True
+gameOver = False
 
 #main loop
 while True:
@@ -142,89 +168,91 @@ while True:
             pygame.quit()
             sys.exit()
     
-    #cheaty
-    if pressed[pygame.K_h] and cheat_timeout < 0:
-        if hitbox == False:
-            hitbox = True
-            player_hitbox_instance.showHitBox()
-        else:
-            hitbox = False
-            player_hitbox_instance.hideHitBox()
-        cheat_timeout = 20
-            
-    if pressed[pygame.K_n] and cheat_timeout < 0:
-        if clip: clip = False
-        else: clip = True
-        cheat_timeout = 20
+    if inGame:
+        health = health_max
         
-    if pressed[pygame.K_m] and cheat_timeout < 0:
-        if show_minimap: show_minimap = False
-        else: show_minimap = True
-        cheat_timeout = 20
-        
-    cheat_timeout -= 1
-    
-    #pohyb
-    posun_x = 0
-    posun_y = 0
-    
-    if pressed[pygame.K_a]:
-        posun_x -= player_speed
-        image = "player_l"
-    if pressed[pygame.K_d]:
-        posun_x += player_speed
-        image = "player_r"
-    if pressed[pygame.K_w]:
-        posun_y -= player_speed
-        image = "player_b"
-    if pressed[pygame.K_s]:
-        posun_y += player_speed
-        image = "player_f"
-    
-    player_hitbox_instance.posun_x(posun_x)
-
-    #kolize se zdmi
-    if clip:
-        for wall in zdi:
-            if wall.rect.collidepoint(player_hitbox_instance.rect.topleft) or wall.rect.collidepoint(player_hitbox_instance.rect.bottomleft):
-                player_hitbox_instance.rect.left = wall.rect.right+1
-            if wall.rect.collidepoint(player_hitbox_instance.rect.topright) or wall.rect.collidepoint(player_hitbox_instance.rect.bottomright):
-                player_hitbox_instance.rect.right = wall.rect.left-1
+        #cheaty
+        if pressed[pygame.K_h] and cheat_timeout < 0:
+            if hitbox == False:
+                hitbox = True
+                player_hitbox_instance.showHitBox()
+            else:
+                hitbox = False
+                player_hitbox_instance.hideHitBox()
+            cheat_timeout = 20
                 
-    player_hitbox_instance.posun_y(posun_y)
+        if pressed[pygame.K_n] and cheat_timeout < 0:
+            if clip: clip = False
+            else: clip = True
+            cheat_timeout = 20
+            
+        if pressed[pygame.K_m] and cheat_timeout < 0:
+            if show_minimap: show_minimap = False
+            else: show_minimap = True
+            cheat_timeout = 20
+            
+        if pressed[pygame.K_g]:
+            health = 0
         
-    if clip:
-        for wall in zdi:
-            if wall.rect.collidepoint(player_hitbox_instance.rect.topleft) or wall.rect.collidepoint(player_hitbox_instance.rect.topright):
-                player_hitbox_instance.rect.top = wall.rect.bottom+1
-            if wall.rect.collidepoint(player_hitbox_instance.rect.bottomleft) or wall.rect.collidepoint(player_hitbox_instance.rect.bottomright):
-                player_hitbox_instance.rect.bottom = wall.rect.top-1
-    
-    #pohyb mezi obrazovkami
-    if player_hitbox_instance.rect.left < 0:
-        player_hitbox_instance.rect.right = width
-        current_position[1] -=1
-        podlaha,dvere = urceni_sprite_group(game_map[current_position[0]][current_position[1]])
-        zdi = wall_map[current_position[0]][current_position[1]]
-    elif player_hitbox_instance.rect.right > width:
-        player_hitbox_instance.rect.left = 0
-        current_position[1] +=1
-        podlaha,dvere = urceni_sprite_group(game_map[current_position[0]][current_position[1]])
-        zdi = wall_map[current_position[0]][current_position[1]]
-    elif player_hitbox_instance.rect.top < 0:
-        player_hitbox_instance.rect.bottom = heigth
-        current_position[0] -=1
-        podlaha,dvere = urceni_sprite_group(game_map[current_position[0]][current_position[1]])
-        zdi = wall_map[current_position[0]][current_position[1]]
-    elif player_hitbox_instance.rect.bottom > heigth:
-        player_hitbox_instance.rect.top = 0
-        current_position[0] +=1
-        podlaha,dvere = urceni_sprite_group(game_map[current_position[0]][current_position[1]])
-        zdi = wall_map[current_position[0]][current_position[1]]
-    
-    #zbytek pohybu
-    player_instance.rect.centerx = player_hitbox_instance.rect.centerx+4 - 4
-    player_instance.rect.bottom = player_hitbox_instance.rect.bottom-2 + 3
+        cheat_timeout -= 1
+        
+        #pohyb
+        posun_x = 0
+        posun_y = 0
+        
+        if pressed[pygame.K_a]:
+            posun_x -= player_speed
+            image = "player_l"
+        if pressed[pygame.K_d]:
+            posun_x += player_speed
+            image = "player_r"
+        if pressed[pygame.K_w]:
+            posun_y -= player_speed
+            image = "player_b"
+        if pressed[pygame.K_s]:
+            posun_y += player_speed
+            image = "player_f"
+        
+        player_hitbox_instance.posun_x(posun_x)
+
+        #kolize se zdmi
+        if clip:
+            for wall in zdi:
+                if wall.rect.collidepoint(player_hitbox_instance.rect.topleft) or wall.rect.collidepoint(player_hitbox_instance.rect.bottomleft):
+                    player_hitbox_instance.rect.left = wall.rect.right+1
+                if wall.rect.collidepoint(player_hitbox_instance.rect.topright) or wall.rect.collidepoint(player_hitbox_instance.rect.bottomright):
+                    player_hitbox_instance.rect.right = wall.rect.left-1
+                    
+        player_hitbox_instance.posun_y(posun_y)
+            
+        if clip:
+            for wall in zdi:
+                if wall.rect.collidepoint(player_hitbox_instance.rect.topleft) or wall.rect.collidepoint(player_hitbox_instance.rect.topright):
+                    player_hitbox_instance.rect.top = wall.rect.bottom+1
+                if wall.rect.collidepoint(player_hitbox_instance.rect.bottomleft) or wall.rect.collidepoint(player_hitbox_instance.rect.bottomright):
+                    player_hitbox_instance.rect.bottom = wall.rect.top-1
+        
+        #pohyb mezi obrazovkami
+        if player_hitbox_instance.rect.left < 0:
+            player_hitbox_instance.rect.right = width
+            current_position[1] -=1
+            podlaha,dvere = urceni_sprite_group(game_map[current_position[0]][current_position[1]])
+            zdi = wall_map[current_position[0]][current_position[1]]
+        elif player_hitbox_instance.rect.right > width:
+            player_hitbox_instance.rect.left = 0
+            current_position[1] +=1
+            podlaha,dvere = urceni_sprite_group(game_map[current_position[0]][current_position[1]])
+            zdi = wall_map[current_position[0]][current_position[1]]
+        elif player_hitbox_instance.rect.top < 0:
+            player_hitbox_instance.rect.bottom = heigth
+            current_position[0] -=1
+            podlaha,dvere = urceni_sprite_group(game_map[current_position[0]][current_position[1]])
+            zdi = wall_map[current_position[0]][current_position[1]]
+        elif player_hitbox_instance.rect.bottom > heigth:
+            player_hitbox_instance.rect.top = 0
+            current_position[0] +=1
+            podlaha,dvere = urceni_sprite_group(game_map[current_position[0]][current_position[1]])
+            zdi = wall_map[current_position[0]][current_position[1]]
         
     #kolize s dvermi
     if pygame.sprite.spritecollide(hrac_hitbox, dvere, False):
@@ -264,5 +292,28 @@ while True:
         health = play_minigame()
         current_time = default_time
     
+        #prohra
+        if health == 0:
+            while pruhlednost <= 10:
+                pruhlednost += 0.1
+                fade.set_alpha(pruhlednost)
+                screen.blit(fade, (0, 0))
+                pygame.display.update()
+                pygame.time.wait(fade_speed)
+            else:
+                health = -1
+                inGame = False
+                gameOver = True
+                pruhlednost = 0
+
+            
+    if gameOver:
+        screen.fill("black")
+        text(125, "GAME OVER", 23*32/2, 14*32/2, (255, 0, 0), "../data/fonts/ARCADECLASSIC.TTF")
+        text(50, "PRESS   ENTER", 23*32/2, 14*32/2 + 75, (100, 0, 0),  "../data/fonts/ARCADECLASSIC.TTF")
+        if pressed[pygame.K_RETURN]:
+            gameOver = False
+            inGame = True
+            
     pygame.display.update()
     clock.tick(60)
