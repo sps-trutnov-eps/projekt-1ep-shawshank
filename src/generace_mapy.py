@@ -210,35 +210,42 @@ while True:
         break
 
 #vytvoření mapky pro Vojtu
-game_map = []
-mains = ("WC","LOCKER_ROOM","EXIT")
-main_ind = 0
-for line in mapa: game_map.append([])
-for row in mapa[0]:
-    for line in game_map:
-        line.append([])
+    
+correct_map = []
+while len(correct_map) != 3 or not "KEY_ROOM" in correct_map or not "LOCKER_ROOM" in correct_map or not "EXIT" in correct_map:
+    correct_map = []
+    game_map = []
+    mains = ("KEY_ROOM","LOCKER_ROOM","EXIT")
+    main_ind = 0
+    for line in mapa: game_map.append([])
+    for row in mapa[0]:
+        for line in game_map:
+            line.append([])
 
-for line_ind,line in enumerate(mapa):
-    for part_ind,part in enumerate(line):
-        if part != []:
-            possibilities = []
-            if part[1]:
-                for possibility in screens_with_doors:
-                    if possibility[1] == part[0]:
-                        possibilities.append(possibility)
-            else:
-                for possibility in screens_without_doors:
-                    if possibility[1] == part[0]:
-                        possibilities.append(possibility)
-            try:
+    for line_ind,line in enumerate(mapa):
+        for part_ind,part in enumerate(line):
+            if part != []:
+                possibilities = []
+                if part[1]:
+                    for possibility in screens_with_doors:
+                        if possibility[1] == part[0]:
+                            possibilities.append(possibility)
+                else:
+                    for possibility in screens_without_doors:
+                        if possibility[1] == part[0]:
+                            possibilities.append(possibility)
                 new = random.choice(possibilities)
-            except:
-                print(part[0],line_ind,part_ind)
-            if part[1] == "main":
-                new[2][1] = mains[main_ind]
-                main_ind += 1
-            else: new[2][1] = part[1]
-            game_map[line_ind][part_ind] = new
+                if part[1] == "main":
+                    new[2][1] = mains[main_ind]
+                    main_ind += 1
+                else:
+                    new[2][1] = part[1]
+                game_map[line_ind][part_ind] = new
+                
+    for line in game_map:
+        for part in line:
+            if part != []:
+                if part[2][1] != "regular_door" and part[2][1] != "master" and part[2][1] != None: correct_map.append(part[2][1])
 
 #vykreslování obrazovky
 drawing_positions = {"0" : (4,0),

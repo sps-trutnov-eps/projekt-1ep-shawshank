@@ -3,7 +3,9 @@ from generace_mapy import game_map,master
 from generace_mapy import screen as minimap
 from sprites import *
 import time
-
+from minihry.The_untitled_minigame import Kuba_minigame
+from minihry.michalek import mminihra
+from minihry.MINIHRA import křídní_minihra
 
 #základní proměnné
 clock = pygame.time.Clock()
@@ -20,8 +22,9 @@ player_speed = 3
 health_max = health = 5
 mozne_prechody = []
 
-default_time = 120
-current_time = 120
+default_time = 60
+current_time = 60
+font = pygame.font.SysFont("rockwellcondensedtučné",30)
 time_background = pygame.Surface((60,54))
 time_background.fill((0,28,32))
 time_outground = pygame.Surface((65,59))
@@ -46,6 +49,19 @@ def vystup(pos):
             elif symbol == "2": return ((symbol_ind-1)*32+16,line_ind*32+16)
             elif symbol == "3": return (symbol_ind*32+16,(line_ind-1)*32+16)
             elif symbol == "4": return ((symbol_ind+1)*32+16,line_ind*32+16)
+##aktivace miniher
+def play_minigame():
+    number = random.randint(0,2)
+    if number == 0: outcome = Kuba_minigame()
+    elif number == 1: outcome = mminihra()
+    elif number == 2: outcome = křídní_minihra()
+    screen = pygame.display.set_mode((width,heigth))
+    pygame.display.set_caption("¤Útěk ze střední průmyslové Shawshank¤")
+    player_hitbox_instance.rect.center = vystup(current_position)
+    player_instance.rect.centerx = player_hitbox_instance.rect.centerx+4
+    player_instance.rect.bottom = player_hitbox_instance.rect.bottom-2
+    if outcome: return health
+    else: return health-1
 
 #vytvoření textu
 def text(text_size, text, center_x, center_y, text_color, text_font):
@@ -69,29 +85,29 @@ def random_zdi(mapka,ind,door):
     for radek_ind,radek in enumerate(mapka):
         for symbol_ind,symbol in enumerate(radek):
             if symbol == "6":
-                zdi.add(zed((symbol_ind*32,radek_ind*32),"zeď_0"))
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"zeď_0",mapka[2][1]))
             elif symbol == "9":
-                zdi.add(zed((symbol_ind*32,radek_ind*32),"zeď_1"))
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"zeď_1",mapka[2][1]))
             elif symbol == "12":
-                zdi.add(zed((symbol_ind*32,radek_ind*32),"zeď_2"))
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"zeď_2",mapka[2][1]))
             elif symbol == "15":
-                zdi.add(zed((symbol_ind*32,radek_ind*32),"zeď_3")) 
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"zeď_3",mapka[2][1])) 
             elif symbol == "7":
-                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnitřní_roh_0")) 
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnitřní_roh_0",mapka[2][1])) 
             elif symbol == "10":
-                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnitřní_roh_1"))
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnitřní_roh_1",mapka[2][1]))
             elif symbol == "13":
-                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnitřní_roh_2")) 
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnitřní_roh_2",mapka[2][1])) 
             elif symbol == "16":
-                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnitřní_roh_3"))  
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnitřní_roh_3",mapka[2][1]))  
             elif symbol == "8":
-                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnější_roh_0"))  
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnější_roh_0",mapka[2][1]))  
             elif symbol == "11":
-                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnější_roh_1"))  
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnější_roh_1",mapka[2][1]))  
             elif symbol == "14":
-                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnější_roh_2"))
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnější_roh_2",mapka[2][1]))
             elif symbol == "17":
-                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnější_roh_3"))
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnější_roh_3",mapka[2][1]))
                 
         if "1" in radek or "2" in radek or "3" in radek or "4" in radek:
             if door == "regular_door":
@@ -105,17 +121,17 @@ def urceni_sprite_group(mapa):
     for radek_ind,radek in enumerate(mapa[0]):
         for symbol_ind,symbol in enumerate(radek):
             if symbol == "18":
-                podlaha.add(zed((symbol_ind*32,radek_ind*32),"void"))
+                podlaha.add(zed((symbol_ind*32,radek_ind*32),"void",mapa[2][1]))
             elif symbol == "5":
-                podlaha.add(zed((symbol_ind*32,radek_ind*32),"podlaha"))
+                podlaha.add(zed((symbol_ind*32,radek_ind*32),"podlaha",mapa[2][1]))
             elif symbol == "1":
-                dvere.add(zed((symbol_ind*32,radek_ind*32),"dveře_0"))
+                dvere.add(zed((symbol_ind*32,radek_ind*32),"dveře_0",mapa[2][1]))
             elif symbol == "2":
-                dvere.add(zed((symbol_ind*32,radek_ind*32),"dveře_1"))
+                dvere.add(zed((symbol_ind*32,radek_ind*32),"dveře_1",mapa[2][1]))
             elif symbol == "3":
-                dvere.add(zed((symbol_ind*32,radek_ind*32),"dveře_2"))
+                dvere.add(zed((symbol_ind*32,radek_ind*32),"dveře_2",mapa[2][1]))
             elif symbol == "4":
-                dvere.add(zed((symbol_ind*32,radek_ind*32),"dveře_3"))
+                dvere.add(zed((symbol_ind*32,radek_ind*32),"dveře_3",mapa[2][1]))
     return podlaha,dvere
 
 #kód pro ztmavení obrazovky
@@ -155,8 +171,6 @@ while True:
             sys.exit()
     
     if inGame:
-        health = health_max
-        
         #cheaty
         if pressed[pygame.K_h] and cheat_timeout < 0:
             if hitbox == False:
@@ -179,6 +193,7 @@ while True:
             
         if pressed[pygame.K_g]:
             health = 0
+            cheat_timeout = 20
         
         cheat_timeout -= 1
         
@@ -239,59 +254,61 @@ while True:
             current_position[0] +=1
             podlaha,dvere = urceni_sprite_group(game_map[current_position[0]][current_position[1]])
             zdi = wall_map[current_position[0]][current_position[1]]
-        
-        #zbytek pohybu
-        player_instance.rect.centerx = player_hitbox_instance.rect.centerx+4 - 4
-        player_instance.rect.bottom = player_hitbox_instance.rect.bottom-2 + 3
             
+        #zbytek pohybu
+        player_instance.rect.centerx = player_hitbox_instance.rect.centerx
+        player_instance.rect.bottom = player_hitbox_instance.rect.bottom+1
+        
         #kolize s dvermi
         if pygame.sprite.spritecollide(hrac_hitbox, dvere, False):
-            print(dvere.sprites().index(pygame.sprite.spritecollide(hrac_hitbox, dvere, False)[0]))
+            for door in dvere:
+                if door.door_type == "regular_door":
+                    health = play_minigame()
+                    current_time = default_time
+                else:
+                    print(door.door_type)
+    
+    #vykreslování
+    screen.fill("black")
+    zdi.draw(screen)
+    podlaha.draw(screen)
+    dvere.draw(screen)
+    if show_minimap:
+        screen.blit(minimap,mimimap_pos)
+        screen.blit(ukazatel,(current_position[1]*20+mimimap_pos[0],current_position[0]*12+mimimap_pos[1]))
+    hrac_display_grp.update()
+    hrac_display_grp.draw(screen)
+    hrac_hitbox_grp.draw(screen)
+    health_bar.vykresleni_baru()
+    health_bar.vykresleni_predelu(health_max, health)
+    health_bar.vykresleni_borderu()
+    
+    #časomíra
+    current_time -= 0.016
+    screen.blit(time_outground,(0,0))
+    screen.blit(time_background,(0,0))
+    if current_time > 21: screen.blit(font.render(str(int(current_time)),False,"gray"),(10,10))
+    elif current_time > 0 : screen.blit(font.render(str(int(current_time)),False,"red"),(10,10))
+    else:
+        current_position = random.choice(mozne_prechody)
+        podlaha,dvere = urceni_sprite_group(game_map[current_position[0]][current_position[1]])
+        zdi = wall_map[current_position[0]][current_position[1]]
         
-        #vykreslování
-        screen.fill("black")
-        zdi.draw(screen)
-        podlaha.draw(screen)
-        dvere.draw(screen)
-        if show_minimap:
-            screen.blit(minimap,mimimap_pos)
-            screen.blit(ukazatel,(current_position[1]*20+mimimap_pos[0],current_position[0]*12+mimimap_pos[1]))
-        hrac_display_grp.update()
-        hrac_display_grp.draw(screen)
-        hrac_hitbox_grp.draw(screen)
-        health_bar.vykresleni_baru()
-        health_bar.vykresleni_predelu(health_max, health)
-        health_bar.vykresleni_borderu()
-        
-        #časomíra
-        current_time -= 0.016
-        screen.blit(time_outground,(0,0))
-        screen.blit(time_background,(0,0))
-        if current_time > 21: sysfont_text(30, (str(int(current_time))), 25, 25, "gray", "rockwellcondensedtučné")
-        elif current_time > 0 : sysfont_text(30, (str(int(current_time))), 25, 25, "red", "rockwellcondensedtučné")
+        health = play_minigame()
+        current_time = default_time
+    
+    #prohra
+    if health <= 0:
+        while pruhlednost <= 10:
+            pruhlednost += 0.1
+            fade.set_alpha(pruhlednost)
+            screen.blit(fade, (0, 0))
+            pygame.display.update()
+            pygame.time.wait(fade_speed)
         else:
-            current_position = random.choice(mozne_prechody)
-            podlaha,dvere = urceni_sprite_group(game_map[current_position[0]][current_position[1]])
-            zdi = wall_map[current_position[0]][current_position[1]]
-            
-            player_hitbox_instance.rect.center = vystup(current_position)
-            player_instance.rect.centerx = player_hitbox_instance.rect.centerx+4
-            player_instance.rect.bottom = player_hitbox_instance.rect.bottom-2
-            current_time = default_time
-        
-        #prohra
-        if health == 0:
-            while pruhlednost <= 10:
-                pruhlednost += 0.1
-                fade.set_alpha(pruhlednost)
-                screen.blit(fade, (0, 0))
-                pygame.display.update()
-                pygame.time.wait(fade_speed)
-            else:
-                health = -1
-                inGame = False
-                gameOver = True
-                pruhlednost = 0
+            health = -1
+            inGame = False
+            gameOver = True
 
             
     if gameOver:
