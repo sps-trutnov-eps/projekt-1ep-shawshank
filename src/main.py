@@ -23,6 +23,7 @@ player_y = 14 * 32 / 2
 player_speed = 3
 health_max = health = 5
 mozne_prechody = []
+player_movable = True
 
 default_time = 10
 current_time = 10
@@ -33,6 +34,7 @@ time_outground.fill("gray")
 
 hrac_display_grp = pygame.sprite.Group()
 hrac_hitbox_grp = pygame.sprite.Group()
+postavy_display_grp = pygame.sprite.Group()
 player_instance = player(player_x, player_y)
 hrac_display_grp.add(player_instance)
 player_hitbox_instance = player_hitbox(player_x, player_y)
@@ -41,6 +43,9 @@ hrac_hitbox = hrac_hitbox_grp.sprites()[0]
 health_bar = Health_bar((23*32/2, 24), screen)
 
 current_position = master
+
+skolnik = janitor(player_instance)
+postavy_display_grp.add(skolnik)
 
 #výstup ze dveří
 def vystup(pos):
@@ -260,20 +265,21 @@ while True:
         posun_x = 0
         posun_y = 0
         
-        if pressed[pygame.K_a]:
-            posun_x -= player_speed
-            image = "player_l"
-        if pressed[pygame.K_d]:
-            posun_x += player_speed
-            image = "player_r"
-        if pressed[pygame.K_w]:
-            posun_y -= player_speed
-            image = "player_b"
-        if pressed[pygame.K_s]:
-            posun_y += player_speed
-            image = "player_f"
-        
-        player_hitbox_instance.posun_x(posun_x)
+        if player_movable:
+            if pressed[pygame.K_a]:
+                posun_x -= player_speed
+                image = "player_l"
+            if pressed[pygame.K_d]:
+                posun_x += player_speed
+                image = "player_r"
+            if pressed[pygame.K_w]:
+                posun_y -= player_speed
+                image = "player_b"
+            if pressed[pygame.K_s]:
+                posun_y += player_speed
+                image = "player_f"
+            
+            player_hitbox_instance.posun_x(posun_x)
 
         #kolize se zdmi
         if clip:
@@ -349,19 +355,13 @@ while True:
         if current_time > 21: text(30, (str(int(current_time))), 25, 25, "gray", "rockwellcondensedtučné", "center", True)
         elif current_time > 0 : text(30, (str(int(current_time))), 25, 25, "red", "rockwellcondensedtučné", "center", True)
         else:
-            x_hrace = player_instance.prevPosX
-            y_hrace = player_instance.prevPosY
-            skolnik = janitor(x_hrace, y_hrace)
-            while not skolnik.completed:
-                skolnik.update()
-            current_position = random.choice(mozne_prechody)
-            podlaha,dvere = urceni_sprite_group(game_map[current_position[0]][current_position[1]])
-            zdi = wall_map[current_position[0]][current_position[1]]
-            
-            player_hitbox_instance.rect.center = vystup(current_position)
-            player_instance.rect.centerx = player_hitbox_instance.rect.centerx+4
-            player_instance.rect.bottom = player_hitbox_instance.rect.bottom-2
-            current_time = default_time
+            if not skolnik.completed:
+                postavy_display_grp.update()
+                postavy_display_grp.draw(screen)
+                player_movable = False
+            else:
+                player_movable = True
+                play_minigame()
         
         #prohra
         if health == 0:
