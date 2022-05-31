@@ -19,6 +19,7 @@ mimimap_pos = (width - len(game_map[0])*20,heigth - len(game_map)*12)
 ukazatel = pygame.image.load("../data/textury_hrac/ukazatel_na_mapce.png").convert_alpha()
 clip = True
 hitbox = False
+show_minigame = True
 player_x = 23 * 32 / 2
 player_y = 14 * 32 / 2
 player_speed = 3
@@ -54,17 +55,23 @@ def vystup(pos):
             elif symbol == "4": return ((symbol_ind+1)*32+16,line_ind*32+16)
 ##aktivace miniher
 def play_minigame():
-    number = random.randint(0,2)
-    if number == 0: outcome = Kuba_minigame()
-    elif number == 1: outcome = mminihra()
-    elif number == 2: outcome = křídní_minihra()
-    screen = pygame.display.set_mode((width,heigth))
-    pygame.display.set_caption("¤Útěk ze střední průmyslové Shawshank¤")
-    player_hitbox_instance.rect.center = vystup(current_position)
-    player_instance.rect.centerx = player_hitbox_instance.rect.centerx+4
-    player_instance.rect.bottom = player_hitbox_instance.rect.bottom-2
-    if outcome: return health
-    else: return health-1
+    if show_minigame:
+        number = random.randint(0,2)
+        if number == 0: outcome = Kuba_minigame()
+        elif number == 1: outcome = mminihra()
+        elif number == 2: outcome = křídní_minihra()
+        screen = pygame.display.set_mode((width,heigth))
+        pygame.display.set_caption("¤Útěk ze střední průmyslové Shawshank¤")
+        player_hitbox_instance.rect.center = vystup(current_position)
+        player_instance.rect.centerx = player_hitbox_instance.rect.centerx+4
+        player_instance.rect.bottom = player_hitbox_instance.rect.bottom-2
+        if outcome: return health
+        else: return health-1
+    else:
+        player_hitbox_instance.rect.center = vystup(current_position)
+        player_instance.rect.centerx = player_hitbox_instance.rect.centerx+4
+        player_instance.rect.bottom = player_hitbox_instance.rect.bottom-2
+        return health
 
 #vytvoření textu
 def text(text_size, text, x, y, text_color, text_font, align, sysfont):
@@ -296,7 +303,13 @@ while True:
             vyhra = True
             door_check = 0
             cheat_timeout = 20
-        
+            
+        if pressed[pygame.K_p] and cheat_timeout < 0:
+            if show_minigame == False:
+                show_minigame = True
+            else:
+                show_minigame = False
+            cheat_timeout = 20
         cheat_timeout -= 1
         
         #pohyb
