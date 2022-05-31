@@ -360,6 +360,10 @@ while True:
                 postavy_display_grp.draw(screen)
                 player_movable = False
             else:
+                current_position = random.choice(mozne_prechody)
+                podlaha,dvere = urceni_sprite_group(game_map[current_position[0]][current_position[1]])
+                zdi = wall_map[current_position[0]][current_position[1]]
+                
                 player_movable = True
                 skolnik.completed = False
                 health = play_minigame()
