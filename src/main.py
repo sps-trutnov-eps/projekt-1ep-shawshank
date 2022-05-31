@@ -2,6 +2,7 @@ import sys
 from generace_mapy import game_map,master
 from generace_mapy import screen as minimap
 from sprites import *
+import time
 from minihry.The_untitled_minigame import Kuba_minigame
 from minihry.michalek import mminihra
 from minihry.MINIHRA import křídní_minihra
@@ -155,6 +156,7 @@ zdi = wall_map[current_position[0]][current_position[1]]
 #gamestates
 inGame = True
 gameOver = False
+vyhra = False
 
 #main loop
 while True:
@@ -317,6 +319,63 @@ while True:
             gameOver = False
             inGame = True
             health = health_max
+            
+    if vyhra:
+        BARVA_POZADI = (0, 0, 0)
+        barva_zpravy = (0, 0, 0)
+        barva_textu = (0, 0, 0)
+        okno = pygame.display.set_mode((736,448))
+        font = pygame.font.SysFont("Comic Sans MS", 42)
+        
+        if not gameOver:
+            zprava = "Vyhráls."
+        else:
+            zprava = "Nevyhráls."
+            
+        pygame.display.set_caption(zprava)
+
+            
+        nabidka = "q - odejít   m - \"menu\""
+            
+        while True:
+            udalost = pygame.event.get()
+            stisknuto = pygame.key.get_pressed()
+            for u in udalost:
+                if u.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                elif u.type == pygame.KEYDOWN:
+                    if u.key == pygame.K_q:
+                        print("Konec")
+                    if u.key == pygame.K_m:
+                        inMenu = True
+             
+            time.sleep(0.05)
+            
+            if vyhral:
+                if barva_zpravy == (0, 255, 0):
+                    barva_zpravy = (255, 255, 0)
+                else:
+                    barva_zpravy = (0, 255, 0)
+            else:
+                if barva_zpravy == (255, 0, 0):
+                    barva_zpravy = (255, 255, 0)
+                else:
+                    barva_zpravy = (255, 0, 0)
+                    
+            if barva_textu == (255, 255, 255):
+                barva_textu = (255, 255, 0)
+            else:
+                barva_textu = (255, 255, 255)
+            
+            vyhra = font.render(zprava, True, barva_zpravy)
+            text = font.render(nabidka, True, barva_textu)
+            
+            okno.fill(BARVA_POZADI)
+            okno.blit(vyhra, (0,0))
+            okno.blit(text, (0,50))
+            
+            pygame.display.update()
             
     pygame.display.update()
     clock.tick(60)
