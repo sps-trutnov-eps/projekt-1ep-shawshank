@@ -328,9 +328,9 @@ while True:
                     sys.exit()
                 elif u.type == pygame.KEYDOWN:
                     if u.key == pygame.K_q:
-                        return vyhral
+                        print("Konec")
                     if u.key == pygame.K_m:
-                        return "menu"
+                        inMenu = True
              
             time.sleep(0.05)
             
