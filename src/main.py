@@ -333,17 +333,20 @@ while True:
             
         nabidka = "q - odejít   m - \"menu\""
             
+    
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+
+        if pressed[pygame.K_q]:
+            pygame.quit()
+            sys.exit()
+
+        if pressed[pygame.K_m]:
+            vyhra = False
+            inMenu = True
+        
         while vyhra:
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            elif event.type == pygame.KEYDOWN:
-                if pressed[pygame.K_q]:
-                    print("Konec")
-                if pressed[pygame.K_m]:
-                    inMenu = True
-        
-        
             time.sleep(0.05)
             
             if barva_zpravy == (0, 255, 0):
