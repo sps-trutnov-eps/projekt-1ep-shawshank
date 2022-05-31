@@ -1,6 +1,8 @@
 import pygame
 pygame.init()
 
+screen = pygame.display.set_mode((23*32,14*32))
+
 def getImage(x, y, w, h, image):
     imageToReturn = pygame.Surface((w, h))
     imageToReturn.set_colorkey((0, 0, 0)) #!!!!!!!dá černou jako průhlednou!!!!!!!!!! (takže nepoužívat v texturách čistě černou(0, 0, 0))
