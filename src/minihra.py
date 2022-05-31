@@ -10,6 +10,7 @@ pocitac_score=0
 hrac_volba=""
 pocitac_volba=""
 vysledek=""
+vysledek_setu=""
 
 #cisla, volby
 def volba_to_cislo(volba):
@@ -27,23 +28,35 @@ def random_pocitac_volba():
 #pocitadlo
 def result(clovek_volba,comp_volba):
     global hrac_score
-    global pocitac_score
+    global pocitac_score, vysledek_setu
     hrac=volba_to_cislo(clovek_volba)
     pocitac=volba_to_cislo(comp_volba)
     if (hrac==pocitac):
-        vysledek="remíza"
+        vysledek="Remíza!"
     elif((hrac-pocitac)%3==1):
-        vysledek="vyhráváš"
+        vysledek="Vyhráváš!"
         hrac_score +=1
     else:
-        vysledek="prohráváš"
+        vysledek="Prohráváš!"
         pocitac_score +=1
+        
+    
+    if (hrac_score==15>pocitac_score):
+        vysledek_setu="Výhra!"
+        
+        
+    if (pocitac_score==15>hrac_score):
+        vysledek_setu="Prohra!"      
+
     rozliseni_tabulky=tk.Text(master=okno,width=75,height=15,bg="#FFFF99")
     rozliseni_tabulky.grid(row=6,column=50)
-    answer="tvá volba: {uc} \nvolba počítače: {cc} \nvýsledek: {uu} \ntvé skóre: {u}" \
-           "\nskóre počítače: {c}".format(uc=hrac_volba,cc=pocitac_volba
-                                      ,u=hrac_score,c=pocitac_score,uu=vysledek)
+    answer="tvá volba: {uc} \nvolba počítače: {cc}  \nvýsledek kola: {uu} \ntvé skóre: {u}" \
+           "\nskóre počítače: {c} \nvýsledek setu: {cx}".format(uc=hrac_volba,cc=pocitac_volba
+                                      ,u=hrac_score,c=pocitac_score,uu=vysledek,cx=vysledek_setu)
     rozliseni_tabulky.insert(tk.END,answer)
+    
+
+
 
 #funkčnost tlačítek
 def kámen():
@@ -76,6 +89,7 @@ tlacitko2.grid(row=2,column=0,padx=3,pady=3)
 
 tlacitko3=tk.Button(text="papír", width=8,height=3,bg="aqua",command=papír)
 tlacitko3.grid(row=3,column=0,padx=3,pady=3)
+
 
 okno.mainloop()
 
