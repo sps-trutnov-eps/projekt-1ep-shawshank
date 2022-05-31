@@ -1,24 +1,27 @@
-import pygame as pg
+import pygame 
 import random
 import sys
 import time
 
 sirka_okno = 776
 vyska_okno = 448
+zelena = (124, 252, 0)
+pygame.init()
+okno = pygame.display.set_mode((sirka_okno, vyska_okno))
+pygame.init()
 
-pygame.init() 
-okno = pygame.display.set_mode((sirka_okno, vyska_okno)) 
+while (True):
+    udalosti = pygame.event.get()
+    
+    for u in udalosti:
+        if u.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+    okno.fill((70, 150, 0))
+    pygame.display.update()
 
-zelena = (0,255,0)
-cervena = (255,0,0)
-modra = (0,0,255)
-fialova = (0,0,128)
-bila = (255,255,255)
-cerna = (0,0,0)
-ruzova = (255,200,200)
 
-
-otazky = ["Kdy začala druhá světová válka?";
+otazky = ["Kdy začala druhá světová válka?",
           "Kdy vzniklo Československo?",
           "Kdo postavil Karlštejn?",
           "Jak se jmenoval konkurenční rod Přemyslovců?",
@@ -29,13 +32,6 @@ otazky = ["Kdy začala druhá světová válka?";
           "Kde byl upálen Jan Hus?",
           "Na jakého panovníka byl spáchán atentát v Sarajevu?"
           ]
-
- data = list(otazky)
- otazka = random.randit  (1, 6)
- 
-
-otazky = random.choice(data)
-        data.remove(otazky)
 
 
 maly_font = pygame.font.SysFont("timesnewroman", 25)
