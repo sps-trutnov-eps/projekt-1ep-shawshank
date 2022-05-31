@@ -103,7 +103,7 @@ def janitorAnim(posX, posY, prevPosX, prevPosY):
     if jLastMoveDiff == "janitor_apear":
         jApearStart = pygame.time.get_ticks() - jApearDiff
         if jApearStart > jApearingAnimSpeed:
-            if jApear == 0 or jApear == 1 or jApear == 2 or jApear == 4 or jApear == 5 or jApear == 8 or jApear == 9 or jApear == 11 or jApear == 12:
+            if jApear in [0, 1, 2, 4, 5, 8, 9, 11, 12]:
                 jApearDiff = pygame.time.get_ticks() + 500
             elif jApear == 15:
                 jApearDiff = pygame.time.get_ticks() + 1000
@@ -112,14 +112,16 @@ def janitorAnim(posX, posY, prevPosX, prevPosY):
                 completed = True
             else:
                 jApearDiff = pygame.time.get_ticks()
-            if (jApear <= 53):
+            
+            jApear += 1
+            
+            if jApear <= 53:
                 jImage = getImage(42*jApear, 0, 42, 59, janitor)
-                jApear += 1
             else:
-                jLastMoveDiff == "janitor_f"
+                completed = False
                 jApear = 0
     else:    
-        if (posX, posY) == (prevPosX, prevPosY): #pokud se hráč školník tak budou aplikovány defaultní textury
+        if (posX, posY) == (prevPosX, prevPosY): #pokud se školník nehýbe tak budou aplikovány defaultní textury
             if jLastMoveDiff == "janitor_r":
                 jImage = getImage(84, 177, 42, 59, janitor)
             if jLastMoveDiff == "janitor_l":
