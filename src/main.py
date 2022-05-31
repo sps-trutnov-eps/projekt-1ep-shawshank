@@ -3,9 +3,9 @@ from generace_mapy import game_map,master
 from generace_mapy import screen as minimap
 from sprites import *
 import time
-from minihry.The_untitled_minigame import Kuba_minigame
+from minihry.polak import Kuba_minigame
 from minihry.michalek import mminihra
-from minihry.MINIHRA import křídní_minihra
+from minihry.svoboda import křídní_minihra
 
 #základní proměnné
 clock = pygame.time.Clock()
