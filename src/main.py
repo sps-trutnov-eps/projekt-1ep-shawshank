@@ -2,6 +2,7 @@ import sys
 from generace_mapy import game_map,master
 from generace_mapy import screen as minimap
 from sprites import *
+from výhra import vyhrals
 
 
 #základní proměnné
@@ -139,6 +140,7 @@ zdi = wall_map[current_position[0]][current_position[1]]
 #gamestates
 inGame = True
 gameOver = False
+vyhra = False
 
 #main loop
 while True:
@@ -299,6 +301,9 @@ while True:
         if pressed[pygame.K_RETURN]:
             gameOver = False
             inGame = True
+            
+    if vyhra:
+        vyhrals(not gameOver)
             
     pygame.display.update()
     clock.tick(60)
