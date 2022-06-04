@@ -45,6 +45,7 @@ while not game_over:
     window.fill(color)
     font = pygame.font.SysFont('forte', 26)
     odsazeni = 10
+        #VYKRESLOVÁNÍ
     for pismeno in abeceda:
         if pismeno["stav"] == True:
             if pismeno["stav2"] == False:
@@ -59,6 +60,7 @@ while not game_over:
         window.blit(text, textRect)
         odsazeni += rozmery_pismene[0] + 7.5
     stisk = pygame.key.get_pressed()
+        #OVLÁDÁNÍ DOPRAVA
     if stisk[pygame.K_RIGHT]:
         for p, pismeno in enumerate(abeceda):
             if pismeno["stav2"] == False:
@@ -71,4 +73,18 @@ while not game_over:
             abeceda[0]["stav2"] = True
         else:
             abeceda[pozice+1]["stav2"] = True
-    pygame.display.update()  
+        #OVLÁDÁNÍ DOLEVA
+    if stisk[pygame.K_LEFT]:
+        for p, pismeno in enumerate(abeceda):
+            if pismeno["stav2"] == False:
+                pass
+            elif pismeno["stav2"] == True:
+                pozice = p
+                break
+        abeceda[pozice]["stav2"] = False
+        if pozice == 0:
+            abeceda[25]["stav2"] = True
+        else:
+            abeceda[pozice-1]["stav2"] = True
+    pygame.time.delay(60)
+    pygame.display.update()   
