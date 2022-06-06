@@ -1,9 +1,12 @@
 import pygame
+import random
 pygame.init()
 window = pygame.display.set_mode((640,480))
 pygame.display.update()
 pygame.display.set_caption("Šibenice")
 game_over = False
+slova = ["tabule", "krida"]
+nahoda = random.choice(slova)
 abeceda = [
     {"znak": "A", "stav": True , "stav2": True},
     {"znak": "B", "stav": True , "stav2": False},
@@ -45,7 +48,7 @@ while not game_over:
     window.fill(color)
     font = pygame.font.SysFont('forte', 26)
     odsazeni = 10
-        #VYKRESLOVÁNÍ
+        #VYKRESLOVANI
     for pismeno in abeceda:
         if pismeno["stav"] == True:
             if pismeno["stav2"] == False:
@@ -73,6 +76,7 @@ while not game_over:
             abeceda[0]["stav2"] = True
         else:
             abeceda[pozice+1]["stav2"] = True
+                
         #OVLÁDÁNÍ DOLEVA
     if stisk[pygame.K_LEFT]:
         for p, pismeno in enumerate(abeceda):
@@ -86,5 +90,18 @@ while not game_over:
             abeceda[25]["stav2"] = True
         else:
             abeceda[pozice-1]["stav2"] = True
+            
+        #POUŽÍVÁNÍ PÍSMEN
+    if stisk[pygame.K_SPACE]:
+        for p, pismeno in enumerate(abeceda):
+            if pismeno["stav2"] == False:
+                pass
+            elif pismeno["stav2"] == True:
+                pozice = p
+                break
+        abeceda[pozice]["stav"] = False
+    
+        
+        
     pygame.time.delay(60)
     pygame.display.update()   
