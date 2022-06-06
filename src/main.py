@@ -57,6 +57,7 @@ current_position = master
 
 skolnik = janitor(player_instance)
 postavy_display_grp.add(skolnik)
+menu_state = None
 
 #výstup ze dveří
 def vystup(pos):
@@ -237,6 +238,19 @@ while True:
     if inMenu:
         screen.fill("black")
         
+        #pohyb přetz tab
+        if pressed[pygame.K_TAB] and cheat_timeout < 0:
+            if pressed[pygame.K_RSHIFT] or pressed[pygame.K_LSHIFT]:
+                if menu_state == None: menu_state = 2
+                elif menu_state != 0: menu_state -= 1
+                else: menu_state = 2
+            else:
+                if menu_state == None: menu_state = 0
+                elif menu_state != 2: menu_state += 1
+                else: menu_state = 0
+            cheat_timeout = 10
+        cheat_timeout -=1
+        
         #povrchy
         txt_bg = pygame.image.load("../data/menu/text_bg.png").convert_alpha()
         txt_bg_rect = txt_bg.get_rect(topright=(23*32, 0))
@@ -254,24 +268,29 @@ while True:
         text(50, "EXIT", 23*32 - 225, 300, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False)
         
         #kolize myši s tlačítky v menu
-        if text(50, "START", 23*32 - 225, 100, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()):
+        if text(50, "START", 23*32 - 225, 100, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) or menu_state == 0:
             screen.blit(start_highlight, start_highlight_rect)
+            menu_state = 0
             
-        if text(50, "CREDITS", 23*32 - 225, 200, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()):
+        if text(50, "CREDITS", 23*32 - 225, 200, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) or menu_state == 1:
             screen.blit(credits_highlight, credits_highlight_rect)
+            menu_state = 1
             
-        if text(50, "EXIT", 23*32 - 225, 300, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()):
+        if text(50, "EXIT", 23*32 - 225, 300, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) or menu_state == 2:
             screen.blit(exit_highlight, exit_highlight_rect)
+            menu_state = 2
             
-        if text(50, "START", 23*32 - 225, 100, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:
+        if (text(50, "START", 23*32 - 225, 100, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]) or ((pressed[pygame.K_KP_ENTER] or pressed[pygame.K_RETURN]) and menu_state == 0):
             inMenu = False
             inGame = True
+            menu_state = None
         
-        if text(50, "CREDITS", 23*32 - 225, 200, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:
+        if (text(50, "CREDITS", 23*32 - 225, 200, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]) or ((pressed[pygame.K_KP_ENTER] or pressed[pygame.K_RETURN]) and menu_state == 1):
             print("Zde budou kredity")
+            menu_state = None
         
 
-        if text(50, "EXIT", 23*32 - 225, 300, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:
+        if (text(50, "EXIT", 23*32 - 225, 300, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]) or ((pressed[pygame.K_KP_ENTER] or pressed[pygame.K_RETURN]) and menu_state == 2):
             pygame.quit()
             sys.exit()
     
