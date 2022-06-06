@@ -412,11 +412,23 @@ while True:
                 if door.door_type == "regular_door":
                     health = play_minigame()
                     current_time = default_time
-                elif door.door_type == "KEY_ROOM" and not invKey.completed: inventoryKey_grp.update()
-                elif door.door_type == "LOCKER_ROOM" and not invBoots.completed and invKey.completed: inventoryBoots_grp.update()
-                elif door.door_type == "EXIT" and invBoots.completed:
-                    inGame = False
-                    vyhra = True
+                elif door.door_type == "KEY_ROOM":
+                    player_hitbox_instance.rect.center = vystup(current_position)
+                    player_instance.rect.centerx = player_hitbox_instance.rect.centerx+4
+                    player_instance.rect.bottom = player_hitbox_instance.rect.bottom-2
+                    if not invKey.completed: inventoryKey_grp.update()
+                elif door.door_type == "LOCKER_ROOM":
+                    player_hitbox_instance.rect.center = vystup(current_position)
+                    player_instance.rect.centerx = player_hitbox_instance.rect.centerx+4
+                    player_instance.rect.bottom = player_hitbox_instance.rect.bottom-2
+                    if not invBoots.completed and invKey.completed: inventoryBoots_grp.update()
+                elif door.door_type == "EXIT":
+                    player_hitbox_instance.rect.center = vystup(current_position)
+                    player_instance.rect.centerx = player_hitbox_instance.rect.centerx+4
+                    player_instance.rect.bottom = player_hitbox_instance.rect.bottom-2
+                    if invBoots.completed:
+                        inGame = False
+                        vyhra = True
         
         #vykreslování
         screen.fill("black")
