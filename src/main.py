@@ -5,6 +5,7 @@ import time
 from minihry.polak import Kuba_minigame
 from minihry.michalek import mminihra
 from minihry.svoboda import křídní_minihra
+from inventory import inventoryHasKey, inventoryHasBoots
 
 pygame.init()
 
@@ -27,8 +28,8 @@ health_max = health = 5
 mozne_prechody = []
 player_movable = True
 
-default_time = 10
-current_time = 10
+default_time = 60
+current_time = 60
 time_background = pygame.Surface((60,54))
 time_background.fill((0,28,32))
 time_outground = pygame.Surface((65,59))
@@ -44,12 +45,20 @@ hrac_hitbox_grp.add(player_hitbox_instance)
 hrac_hitbox = hrac_hitbox_grp.sprites()[0]
 health_bar = Health_bar((23*32/2, 24), screen)
 
+#inventář
+inventoryKey_grp = pygame.sprite.Group()
+invKey = inventoryHasKey(23*32-32-16-16, 16+8)
+inventoryKey_grp.add(invKey)
+inventoryBoots_grp = pygame.sprite.Group()
+invBoots = inventoryHasBoots(23*32-16-8, 16+8)
+inventoryBoots_grp.add(invBoots)
+
 current_position = master
 
 skolnik = janitor(player_instance)
 postavy_display_grp.add(skolnik)
+menu_state = None
 
-door_check = 0
 #výstup ze dveří
 def vystup(pos):
     for line_ind,line in enumerate(game_map[pos[0]][pos[1]][0]):
@@ -195,6 +204,10 @@ def restart():
         
     podlaha,dvere = urceni_sprite_group(game_map[current_position[0]][current_position[1]])
     zdi = wall_map[current_position[0]][current_position[1]]
+    invKey.completed = True
+    invBoots.completed = True
+    inventoryKey_grp.update()
+    inventoryBoots_grp.update()
 
 #kód pro ztmavení obrazovky
 fade = pygame.Surface((23*32, 14*32))
@@ -225,6 +238,19 @@ while True:
     if inMenu:
         screen.fill("black")
         
+        #pohyb přetz tab
+        if pressed[pygame.K_TAB] and cheat_timeout < 0:
+            if pressed[pygame.K_RSHIFT] or pressed[pygame.K_LSHIFT]:
+                if menu_state == None: menu_state = 2
+                elif menu_state != 0: menu_state -= 1
+                else: menu_state = 2
+            else:
+                if menu_state == None: menu_state = 0
+                elif menu_state != 2: menu_state += 1
+                else: menu_state = 0
+            cheat_timeout = 10
+        cheat_timeout -=1
+        
         #povrchy
         txt_bg = pygame.image.load("../data/menu/text_bg.png").convert_alpha()
         txt_bg_rect = txt_bg.get_rect(topright=(23*32, 0))
@@ -242,23 +268,29 @@ while True:
         text(50, "EXIT", 23*32 - 225, 300, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False)
         
         #kolize myši s tlačítky v menu
-        if text(50, "START", 23*32 - 225, 100, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()):
+        if text(50, "START", 23*32 - 225, 100, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) or menu_state == 0:
             screen.blit(start_highlight, start_highlight_rect)
+            menu_state = 0
             
-        if text(50, "CREDITS", 23*32 - 225, 200, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()):
+        if text(50, "CREDITS", 23*32 - 225, 200, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) or menu_state == 1:
             screen.blit(credits_highlight, credits_highlight_rect)
+            menu_state = 1
             
-        if text(50, "EXIT", 23*32 - 225, 300, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()):
+        if text(50, "EXIT", 23*32 - 225, 300, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) or menu_state == 2:
             screen.blit(exit_highlight, exit_highlight_rect)
+            menu_state = 2
             
-        if text(50, "START", 23*32 - 225, 100, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:
+        if (text(50, "START", 23*32 - 225, 100, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]) or ((pressed[pygame.K_KP_ENTER] or pressed[pygame.K_RETURN]) and menu_state == 0):
             inMenu = False
             inGame = True
+            menu_state = None
         
-        if text(50, "CREDITS", 23*32 - 225, 200, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:
+        if (text(50, "CREDITS", 23*32 - 225, 200, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]) or ((pressed[pygame.K_KP_ENTER] or pressed[pygame.K_RETURN]) and menu_state == 1):
             print("Zde budou kredity")
+            menu_state = None
         
-        if text(50, "EXIT", 23*32 - 225, 300, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:
+
+        if (text(50, "EXIT", 23*32 - 225, 300, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]) or ((pressed[pygame.K_KP_ENTER] or pressed[pygame.K_RETURN]) and menu_state == 2):
             pygame.quit()
             sys.exit()
     
@@ -283,30 +315,25 @@ while True:
             else: show_minimap = True
             cheat_timeout = 20
             
-        if pressed[pygame.K_g]:
+        if pressed[pygame.K_g] and cheat_timeout < 0:
             health = 0
             cheat_timeout = 20
-            
-        if pressed[pygame.K_c]:
-            print(door_check)
-            cheat_timeout = 20
         
-        if pressed[pygame.K_t]:
+        if pressed[pygame.K_t] and cheat_timeout < 0:
             current_time = default_time
             cheat_timeout = 20
             
-        if pressed[pygame.K_1]:
-            door_check = 1
+        if pressed[pygame.K_1] and cheat_timeout < 0:
+            inventoryKey_grp.update()
             cheat_timeout = 20
             
-        if pressed[pygame.K_2]:
-            door_check = 2
+        if pressed[pygame.K_2] and cheat_timeout < 0:
+            inventoryBoots_grp.update()
             cheat_timeout = 20
             
-        if pressed[pygame.K_3]:
+        if pressed[pygame.K_3] and cheat_timeout < 0:
             inGame = False
             vyhra = True
-            door_check = 0
             cheat_timeout = 20
             
         if pressed[pygame.K_p] and cheat_timeout < 0:
@@ -320,7 +347,6 @@ while True:
         #pohyb
         posun_x = 0
         posun_y = 0
-        
         if player_movable:
             if pressed[pygame.K_a]:
                 posun_x -= player_speed
@@ -386,12 +412,23 @@ while True:
                 if door.door_type == "regular_door":
                     health = play_minigame()
                     current_time = default_time
-                elif door.door_type == "KEY_ROOM" and door_check == 0: door_check = 1
-                elif door.door_type == "LOCKER_ROOM" and door_check == 1: door_check = 2
-                elif door.door_type == "EXIT" and door_check == 2:
-                    inGame = False
-                    vyhra = True
-                    door_check = 0
+                elif door.door_type == "KEY_ROOM":
+                    player_hitbox_instance.rect.center = vystup(current_position)
+                    player_instance.rect.centerx = player_hitbox_instance.rect.centerx+4
+                    player_instance.rect.bottom = player_hitbox_instance.rect.bottom-2
+                    if not invKey.completed: inventoryKey_grp.update()
+                elif door.door_type == "LOCKER_ROOM":
+                    player_hitbox_instance.rect.center = vystup(current_position)
+                    player_instance.rect.centerx = player_hitbox_instance.rect.centerx+4
+                    player_instance.rect.bottom = player_hitbox_instance.rect.bottom-2
+                    if not invBoots.completed and invKey.completed: inventoryBoots_grp.update()
+                elif door.door_type == "EXIT":
+                    player_hitbox_instance.rect.center = vystup(current_position)
+                    player_instance.rect.centerx = player_hitbox_instance.rect.centerx+4
+                    player_instance.rect.bottom = player_hitbox_instance.rect.bottom-2
+                    if invBoots.completed:
+                        inGame = False
+                        vyhra = True
         
         #vykreslování
         screen.fill("black")
@@ -407,6 +444,8 @@ while True:
         health_bar.vykresleni_baru()
         health_bar.vykresleni_predelu(health_max, health)
         health_bar.vykresleni_borderu()
+        inventoryKey_grp.draw(screen)
+        inventoryBoots_grp.draw(screen)
         
         #časomíra
         current_time -= 0.016
