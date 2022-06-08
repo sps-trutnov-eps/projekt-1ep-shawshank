@@ -1,7 +1,7 @@
 import pygame
 import sys
 import random
-def minihra()
+def Udat_minihra():
     def cteni_dat_list(jmeno_souboru):
         soubor = open(jmeno_souboru, 'r', encoding = 'utf-8')
         data = []
@@ -20,7 +20,6 @@ def minihra()
     def kontrola_kod(seznam,seznam2,typ):
         for polozka in seznam:
             if polozka[typ] == seznam2[typ]:
-                print(polozka)
                 return polozka
             
     def datum_souradnice(text,font,x,y,barva):
@@ -41,14 +40,14 @@ def minihra()
                 rand3 = random.randint(min,max)
         if status == 1:
             return rand1,rand2,rand3
+            
         else:
             return rand1,rand2
-        
+                
     def tvorba_otazky():
         i_otazka = random.randint(0,(len(otazky) - 1))
         otazka = otazky[i_otazka]
         if otazka in list_otazky:
-            print('A')
             return tvorba_otazky()
             otazka = tvorba_otazky
             list_otazky.append(otazka)
@@ -59,7 +58,6 @@ def minihra()
          
     odpovedi = cteni_dat_list("odpovedi.csv")
     otazky = cteni_dat_list("otazky.csv")
-    print(otazky,odpovedi)
     rozliseni_okna = rozliseni_x, rozliseni_y = (1200,800)
     pozadi_barva = (186, 140, 90)
     w_pap = rozliseni_x / 2
@@ -87,6 +85,7 @@ def minihra()
     y_znamka = y_pap + (h_pap/6)
 
     vybrana_odpoved = ''
+    hotovo = True
     a = 0
     spatne = 0
     znamka = "test"
@@ -100,11 +99,11 @@ def minihra()
 
     je_otazka = "false"
     pokus = 0
-    while True:
+    while hotovo == True:
         udalosti = pygame.event.get()
         stisknuto = pygame.key.get_pressed()
         m_x,m_y = pygame.mouse.get_pos()
-        bg = pygame.image.load("a.jpg")
+        bg = pygame.image.load("desk.png")
         
         if pokus < 5 and je_otazka == "false":
             #tvorba odpovedi a otazky
@@ -112,15 +111,10 @@ def minihra()
             odpoved = kontrola_kod(odpovedi,otazka,"kod")
             otazka = otazka['udalost']
             #tvorba spatnych odpovedi
-            print(odpoved['kod'] + 'A')
-            print(len(otazky) - 1)
-            i_false_odpoved1,i_false_odpoved2 = kontrola_random("",0,0,len(otazky)-1)
-            print(i_false_odpoved1)
-            print(i_false_odpoved2)
+            i_false_odpoved1,i_false_odpoved2 = kontrola_random((int(odpoved["kod"])-1),0,0,len(otazky)-1)
             false_odpoved = odpovedi[i_false_odpoved1]
             false_odpoved2 = odpovedi[i_false_odpoved2]
             #tvorba datumu pro odpovedi
-            print(odpoved['datum'])
             datum = odpoved['datum']
             false_datum = false_odpoved["datum"]
             false_datum_2 = false_odpoved2["datum"]
@@ -131,9 +125,7 @@ def minihra()
             datum_2,datum_2_center = datum_souradnice(data[lokace_2],font_odpoved,x2_center,y_center,(0, 0, 0))
             datum_3,datum_3_center = datum_souradnice(data[lokace_3],font_odpoved,x3_center,y_center,(0, 0, 0))
             otazka,otazka_center = datum_souradnice(otazka,font_otazka,x_pap_center,y_pap_center,(0, 0, 0))
-            je_otazka = "true"
-        
-        
+            je_otazka = "true"     
         for u in udalosti:
             if u.type == pygame.QUIT:
                 pygame.quit()
@@ -154,9 +146,7 @@ def minihra()
                         vybrana_odpoved = data[lokace_3]
                         a = 1
                         pokus += 1
-                        je_otazka = "false"
-                    print(vybrana_odpoved)
-                    print(odpoved['datum'])                    
+                        je_otazka = "false"                  
         
         if stisknuto[pygame.K_ESCAPE]:
             pygame.quit()
@@ -180,7 +170,7 @@ def minihra()
                 znamka = "4"
             elif spatne == 5:
                 znamka = "5"
-            znamka,znamka_center = datum_souradnice(znamka,font_znamka,x_znamka,y_znamka,(255,0,0))
+            znamka_text,znamka_center = datum_souradnice(znamka,font_znamka,x_znamka,y_znamka,(255,0,0))
        
         okno.fill(pozadi_barva)
         okno.blit(bg,(0,0))
@@ -190,17 +180,18 @@ def minihra()
         pygame.draw.rect(okno, (0, 0, 0), (x3,y_odp,w_odp,h_odp), (5))
         if pokus >= 5:
             pygame.draw.circle(okno, (255, 0, 0), (x_znamka,y_znamka,), 40,5)
-            okno.blit(znamka,znamka_center)
-            if znamka == 5:
-                vysledek = False
-            else:
-                vysledek = True
-        
+            okno.blit(znamka_text,znamka_center)
+            
         okno.blit(datum_1, datum_1_center)
         okno.blit(datum_2, datum_2_center)
         okno.blit(datum_3, datum_3_center)
         okno.blit(otazka, otazka_center)
         pygame.display.update()
-pg.quit() 
-sys.exit() 
-return vysledek
+        if pokus >= 5:
+            if int(znamka) >= 4:
+                vysledek = False
+            else:
+                vysledek = True
+            hotovo = False
+            return vysledek
+print(Udat_minihra())
