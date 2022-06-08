@@ -103,7 +103,6 @@ class player(pygame.sprite.Sprite):
         self.prevPosY = player_y
         
         self.image = playerAnim(player_x, player_y, self.prevPosX, self.prevPosY)
-        #self.image = janitorAnim(player_x, player_y, self.prevPosX, self.prevPosY)
         self.rect = self.image.get_rect()
         self.rect.center = (player_y, player_x)
         
@@ -113,7 +112,6 @@ class player(pygame.sprite.Sprite):
     def update(self):
         
         self.image = playerAnim(self.rect.centerx, self.rect.centery, self.prevPosX, self.prevPosY)
-        #self.image = janitorAnim(self.rect.centerx, self.rect.centery, self.prevPosX, self.prevPosY)
         
         self.prevPosX = self.rect.centerx
         self.prevPosY = self.rect.centery
@@ -142,6 +140,28 @@ class player_hitbox(pygame.sprite.Sprite):
         if self.hitbox == True:
             self.hitbox = False
             self.image = self.hitBox
+            
+class janitor(pygame.sprite.Sprite):
+    def __init__(self, player):
+        super().__init__()
+        
+        self.player = player
+        self.prevPosX = player.prevPosX
+        self.prevPosY = player.prevPosY
+        
+        self.image, self.completed = janitorAnim(self.prevPosX, self.prevPosY, self.prevPosX, self.prevPosY)
+        self.rect = self.image.get_rect()
+        self.rect.center = (self.prevPosY, self.prevPosX)
+        
+        self.prevPosX = self.rect.centerx
+        self.prevPosY = self.rect.centery
+        
+    def update(self):
+        
+        self.image, self.completed = janitorAnim(self.rect.centerx, self.rect.centery, self.prevPosX, self.prevPosY)
+        
+        self.prevPosX = self.rect.centerx = self.player.prevPosX
+        self.prevPosY = self.rect.centery = self.player.prevPosY
             
 class Health_bar(pygame.sprite.Sprite):
     def __init__(self, pozice, okno):

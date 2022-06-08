@@ -1,13 +1,16 @@
 import sys
-from generace_mapy import game_map,master
-from generace_mapy import screen as minimap
+from generace_mapy import generate
 from sprites import *
 import time
-from minihry.The_untitled_minigame import Kuba_minigame
+from minihry.polak import Kuba_minigame
 from minihry.michalek import mminihra
-from minihry.MINIHRA import křídní_minihra
+from minihry.svoboda import křídní_minihra
+
+pygame.init()
 
 #základní proměnné
+game_map,master,minimap = generate()
+
 clock = pygame.time.Clock()
 
 cheat_timeout = 20
@@ -16,15 +19,16 @@ mimimap_pos = (width - len(game_map[0])*20,heigth - len(game_map)*12)
 ukazatel = pygame.image.load("../data/textury_hrac/ukazatel_na_mapce.png").convert_alpha()
 clip = True
 hitbox = False
+show_minigame = True
 player_x = 23 * 32 / 2
 player_y = 14 * 32 / 2
 player_speed = 3
 health_max = health = 5
 mozne_prechody = []
+player_movable = True
 
-default_time = 60
-current_time = 60
-font = pygame.font.SysFont("rockwellcondensedtučné",30)
+default_time = 10
+current_time = 10
 time_background = pygame.Surface((60,54))
 time_background.fill((0,28,32))
 time_outground = pygame.Surface((65,59))
@@ -32,6 +36,7 @@ time_outground.fill("gray")
 
 hrac_display_grp = pygame.sprite.Group()
 hrac_hitbox_grp = pygame.sprite.Group()
+postavy_display_grp = pygame.sprite.Group()
 player_instance = player(player_x, player_y)
 hrac_display_grp.add(player_instance)
 player_hitbox_instance = player_hitbox(player_x, player_y)
@@ -41,6 +46,10 @@ health_bar = Health_bar((23*32/2, 24), screen)
 
 current_position = master
 
+skolnik = janitor(player_instance)
+postavy_display_grp.add(skolnik)
+
+door_check = 0
 #výstup ze dveří
 def vystup(pos):
     for line_ind,line in enumerate(game_map[pos[0]][pos[1]][0]):
@@ -51,31 +60,53 @@ def vystup(pos):
             elif symbol == "4": return ((symbol_ind+1)*32+16,line_ind*32+16)
 ##aktivace miniher
 def play_minigame():
-    number = random.randint(0,2)
-    if number == 0: outcome = Kuba_minigame()
-    elif number == 1: outcome = mminihra()
-    elif number == 2: outcome = křídní_minihra()
-    screen = pygame.display.set_mode((width,heigth))
-    pygame.display.set_caption("¤Útěk ze střední průmyslové Shawshank¤")
-    player_hitbox_instance.rect.center = vystup(current_position)
-    player_instance.rect.centerx = player_hitbox_instance.rect.centerx+4
-    player_instance.rect.bottom = player_hitbox_instance.rect.bottom-2
-    if outcome: return health
-    else: return health-1
+    if show_minigame:
+        number = random.randint(0,2)
+        if number == 0: outcome = Kuba_minigame()
+        elif number == 1: outcome = mminihra()
+        elif number == 2: outcome = křídní_minihra()
+        screen = pygame.display.set_mode((width,heigth))
+        pygame.display.set_caption("¤Útěk ze střední průmyslové Shawshank¤")
+        player_hitbox_instance.rect.center = vystup(current_position)
+        player_instance.rect.centerx = player_hitbox_instance.rect.centerx+4
+        player_instance.rect.bottom = player_hitbox_instance.rect.bottom-2
+        if outcome: return health
+        else: return health-1
+    else:
+        player_hitbox_instance.rect.center = vystup(current_position)
+        player_instance.rect.centerx = player_hitbox_instance.rect.centerx+4
+        player_instance.rect.bottom = player_hitbox_instance.rect.bottom-2
+        return health
 
 #vytvoření textu
-def text(text_size, text, center_x, center_y, text_color, text_font):
-    font = pygame.font.Font(text_font, text_size)
+def text(text_size, text, x, y, text_color, text_font, align, sysfont):
+    if sysfont:
+        font = pygame.font.SysFont(text_font, text_size)
+    else:        
+        font = pygame.font.Font(text_font, text_size)
     text = font.render(text, True, text_color)
-    text_rect = text.get_rect(center=(center_x, center_y))
+    text_rect = text.get_rect()
+    if align == "topleft":
+        text_rect.topleft = (x,y)
+    if align == "midtop":
+        text_rect.midtop = (x,y)
+    if align == "topright":
+        text_rect.topright = (x,y)
+    if align == "midleft":
+        text_rect.midleft = (x,y)
+    if align == "center":
+        text_rect.center = (x,y)
+    if align == "midright":
+        text_rect.midright = (x,y)
+    if align == "bottomleft":
+        text_rect.bottomleft = (x,y)
+    if align == "midbottom":
+        text_rect.midbottom = (x,y)
+    if align == "midright":
+        text_rect.midright = (x,y)
+        
     screen.blit(text, text_rect)
-
-
-def sysfont_text(text_size, text, center_x, center_y, text_color, text_font):
-    font = pygame.font.SysFont(text_font, text_size)
-    text = font.render(text, True, text_color)
-    text_rect = text.get_rect(center=(center_x, center_y))
-    screen.blit(text, text_rect)
+    return text_rect
     
     
 #načtení zdí specificky
@@ -134,13 +165,6 @@ def urceni_sprite_group(mapa):
                 dvere.add(zed((symbol_ind*32,radek_ind*32),"dveře_3",mapa[2][1]))
     return podlaha,dvere
 
-#kód pro ztmavení obrazovky
-fade = pygame.Surface((23*32, 14*32))
-fade.fill("black")
-pruhlednost = 0
-fade.set_alpha(pruhlednost)
-fade_speed = 10
-
 wall_map = []
 for line_ind,line in enumerate(game_map):
     new = []
@@ -153,9 +177,37 @@ for line_ind,line in enumerate(game_map):
 podlaha,dvere = urceni_sprite_group(game_map[current_position[0]][current_position[1]])
 zdi = wall_map[current_position[0]][current_position[1]]
 
+#restart
+def restart():
+    global current_position,podlaha,dvere,zdi,minimap,game_map,wall_map,master
+    game_map,master,minimap = generate()
+    current_position = master
+    player_hitbox_instance.rect.center = (width//2,heigth//2)
+    
+    wall_map = []
+    for line_ind,line in enumerate(game_map):
+        new = []
+        for something_ind,something in enumerate(line):
+            if something != []:
+                new.append(random_zdi(something[0],[line_ind,something_ind],something[2][1]))
+            else: new.append(None)
+        wall_map.append(new)
+        
+    podlaha,dvere = urceni_sprite_group(game_map[current_position[0]][current_position[1]])
+    zdi = wall_map[current_position[0]][current_position[1]]
+
+#kód pro ztmavení obrazovky
+fade = pygame.Surface((23*32, 14*32))
+fade.fill("black")
+pruhlednost = 0
+pruhlednost_textu = 0
+fade.set_alpha(pruhlednost)
+fade_speed = 10
+
 #gamestates
-inGame = True
+inGame = False
 gameOver = False
+inMenu = True
 vyhra = False
 
 #main loop
@@ -167,6 +219,46 @@ while True:
             pygame.quit()
             sys.exit()
         if pressed[pygame.K_ESCAPE]:
+            pygame.quit()
+            sys.exit()
+    
+    if inMenu:
+        screen.fill("black")
+        
+        #povrchy
+        txt_bg = pygame.image.load("../data/menu/text_bg.png").convert_alpha()
+        txt_bg_rect = txt_bg.get_rect(topright=(23*32, 0))
+        start_highlight = pygame.image.load("../data/menu/start_highlight.png").convert_alpha()
+        start_highlight_rect = start_highlight.get_rect(topright=(23*32 - 8, 8))
+        credits_highlight = pygame.image.load("../data/menu/credits_highlight.png").convert_alpha()
+        credits_highlight_rect = credits_highlight.get_rect(topright=(23*32 - 10, 13))
+        exit_highlight = pygame.image.load("../data/menu/exit_highlight.png").convert_alpha()
+        exit_highlight_rect = exit_highlight.get_rect(topright=(23*32 - 15, 15))
+        
+        #vykreslování
+        screen.blit(txt_bg, txt_bg_rect)
+        text(50, "START", 23*32 - 225, 100, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False)
+        text(50, "CREDITS", 23*32 - 225, 200, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False)
+        text(50, "EXIT", 23*32 - 225, 300, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False)
+        
+        #kolize myši s tlačítky v menu
+        if text(50, "START", 23*32 - 225, 100, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()):
+            screen.blit(start_highlight, start_highlight_rect)
+            
+        if text(50, "CREDITS", 23*32 - 225, 200, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()):
+            screen.blit(credits_highlight, credits_highlight_rect)
+            
+        if text(50, "EXIT", 23*32 - 225, 300, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()):
+            screen.blit(exit_highlight, exit_highlight_rect)
+            
+        if text(50, "START", 23*32 - 225, 100, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:
+            inMenu = False
+            inGame = True
+        
+        if text(50, "CREDITS", 23*32 - 225, 200, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:
+            print("Zde budou kredity")
+        
+        if text(50, "EXIT", 23*32 - 225, 300, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:
             pygame.quit()
             sys.exit()
     
@@ -197,27 +289,56 @@ while True:
             
         if pressed[pygame.K_v]:
             vyhra = True
+            
+        if pressed[pygame.K_c]:
+            print(door_check)
+            cheat_timeout = 20
         
+        if pressed[pygame.K_t]:
+            current_time = default_time
+            cheat_timeout = 20
+            
+        if pressed[pygame.K_1]:
+            door_check = 1
+            cheat_timeout = 20
+            
+        if pressed[pygame.K_2]:
+            door_check = 2
+            cheat_timeout = 20
+            
+        if pressed[pygame.K_3]:
+            inGame = False
+            vyhra = True
+            door_check = 0
+            cheat_timeout = 20
+            
+        if pressed[pygame.K_p] and cheat_timeout < 0:
+            if show_minigame == False:
+                show_minigame = True
+            else:
+                show_minigame = False
+            cheat_timeout = 20
         cheat_timeout -= 1
         
         #pohyb
         posun_x = 0
         posun_y = 0
         
-        if pressed[pygame.K_a]:
-            posun_x -= player_speed
-            image = "player_l"
-        if pressed[pygame.K_d]:
-            posun_x += player_speed
-            image = "player_r"
-        if pressed[pygame.K_w]:
-            posun_y -= player_speed
-            image = "player_b"
-        if pressed[pygame.K_s]:
-            posun_y += player_speed
-            image = "player_f"
-        
-        player_hitbox_instance.posun_x(posun_x)
+        if player_movable:
+            if pressed[pygame.K_a]:
+                posun_x -= player_speed
+                image = "player_l"
+            if pressed[pygame.K_d]:
+                posun_x += player_speed
+                image = "player_r"
+            if pressed[pygame.K_w]:
+                posun_y -= player_speed
+                image = "player_b"
+            if pressed[pygame.K_s]:
+                posun_y += player_speed
+                image = "player_f"
+            
+            player_hitbox_instance.posun_x(posun_x)
 
         #kolize se zdmi
         if clip:
@@ -268,59 +389,94 @@ while True:
                 if door.door_type == "regular_door":
                     health = play_minigame()
                     current_time = default_time
-                else:
-                    print(door.door_type)
-    
-    #vykreslování
-    screen.fill("black")
-    zdi.draw(screen)
-    podlaha.draw(screen)
-    dvere.draw(screen)
-    if show_minimap:
-        screen.blit(minimap,mimimap_pos)
-        screen.blit(ukazatel,(current_position[1]*20+mimimap_pos[0],current_position[0]*12+mimimap_pos[1]))
-    hrac_display_grp.update()
-    hrac_display_grp.draw(screen)
-    hrac_hitbox_grp.draw(screen)
-    health_bar.vykresleni_baru()
-    health_bar.vykresleni_predelu(health_max, health)
-    health_bar.vykresleni_borderu()
-    
-    #časomíra
-    current_time -= 0.016
-    screen.blit(time_outground,(0,0))
-    screen.blit(time_background,(0,0))
-    if current_time > 21: screen.blit(font.render(str(int(current_time)),False,"gray"),(10,10))
-    elif current_time > 0 : screen.blit(font.render(str(int(current_time)),False,"red"),(10,10))
-    else:
-        current_position = random.choice(mozne_prechody)
-        podlaha,dvere = urceni_sprite_group(game_map[current_position[0]][current_position[1]])
-        zdi = wall_map[current_position[0]][current_position[1]]
+                elif door.door_type == "KEY_ROOM" and door_check == 0: door_check = 1
+                elif door.door_type == "LOCKER_ROOM" and door_check == 1: door_check = 2
+                elif door.door_type == "EXIT" and door_check == 2:
+                    inGame = False
+                    vyhra = True
+                    door_check = 0
         
-        health = play_minigame()
-        current_time = default_time
-    
-    #prohra
-    if health <= 0:
-        while pruhlednost <= 10:
-            pruhlednost += 0.1
-            fade.set_alpha(pruhlednost)
-            screen.blit(fade, (0, 0))
-            pygame.display.update()
-            pygame.time.wait(fade_speed)
+        #vykreslování
+        screen.fill("black")
+        zdi.draw(screen)
+        podlaha.draw(screen)
+        dvere.draw(screen)
+        if show_minimap:
+            screen.blit(minimap,mimimap_pos)
+            screen.blit(ukazatel,(current_position[1]*20+mimimap_pos[0],current_position[0]*12+mimimap_pos[1]))
+        hrac_display_grp.update()
+        hrac_display_grp.draw(screen)
+        hrac_hitbox_grp.draw(screen)
+        health_bar.vykresleni_baru()
+        health_bar.vykresleni_predelu(health_max, health)
+        health_bar.vykresleni_borderu()
+        
+        #časomíra
+        current_time -= 0.016
+        screen.blit(time_outground,(0,0))
+        screen.blit(time_background,(0,0))
+        if current_time > 21: text(30, (str(int(current_time))), 25, 25, "gray", "rockwellcondensedtučné", "center", True)
+        elif current_time > 0 : text(30, (str(int(current_time))), 25, 25, "red", "rockwellcondensedtučné", "center", True)
         else:
+            if not skolnik.completed:
+                postavy_display_grp.update()
+                postavy_display_grp.draw(screen)
+                player_movable = False
+            else:
+                current_position = random.choice(mozne_prechody)
+                podlaha,dvere = urceni_sprite_group(game_map[current_position[0]][current_position[1]])
+                zdi = wall_map[current_position[0]][current_position[1]]
+                
+                player_movable = True
+                skolnik.completed = False
+                health = play_minigame()
+                current_time = default_time
+        
+        #prohra
+        if health == 0:
+            g_over_font = pygame.font.Font("../data/fonts/ARCADECLASSIC.TTF", 125)
+            return_font = pygame.font.Font("../data/fonts/ARCADECLASSIC.TTF", 50)
+            g_over_font_render = g_over_font.render("GAME OVER", True, (255, 0, 0))
+            return_font_render = return_font.render("PRESS   ENTER", True, (100, 0, 0))
+            g_over_font_rect = g_over_font_render.get_rect(center=(23*32/2, 14*32/2))
+            return_font_rect = return_font_render.get_rect(center=(23*32/2, 14*32/2 + 75))
+            g_over_font_render.set_alpha(0)
+            return_font_render.set_alpha(0)
+            
+            while pruhlednost <= 12:
+                pruhlednost += 0.1
+                pruhlednost_textu += 1.5
+                fade.set_alpha(pruhlednost)
+                g_over_font_render.set_alpha(pruhlednost_textu)
+                return_font_render.set_alpha(pruhlednost_textu)
+                screen.blit(fade, (0, 0))
+                screen.blit(g_over_font_render, g_over_font_rect)
+                screen.blit(return_font_render, return_font_rect)
+                pygame.display.update()
+                pygame.time.wait(fade_speed)
+            
             health = -1
             inGame = False
             gameOver = True
-
+            pruhlednost = 255
+            fade.set_alpha(pruhlednost)
+            g_over_font_render.set_alpha(pruhlednost)
+            return_font_render.set_alpha(pruhlednost)
+            
+        #školník
+        if current_time == 0:
+            x_hrace = player_instance.prevPosX
+            y_hrace = player_instance.prevPosY
+            janitor(x_hrace, y_hrace)
             
     if gameOver:
-        screen.fill("black")
-        text(125, "GAME OVER", 23*32/2, 14*32/2, (255, 0, 0), "../data/fonts/ARCADECLASSIC.TTF")
-        text(50, "PRESS   ENTER", 23*32/2, 14*32/2 + 75, (100, 0, 0),  "../data/fonts/ARCADECLASSIC.TTF")
+        pruhlednost = 0
         if pressed[pygame.K_RETURN]:
             gameOver = False
-            vyhra = True
+            inMenu = True
+            restart()
+            current_time = default_time
+            health = health_max
             
     if vyhra:
         BARVA_POZADI = (0, 20, 0)
@@ -362,13 +518,16 @@ while True:
             else:
                 barva_textu = (255, 255, 255)
             
-            vyhra = font.render(zprava, True, barva_zpravy)
-            text = font.render(nabidka, True, barva_textu)
+            vyhra_text = font.render(zprava, True, barva_zpravy)
+            text_vyhra = font.render(nabidka, True, barva_textu)
             
             okno.fill(BARVA_POZADI)
             okno.blit(vyhra, (0,0))
             okno.blit(text, (0,50))
             pygame.display.update()
-            
+        else:
+            restart()
+            current_time = default_time
+            health = health_max
     pygame.display.update()
     clock.tick(60)
