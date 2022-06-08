@@ -1,6 +1,6 @@
 import pygame,random,sys
 pygame.init()
-def křídní_minihra():
+def main():
     stav_hry = "zivot"
     def spawn_kridy():
         return random.randint(300,780+203)

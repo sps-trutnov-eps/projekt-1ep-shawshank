@@ -286,7 +286,7 @@ class speaker_class():
             
             
 #hra samotná
-def Kuba_minigame():
+def main():
     #základní proměnné
     width,heigth = 23*32,14*32
     screen = pygame.display.set_mode((width,heigth))

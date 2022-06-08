@@ -6,7 +6,7 @@ import time
 
 pg.init()
 
-def mminihra():
+def main():
     UKOL="Vzpočti Diskriminant"
     BARVA_POZADI = (0, 20, 0)
     okno = pg.display.set_mode((736,448))

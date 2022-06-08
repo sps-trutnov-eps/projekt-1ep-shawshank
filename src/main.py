@@ -1,11 +1,21 @@
 import sys
+import os
+import importlib
 from generace_mapy import generate
 from sprites import *
 import time
-from minihry.polak import Kuba_minigame
-from minihry.michalek import mminihra
-from minihry.svoboda import křídní_minihra
 from inventory import inventoryHasKey, inventoryHasBoots
+
+minigames = []
+try:
+    path = os.path.join(os.getcwd()+"\\minihry")
+    names = os.listdir(path)
+except:
+    path = os.path.join(os.getcwd()+"/minihry")
+    names = os.listdir(path)
+for x in names:
+    minigames.append(importlib.import_module("minihry."+x.split(".")[0]))
+    
 
 pygame.init()
 
@@ -70,10 +80,7 @@ def vystup(pos):
 ##aktivace miniher
 def play_minigame():
     if show_minigame:
-        number = random.randint(0,2)
-        if number == 0: outcome = Kuba_minigame()
-        elif number == 1: outcome = mminihra()
-        elif number == 2: outcome = křídní_minihra()
+        outcome = random.choice(minigames).main()
         screen = pygame.display.set_mode((width,heigth))
         pygame.display.set_caption("¤Útěk ze střední průmyslové Shawshank¤")
         player_hitbox_instance.rect.center = vystup(current_position)
@@ -294,7 +301,7 @@ while True:
             pygame.quit()
             sys.exit()
     
-    if inGame:
+    elif inGame:
         #cheaty
         if pressed[pygame.K_h] and cheat_timeout < 0:
             if hitbox == False:
@@ -513,7 +520,8 @@ while True:
             restart()
             current_time = default_time
             health = health_max
-            
+    
+    #vyhra
     if vyhra:
         BARVA_POZADI = (0, 0, 0)
         barva_zpravy = (0, 0, 0)
