@@ -28,15 +28,35 @@ handle = open("odpovedi.txt", "r", encoding = "utf-8")
 vsechny_odpovedi = handle.read()
 handle.close()
 
+#nacteni-spatnych-odpovedi
+handle = open("spatna_odpoved1.txt", "r", encoding = "utf-8")
+spatna_odpoved1 = handle.read()
+handle.close()
+
+handle = open("spatna_odpoved2.txt", "r", encoding = "utf-8")
+spatna_odpoved2 = handle.read()
+handle.close()
+
+
 #Rozdeleni-na-radky
 spravne_odpovedi = vsechny_odpovedi.strip().split("\n")
-otazky= vsechny_otazky.strip().split("\n")
+otazky = vsechny_otazky.strip().split("\n")
+spatne_odpovedi1 = spatna_odpoved1.strip().split("\n")
+spatne_odpovedi2 = spatna_odpoved2.strip().split("\n")
+
+nahodnaOtazka = random.choice(otazky)
+spravnaOdpoved = spravne_odpovedi[otazky.index(nahodnaOtazka)]
+spatnaOdpoved1 = spatne_odpovedi1[otazky.index(nahodnaOtazka)]
+spatnaOdpoved2 = spatne_odpovedi2[otazky.index(nahodnaOtazka)]
 
 font = pygame.font.SysFont("Consolas", 20)
-text = font.render(random.choice(otazky), True, (255, 255, 255))
+otazkaText = font.render(nahodnaOtazka, True, (255, 255, 255))
+spravnaOdpovedText = font.render(spravnaOdpoved, True, (255, 255, 255))
+spatnaOdpovedText1 = font.render(spatnaOdpoved1, True, (255, 255, 255))
+spatnaOdpovedText2 = font.render(spatnaOdpoved2, True, (255, 255, 255))
 
-vyplneneTlacitko = random.choice(range(0,3))
-print(vyplneneTlacitko)
+spravneTlacitko = random.choice(range(0,3))
+print(spravneTlacitko)
 
 while(True):
     udalosti = pygame.event.get()
@@ -48,11 +68,11 @@ while(True):
     screen.fill((50, 141, 176))
     
     if u.type == pygame.MOUSEBUTTONDOWN and u.button == 1:
-        if vyplneneTlacitko == 0 and pygame.mouse.get_pos()[0] > moznostiPozice[0] and pygame.mouse.get_pos()[0] < moznostiPozice[0] + moznostiSirka[0] and pygame.mouse.get_pos()[1] > moznostiPozice[3] and pygame.mouse.get_pos()[1] < moznostiPozice[3] + moznostiSirka[1]:
+        if spravneTlacitko == 0 and pygame.mouse.get_pos()[0] > moznostiPozice[0] and pygame.mouse.get_pos()[0] < moznostiPozice[0] + moznostiSirka[0] and pygame.mouse.get_pos()[1] > moznostiPozice[3] and pygame.mouse.get_pos()[1] < moznostiPozice[3] + moznostiSirka[1]:
             print("Správně")
-        if vyplneneTlacitko == 1 and pygame.mouse.get_pos()[0] > moznostiPozice[1] and pygame.mouse.get_pos()[0] < moznostiPozice[1] + moznostiSirka[0] and pygame.mouse.get_pos()[1] > moznostiPozice[3] and pygame.mouse.get_pos()[1] < moznostiPozice[3] + moznostiSirka[1]:
+        if spravneTlacitko == 1 and pygame.mouse.get_pos()[0] > moznostiPozice[1] and pygame.mouse.get_pos()[0] < moznostiPozice[1] + moznostiSirka[0] and pygame.mouse.get_pos()[1] > moznostiPozice[3] and pygame.mouse.get_pos()[1] < moznostiPozice[3] + moznostiSirka[1]:
             print("Správně")
-        if vyplneneTlacitko == 2 and pygame.mouse.get_pos()[0] > moznostiPozice[2] and pygame.mouse.get_pos()[0] < moznostiPozice[2] + moznostiSirka[0] and pygame.mouse.get_pos()[1] > moznostiPozice[3] and pygame.mouse.get_pos()[1] < moznostiPozice[3] + moznostiSirka[1]:
+        if spravneTlacitko == 2 and pygame.mouse.get_pos()[0] > moznostiPozice[2] and pygame.mouse.get_pos()[0] < moznostiPozice[2] + moznostiSirka[0] and pygame.mouse.get_pos()[1] > moznostiPozice[3] and pygame.mouse.get_pos()[1] < moznostiPozice[3] + moznostiSirka[1]:
             print("Správně")
     
     #otázka
@@ -61,8 +81,35 @@ while(True):
     pygame.draw.rect(screen, (20, 121, 160), pygame.Rect(moznostiPozice[0], moznostiPozice[3], moznostiSirka[0], moznostiSirka[1]))
     pygame.draw.rect(screen, (20, 121, 160), pygame.Rect(moznostiPozice[1], moznostiPozice[3], moznostiSirka[0], moznostiSirka[1]))
     pygame.draw.rect(screen, (20, 121, 160), pygame.Rect(moznostiPozice[2], moznostiPozice[3], moznostiSirka[0], moznostiSirka[1]))
-    screen.blit(text, (0,40))
+    #otazka otázek
+    screen.blit(otazkaText, (sirka_okna/2 - otazkaText.get_rect().width/2, 100/2 - otazkaText.get_rect().height/2))
+    #otazka odpovedi
+    if spravneTlacitko == 0:
+        screen.blit(spravnaOdpovedText, (moznostiPozice[0] + moznostiSirka[0]/2 - spravnaOdpovedText.get_rect().width/2, moznostiPozice[3] + moznostiSirka[1]/2 - spravnaOdpovedText.get_rect().height/2))
+        screen.blit(spatnaOdpovedText1, (moznostiPozice[1] + moznostiSirka[0]/2 - spravnaOdpovedText.get_rect().width/2, moznostiPozice[3] + moznostiSirka[1]/2 - spravnaOdpovedText.get_rect().height/2))
+        screen.blit(spatnaOdpovedText2, (moznostiPozice[2] + moznostiSirka[0]/2 - spravnaOdpovedText.get_rect().width/2, moznostiPozice[3] + moznostiSirka[1]/2 - spravnaOdpovedText.get_rect().height/2))
+    if spravneTlacitko == 1 :
+        screen.blit(spravnaOdpovedText, (moznostiPozice[1] + moznostiSirka[0]/2 - spravnaOdpovedText.get_rect().width/2, moznostiPozice[3] + moznostiSirka[1]/2 - spravnaOdpovedText.get_rect().height/2))
+    if spravneTlacitko == 2:
+        screen.blit(spravnaOdpovedText, (moznostiPozice[2] + moznostiSirka[0]/2 - spravnaOdpovedText.get_rect().width/2, moznostiPozice[3] + moznostiSirka[1]/2 - spravnaOdpovedText.get_rect().height/2))
+    
+    
+    
     pygame.display.update()
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
 
 #otázky
                
