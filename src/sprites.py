@@ -165,11 +165,11 @@ class janitor(pygame.sprite.Sprite):
             
 class Health_bar(pygame.sprite.Sprite):
     def __init__(self, pozice, okno):
-        self.textura = pygame.image.load("../data/health_bar/health_bar.png").convert_alpha()
+        self.textura = pygame.image.load("../data/hud/health_bar/health_bar.png").convert_alpha()
         self.rect = self.textura.get_rect()
         self.rect.center = pozice
         self.okno = okno
-        self.border = pygame.image.load("../data/health_bar/health_bar_border.png").convert_alpha()
+        self.border = pygame.image.load("../data/hud/health_bar/health_bar_border.png").convert_alpha()
         
     def vykresleni_baru(self):
         self.okno.blit(self.textura, self.rect)
