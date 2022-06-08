@@ -1,6 +1,8 @@
 import pygame,random,sys
 pygame.init()
+pygame.mixer.init()
 def main():
+    theme = pygame.mixer.Sound("../data/music/minigame_theme.mp3")
     stav_hry = "zivot"
     def spawn_kridy():
         return random.randint(300,780+203)
@@ -41,6 +43,8 @@ def main():
     
     run = True
     while run:
+        if not pygame.mixer.get_busy():
+            theme.play()
         score_text = font1.render("SCORE: " + str(skore), True, (0, 0, 0))
         score_text_rect = score_text.get_rect()
         score_text_rect.center = (1280//2, 17)
@@ -73,6 +77,7 @@ def main():
                 okno.blit(text_1,text_1_rect)
                 pygame.display.update()
                 pygame.time.wait(2000)
+                theme.stop()
                 return(True)
                 
         #hra
@@ -117,6 +122,7 @@ def main():
             okno.blit(text,text_rect)
             pygame.display.update()
             pygame.time.wait(2000)
+            theme.stop()
             return False
                   
         pygame.display.update()
