@@ -286,10 +286,7 @@ while True:
         if pressed[pygame.K_g]:
             health = 0
             cheat_timeout = 20
-            
-        if pressed[pygame.K_v]:
-            vyhra = True
-            
+                       
         if pressed[pygame.K_c]:
             print(door_check)
             cheat_timeout = 20
@@ -503,6 +500,7 @@ while True:
                     if u.key == pygame.K_m:
                         vyhra = False
                         inMenu = True
+                        inGame = False
 
             time.sleep(0.05)
             #print("TEst")
@@ -522,12 +520,15 @@ while True:
             text_vyhra = font.render(nabidka, True, barva_textu)
             
             okno.fill(BARVA_POZADI)
-            okno.blit(vyhra, (0,0))
-            okno.blit(text, (0,50))
+            okno.blit(vyhra_text, (0,0))
+            okno.blit(text_vyhra, (0,50))
             pygame.display.update()
+            
+            
         else:
             restart()
             current_time = default_time
             health = health_max
+            
     pygame.display.update()
     clock.tick(60)
