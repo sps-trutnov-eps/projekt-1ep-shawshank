@@ -13,8 +13,10 @@ try:
 except:
     path = os.path.join(os.getcwd()+"/minihry")
     names = os.listdir(path)
-for x in names:
-    minigames.append(importlib.import_module("minihry."+x.split(".")[0]))
+
+for name in names:
+    if ".py" in name:
+        minigames.append(importlib.import_module("minihry."+name.split(".")[0]))
     
 
 pygame.init()

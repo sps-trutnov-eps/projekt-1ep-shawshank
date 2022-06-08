@@ -18,7 +18,7 @@ def draw_screen(obrazovka,pos,drawing_positions):
         if symbol == "1": screen.blit(pixel,(pos[0]+drawing_positions[str(symbol_ind)][0],pos[1]+drawing_positions[str(symbol_ind)][1]))
     if obrazovka[1]:
         screen.blit(dot,(pos[0]+8,pos[1]+4))
-        if obrazovka[1] == "main":
+        if obrazovka[1] != "regular_door":
             dot.fill("red")
             screen.blit(dot,(pos[0]+8,pos[1]+4))
 
@@ -108,7 +108,7 @@ def main_generation():
             [[],[],[],[],[],[],[],[],[],[],[]],
             [[],[],[],[],[],[],[],[],[],[],[]],
             [[],[],[],[],[],[],[],[],[],[],[]],
-            [[],[],[],[],[],["111111","master"],[],[],[],[],[]],
+            [[],[],[],[],[],["111111","regular_door"],[],[],[],[],[]],
             [[],[],[],[],[],[],[],[],[],[],[]],
             [[],[],[],[],[],[],[],[],[],[],[]],
             [[],[],[],[],[],[],[],[],[],[],[]],
@@ -125,21 +125,11 @@ def main_generation():
     pygame.display.update()
 
     #generace hlavních obrazovek
+    mains = ("KEY_ROOM","LOCKER_ROOM","EXIT")
+    ind = 0
     for x in range(3):
-        chosen = ["""101101
-                _            
-               | |             
-               | |             
-               | |             
-               | |             
-               | |             
-               | |             
-               | |             
-          _____| |_____        
-         |_____ X _____|      
-               | |             
-               | |
-               |_|            ""","main"]
+        chosen = ["101101",mains[ind]]
+        ind += 1
         main_screenes.append(chosen) 
         
         pos = [random.randint(1,len(mapa[0])-1),random.randint(1,len(mapa)-1)]
@@ -217,35 +207,29 @@ def generate():
     #vytvoření mapky pro Vojtu
         
     correct_map = []
-    while len(correct_map) != 3 or not "KEY_ROOM" in correct_map or not "LOCKER_ROOM" in correct_map or not "EXIT" in correct_map:
-        correct_map = []
-        game_map = []
-        mains = ("KEY_ROOM","LOCKER_ROOM","EXIT")
-        main_ind = 0
-        for line in mapa: game_map.append([])
-        for row in mapa[0]:
-            for line in game_map:
-                line.append([])
+    correct_map = []
+    game_map = []
+    main_ind = 0
+    for line in mapa: game_map.append([])
+    for row in mapa[0]:
+        for line in game_map:
+            line.append([])
 
-        for line_ind,line in enumerate(mapa):
-            for part_ind,part in enumerate(line):
-                if part != []:
-                    possibilities = []
-                    if part[1]:
-                        for possibility in screens_with_doors:
-                            if possibility[1] == part[0]:
-                                possibilities.append(possibility)
-                    else:
-                        for possibility in screens_without_doors:
-                            if possibility[1] == part[0]:
-                                possibilities.append(possibility)
-                    new = random.choice(possibilities)
-                    if part[1] == "main":
-                        new[2][1] = mains[main_ind]
-                        main_ind += 1
-                    else:
-                        new[2][1] = part[1]
-                    game_map[line_ind][part_ind] = new
+    for line_ind,line in enumerate(mapa):
+        for part_ind,part in enumerate(line):
+            if part != []:
+                possibilities = []
+                if part[1]:
+                    for possibility in screens_with_doors:
+                        if possibility[1] == part[0]:
+                            possibilities.append(possibility)
+                else:
+                    for possibility in screens_without_doors:
+                        if possibility[1] == part[0]:
+                            possibilities.append(possibility)
+                new = random.choice(possibilities)
+                new[2][1] = part[1]
+                game_map[line_ind][part_ind] = new
                     
         for line in game_map:
             for part in line:
