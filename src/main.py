@@ -27,6 +27,7 @@ game_map,master,minimap = generate()
 
 clock = pygame.time.Clock()
 hall = pygame.mixer.Sound("../data/music/þE_hALL.mp3")
+typing = pygame.mixer.Sound("../data/music/demonic_typing.mp3")
 
 cheat_timeout = 20
 show_minimap = False
@@ -34,6 +35,8 @@ mimimap_pos = (width - len(game_map[0])*20,heigth - len(game_map)*12)
 ukazatel = pygame.image.load("../data/hud/ukazatel_na_mapce.png").convert_alpha()
 counter_texture = pygame.image.load("../data/hud/counter.png").convert_alpha()
 counter_surface = counter_texture.get_rect()
+menu_background = pygame.Surface((23*32,14*32))
+menu_background.blit(pygame.transform.rotozoom(pygame.image.load("../data/textury_miniher/Nature.jpg").convert(),0,1/6),(0,-120))
 clip = True
 hitbox = False
 show_minigame = True
@@ -254,8 +257,9 @@ while True:
             pygame.mixer.quit()
     
     if inMenu:
-        screen.fill("black")
-        
+        screen.blit(menu_background,(0,0))
+        if not pygame.mixer.get_busy():
+            typing.play()
         #pohyb přetz tab
         if pressed[pygame.K_TAB] and cheat_timeout < 0:
             if pressed[pygame.K_RSHIFT] or pressed[pygame.K_LSHIFT]:
@@ -302,6 +306,7 @@ while True:
             inMenu = False
             inGame = True
             menu_state = None
+            typing.stop()
             hall.play()
         
         if (text(50, "CREDITS", 23*32 - 225, 200, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]) or ((pressed[pygame.K_KP_ENTER] or pressed[pygame.K_RETURN]) and menu_state == 1):
@@ -341,6 +346,8 @@ while True:
         
         if pressed[pygame.K_t] and cheat_timeout < 0:
             current_time = default_time
+            hall.stop()
+            hall.play()
             cheat_timeout = 20
             
         if pressed[pygame.K_1] and cheat_timeout < 0:

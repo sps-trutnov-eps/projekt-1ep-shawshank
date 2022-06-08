@@ -39,7 +39,7 @@ def main():
         spravne = ""
         vysledek = True
         while not odpovezeno:
-            if not pygame.mixer.get_busy():
+            if not pg.mixer.get_busy():
                 theme.play()
             udalost = pg.event.get()
             stisknuto = pg.key.get_pressed()
