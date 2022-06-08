@@ -57,10 +57,10 @@ health_bar = Health_bar((23*32/2, 24), screen)
 
 #inventář
 inventoryKey_grp = pygame.sprite.Group()
-invKey = inventoryHasKey(23*32-16, 16)
+invKey = inventoryHasKey(23*32-32-16-16, 16+8)
 inventoryKey_grp.add(invKey)
 inventoryBoots_grp = pygame.sprite.Group()
-invBoots = inventoryHasBoots(23*32-32-16, 16)
+invBoots = inventoryHasBoots(23*32-16-8, 16+8)
 inventoryBoots_grp.add(invBoots)
 
 current_position = master
