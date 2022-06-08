@@ -4,7 +4,10 @@ import os
 import random
 def main():
     def cteni_dat_list(jmeno_souboru):
-        soubor = open(os.path.join(os.getcwd(), 'udatny', jmeno_souboru), 'r', encoding = 'utf-8')
+        try:
+            soubor = open(os.path.join(os.getcwd()+f'\\minihry\\udatny\\{jmeno_souboru}'), 'r', encoding = 'utf-8')
+        except:
+            soubor = open(os.path.join(os.getcwd()+f'/minihry/udatny/{jmeno_souboru}'), 'r', encoding = 'utf-8')
         data = []
         klice = soubor.readline()
         klice = klice[:-1].split(",")
@@ -104,7 +107,10 @@ def main():
         udalosti = pygame.event.get()
         stisknuto = pygame.key.get_pressed()
         m_x,m_y = pygame.mouse.get_pos()
-        bg = pygame.image.load(os.path.join("udatny", "desk.png"))
+        try:
+            bg = pygame.image.load(os.path.join("minihry\\udatny", "desk.png"))
+        except:
+            bg = pygame.image.load(os.path.join("minihry/udatny", "desk.png"))
         
         if pokus < 5 and je_otazka == "false":
             #tvorba odpovedi a otazky
