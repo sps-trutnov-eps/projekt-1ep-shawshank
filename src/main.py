@@ -27,7 +27,7 @@ clock = pygame.time.Clock()
 cheat_timeout = 20
 show_minimap = False
 mimimap_pos = (width - len(game_map[0])*20,heigth - len(game_map)*12)
-ukazatel = pygame.image.load("../data/textury_hrac/ukazatel_na_mapce.png").convert_alpha()
+ukazatel = pygame.image.load("../data/hud/ukazatel_na_mapce.png").convert_alpha()
 clip = True
 hitbox = False
 show_minigame = True
@@ -453,13 +453,15 @@ while True:
         health_bar.vykresleni_borderu()
         inventoryKey_grp.draw(screen)
         inventoryBoots_grp.draw(screen)
+        counter_texture = pygame.image.load("../data/hud/counter.png").convert_alpha()
+        counter_surface = counter_texture.get_rect()
+        counter_surface.topleft = (8,6)
+        screen.blit(counter_texture, counter_surface)
         
         #časomíra
         current_time -= 0.016
-        screen.blit(time_outground,(0,0))
-        screen.blit(time_background,(0,0))
-        if current_time > 21: text(30, (str(int(current_time))), 25, 25, "gray", "rockwellcondensedtučné", "center", True)
-        elif current_time > 0 : text(30, (str(int(current_time))), 25, 25, "red", "rockwellcondensedtučné", "center", True)
+        if current_time > 21: text(30, (str(int(current_time))), 24, 25, "gray", "rockwellcondensedtučné", "center", True)
+        elif current_time > 0 : text(30, (str(int(current_time))), 24, 25, "red", "rockwellcondensedtučné", "center", True)
         else:
             if not skolnik.completed:
                 postavy_display_grp.update()
