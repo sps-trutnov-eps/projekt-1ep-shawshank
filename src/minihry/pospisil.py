@@ -1,9 +1,10 @@
 import pygame
 import sys
+import os
 import random
 pygame.init()
 
-def trídnice():
+def main():
     clock = pygame.time.Clock()
     v1,v2 = (500,331)
     smer = ""
@@ -15,7 +16,7 @@ def trídnice():
     
     panacek = True
     
-    obrazek = pygame.image.load("pixil-frame-0.png")
+    obrazek = pygame.image.load(os.path.join("pospisil", "pixil-frame-0.png"))
     
     font = pygame.font.SysFont ("Arial" , 50)
     
@@ -23,7 +24,7 @@ def trídnice():
     
     pygame.display.set_caption("Třídnice!")
     
-    pozadi = pygame.image.load("121.jpg")
+    pozadi = pygame.image.load(os.path.join("pospisil", "121.jpg"))
     
     font1 = pygame.font.SysFont("Arial" , 300)
     
@@ -152,8 +153,3 @@ def trídnice():
                 sys.exit()
                 
         #konec
-       
-            
-            
-    
-trídnice()
