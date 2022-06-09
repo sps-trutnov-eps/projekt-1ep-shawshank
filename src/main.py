@@ -7,12 +7,9 @@ import time
 from inventory import inventoryHasKey, inventoryHasBoots
 
 minigames = []
-try:
-    path = os.path.join(os.getcwd()+"\\minihry")
-    names = os.listdir(path)
-except:
-    path = os.path.join(os.getcwd()+"/minihry")
-    names = os.listdir(path)
+path = os.path.join(os.getcwd(),"minihry")
+names = os.listdir(path)
+
 
 for name in names:
     if ".py" in name:
