@@ -5,8 +5,10 @@ import random
 import time
 
 pg.init()
+pg.mixer.init()
 
 def main():
+    theme = pg.mixer.Sound("../data/music/minigame_theme.mp3")
     UKOL="Vzpočti Diskriminant"
     BARVA_POZADI = (0, 20, 0)
     okno = pg.display.set_mode((736,448))
@@ -15,14 +17,14 @@ def main():
     ukol_barva_alt = (255, 0, 0)
     ub = ukol_barva
 
-    seznam_zadani = {"2x² - 11x + 14 = 0":"9",#"620",
-                     "3x² + 6x + 5 = 0":"-24",#"-111",
-                     "x² + 4x - 16 = 0":"-48",#"257",
-                     "4x² - 8x - 87 = 0":"1456",#"-2800",
-                     "2x² + 5x - 4 = 0":"57",#"84",
-                     "5x² - 12x + 58 = 0":"-1016",#"2809",
-                     "x² + 7x + 5 = 0":"24",#"139",
-                     "3x² - 8x + 5 = 0":"4",#"169",
+    seznam_zadani = {"2x² - 11x + 14 = 0":"9",
+                     "3x² + 6x + 5 = 0":"-24",
+                     "x² + 4x - 16 = 0":"-48",
+                     "4x² - 8x - 87 = 0":"1456",
+                     "2x² + 5x - 4 = 0":"57",
+                     "5x² - 12x + 58 = 0":"-1016",
+                     "x² + 7x + 5 = 0":"24",
+                     "3x² - 8x + 5 = 0":"4",
                      }
     klice = list(seznam_zadani)
     notazek = random.randint(1, 5)
@@ -37,11 +39,14 @@ def main():
         spravne = ""
         vysledek = True
         while not odpovezeno:
+            if not pg.mixer.get_busy():
+                theme.play()
             udalost = pg.event.get()
             stisknuto = pg.key.get_pressed()
             for u in udalost:
                 if u.type == pg.QUIT:
                     pg.quit()
+                    pg.mixer.quit()
                     sys.exit()
                 elif u.type == pg.KEYDOWN and not odpovezeno:
                     if u.key == pg.K_RETURN:
@@ -84,4 +89,5 @@ def main():
             pg.display.update()
         time.sleep(0.5)
         notazek = notazek - 1
+    theme.stop()
     return vysledek

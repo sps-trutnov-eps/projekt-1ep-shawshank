@@ -13,21 +13,30 @@ try:
 except:
     path = os.path.join(os.getcwd()+"/minihry")
     names = os.listdir(path)
-for x in names:
-    minigames.append(importlib.import_module("minihry."+x.split(".")[0]))
+
+for name in names:
+    if ".py" in name:
+        minigames.append(importlib.import_module("minihry."+name.split(".")[0]))
     
 
 pygame.init()
+pygame.mixer.init()
 
 #základní proměnné
 game_map,master,minimap = generate()
 
 clock = pygame.time.Clock()
+hall = pygame.mixer.Sound("../data/music/þE_hALL.mp3")
+typing = pygame.mixer.Sound("../data/music/demonic_typing.mp3")
 
 cheat_timeout = 20
 show_minimap = False
 mimimap_pos = (width - len(game_map[0])*20,heigth - len(game_map)*12)
 ukazatel = pygame.image.load("../data/hud/ukazatel_na_mapce.png").convert_alpha()
+counter_texture = pygame.image.load("../data/hud/counter.png").convert_alpha()
+counter_surface = counter_texture.get_rect()
+menu_background = pygame.Surface((23*32,14*32))
+menu_background.blit(pygame.transform.rotozoom(pygame.image.load("../data/textury_miniher/Nature.jpg").convert(),0,1/6),(0,-120))
 clip = True
 hitbox = False
 show_minigame = True
@@ -79,6 +88,7 @@ def vystup(pos):
             elif symbol == "4": return ((symbol_ind+1)*32+16,line_ind*32+16)
 ##aktivace miniher
 def play_minigame():
+    hall.stop()
     if show_minigame:
         outcome = random.choice(minigames).main()
         screen = pygame.display.set_mode((width,heigth))
@@ -86,12 +96,14 @@ def play_minigame():
         player_hitbox_instance.rect.center = vystup(current_position)
         player_instance.rect.centerx = player_hitbox_instance.rect.centerx+4
         player_instance.rect.bottom = player_hitbox_instance.rect.bottom-2
+        hall.play()
         if outcome: return health
         else: return health-1
     else:
         player_hitbox_instance.rect.center = vystup(current_position)
         player_instance.rect.centerx = player_hitbox_instance.rect.centerx+4
         player_instance.rect.bottom = player_hitbox_instance.rect.bottom-2
+        hall.play()
         return health
 
 #vytvoření textu
@@ -238,13 +250,16 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
+            pygame.mixer.quit()
         if pressed[pygame.K_ESCAPE]:
             pygame.quit()
             sys.exit()
+            pygame.mixer.quit()
     
     if inMenu:
-        screen.fill("black")
-        
+        screen.blit(menu_background,(0,0))
+        if not pygame.mixer.get_busy():
+            typing.play()
         #pohyb přetz tab
         if pressed[pygame.K_TAB] and cheat_timeout < 0:
             if pressed[pygame.K_RSHIFT] or pressed[pygame.K_LSHIFT]:
@@ -291,6 +306,8 @@ while True:
             inMenu = False
             inGame = True
             menu_state = None
+            typing.stop()
+            hall.play()
         
         if (text(50, "CREDITS", 23*32 - 225, 200, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]) or ((pressed[pygame.K_KP_ENTER] or pressed[pygame.K_RETURN]) and menu_state == 1):
             print("Zde budou kredity")
@@ -299,6 +316,7 @@ while True:
 
         if (text(50, "EXIT", 23*32 - 225, 300, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]) or ((pressed[pygame.K_KP_ENTER] or pressed[pygame.K_RETURN]) and menu_state == 2):
             pygame.quit()
+            pygame.mixer.quit()
             sys.exit()
     
     elif inGame:
@@ -328,6 +346,8 @@ while True:
         
         if pressed[pygame.K_t] and cheat_timeout < 0:
             current_time = default_time
+            hall.stop()
+            hall.play()
             cheat_timeout = 20
             
         if pressed[pygame.K_1] and cheat_timeout < 0:
@@ -342,6 +362,7 @@ while True:
             inGame = False
             vyhra = True
             cheat_timeout = 20
+            hall.stop()
             
         if pressed[pygame.K_p] and cheat_timeout < 0:
             if show_minigame == False:
@@ -436,6 +457,7 @@ while True:
                     if invBoots.completed:
                         inGame = False
                         vyhra = True
+                        hall.stop()
         
         #vykreslování
         screen.fill("black")
@@ -453,8 +475,6 @@ while True:
         health_bar.vykresleni_borderu()
         inventoryKey_grp.draw(screen)
         inventoryBoots_grp.draw(screen)
-        counter_texture = pygame.image.load("../data/hud/counter.png").convert_alpha()
-        counter_surface = counter_texture.get_rect()
         counter_surface.topleft = (8,6)
         screen.blit(counter_texture, counter_surface)
         
@@ -463,6 +483,7 @@ while True:
         if current_time > 21: text(30, (str(int(current_time))), 24, 25, "gray", "rockwellcondensedtučné", "center", True)
         elif current_time > 0 : text(30, (str(int(current_time))), 24, 25, "red", "rockwellcondensedtučné", "center", True)
         else:
+            hall.stop()
             if not skolnik.completed:
                 postavy_display_grp.update()
                 postavy_display_grp.draw(screen)
@@ -503,6 +524,7 @@ while True:
             health = -1
             inGame = False
             gameOver = True
+            hall.stop()
             pruhlednost = 255
             fade.set_alpha(pruhlednost)
             g_over_font_render.set_alpha(pruhlednost)
@@ -547,10 +569,13 @@ while True:
             for u in udalost:
                 if u.type == pygame.QUIT:
                     pygame.quit()
+                    pygame.mixer.quit()
                     sys.exit()
+                    
                 elif u.type == pygame.KEYDOWN:
                     if u.key == pygame.K_q:
                         pygame.quit()
+                        pygame.mixer.quit()
                         sys.exit()
                     if u.key == pygame.K_m:
                         inMenu = True

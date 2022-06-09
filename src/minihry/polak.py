@@ -1,5 +1,6 @@
 import pygame,random,sys,ctypes,os
 pygame.init()
+pygame.mixer.init()
 
 #překážky
 class obsticle(pygame.sprite.Sprite):
@@ -288,6 +289,7 @@ class speaker_class():
 #hra samotná
 def main():
     #základní proměnné
+    theme = pygame.mixer.Sound("../data/music/minigame_theme.mp3")
     width,heigth = 23*32,14*32
     screen = pygame.display.set_mode((width,heigth))
     pygame.display.set_caption("¤___¤")
@@ -363,6 +365,8 @@ def main():
             if pressed[pygame.K_ESCAPE]:
                 pygame.quit()
                 sys.exit()
+        if not pygame.mixer.get_busy():
+            theme.play()
         
         #počátek
         if game_state == "intro":
@@ -568,6 +572,7 @@ def main():
                 screen.blit(win_text,win_rect)
                 pygame.display.update()
                 pygame.time.wait(2000)
+                theme.stop()
                 return(False)
         #konec
         else:
@@ -589,6 +594,7 @@ def main():
                 screen.blit(win_text,win_rect)
                 pygame.display.update()
                 pygame.time.wait(2000)
+                theme.stop()
                 return(True)
             
         pygame.display.update()

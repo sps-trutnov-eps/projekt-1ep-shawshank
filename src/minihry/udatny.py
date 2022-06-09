@@ -2,9 +2,13 @@ import pygame
 import sys
 import os
 import random
+pygame.mixer.init()
 def main():
     def cteni_dat_list(jmeno_souboru):
-        soubor = open(os.path.join(os.getcwd(), 'udatny', jmeno_souboru), 'r', encoding = 'utf-8')
+        try:
+            soubor = open(os.path.join(os.getcwd()+f'\\minihry\\udatny\\{jmeno_souboru}'), 'r', encoding = 'utf-8')
+        except:
+            soubor = open(os.path.join(os.getcwd()+f'/minihry/udatny/{jmeno_souboru}'), 'r', encoding = 'utf-8')
         data = []
         klice = soubor.readline()
         klice = klice[:-1].split(",")
@@ -56,7 +60,8 @@ def main():
             list_otazky.append(otazka)
         return otazka
         
-         
+        
+    theme = pygame.mixer.Sound("../data/music/minigame_theme.mp3") 
     odpovedi = cteni_dat_list("odpovedi.csv")
     otazky = cteni_dat_list("otazky.csv")
     rozliseni_okna = rozliseni_x, rozliseni_y = (1200,800)
@@ -104,7 +109,10 @@ def main():
         udalosti = pygame.event.get()
         stisknuto = pygame.key.get_pressed()
         m_x,m_y = pygame.mouse.get_pos()
-        bg = pygame.image.load(os.path.join("udatny", "desk.png"))
+        try:
+            bg = pygame.image.load(os.path.join("minihry\\udatny", "desk.png"))
+        except:
+            bg = pygame.image.load(os.path.join("minihry/udatny", "desk.png"))
         
         if pokus < 5 and je_otazka == "false":
             #tvorba odpovedi a otazky
@@ -152,6 +160,9 @@ def main():
         if stisknuto[pygame.K_ESCAPE]:
             pygame.quit()
             sys.exit()
+            pygame.mixer.quit()
+        if not pygame.mixer.get_busy():
+            theme.play()
           
         if a == 1:        
             if vybrana_odpoved == odpoved['datum']:
@@ -194,4 +205,5 @@ def main():
             else:
                 vysledek = True
             hotovo = False
+            theme.stop()
             return vysledek
