@@ -1,14 +1,23 @@
+import pygame as pg
+import sys
 import random
+import time
 
-
+pg.init()
 
 opakovat = 0
 znamka = 1
 vyhra = False
 
+UKOL="Prvočíslo"
+BARVA_POZADI = (0, 20, 0)
+okno = pg.display.set_mode((736,448))
+pg.display.set_caption(UKOL)
+ukol_barva = (255, 255, 255)
+font = pg.font.SysFont("Comic Sans MS", 42)
 
+def reseni(x, y):
 
-def odpoved(x, y):
     print("řešení: ")
     for z in range(x, y+1):
         if z>1:
@@ -18,19 +27,40 @@ def odpoved(x, y):
             else:
                 print(z)
                 
+    pg.display.update()
+                
 def otazka(zacatek, konec, odpovedi):
-    print("\n\n\n")
+    while not odpovezeno:
+        udalost = pg.event.get()
+        stisknuto = pg.key.get_pressed()
+        for u in udalost:
+            if u.type == pg.QUIT:
+                pg.quit()
+                sys.exit()
+            elif u.type == pg.KEYDOWN and not odpovezeno:
+                if u.key == pg.K_RETURN:
+                    odpovezeno = True
+                elif u.key == pg.K_BACKSPACE:
+                    if len(odpoved)>0:
+                        odpoved = odpoved[:-1]
+                else:
+                    odpoved += u.unicode
     
-    akce = int(input("Napiš prvočíslo od " + str(zacatek) + " do " + str(konec) + ": "))
-
-    if akce in odpovedi:
-        print("Správná odpověd ")
+    
+    
+    uloha = font.render("Napiš prvočíslo od " + str(zacatek) + " do " + str(konec) + ": ", True, (255, 255, 255))
+    odpovedin = font.render(odpoved, True, (255, 255, 255))
+    
+    if int(uloha) in odpovedi:
+    vysledek = "Správná odpověd "
         
     else:
-        print("Špatná odpověd \n")
+        vysledek = "Špatná odpověd \n"
         znamka = znamka + 1
         
-        odpoved(zacatek, konec)                    
+        reseni(zacatek, konec)
+        
+    pg.display.update()
 
 
 
