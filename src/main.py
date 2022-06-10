@@ -23,6 +23,9 @@ pygame.mixer.init()
 game_map,master,minimap = generate()
 
 clock = pygame.time.Clock()
+
+zvonek_0 = pygame.mixer.Sound("../data/music/zvonek_0.mp3")
+zvonek_1 = pygame.mixer.Sound("../data/music/zvonek_1.mp3")
 hall = pygame.mixer.Sound("../data/music/þE_hALL.mp3")
 typing = pygame.mixer.Sound("../data/music/demonic_typing.mp3")
 
@@ -83,9 +86,11 @@ def vystup(pos):
             elif symbol == "2": return ((symbol_ind-1)*32+16,line_ind*32+16)
             elif symbol == "3": return (symbol_ind*32+16,(line_ind-1)*32+16)
             elif symbol == "4": return ((symbol_ind+1)*32+16,line_ind*32+16)
-##aktivace miniher
+#aktivace miniher
 def play_minigame():
     hall.stop()
+    zvonek_1.stop()
+    zvonek_0.stop()
     if show_minigame:
         outcome = random.choice(minigames).main()
         screen = pygame.display.set_mode((width,heigth))
@@ -94,6 +99,7 @@ def play_minigame():
         player_instance.rect.centerx = player_hitbox_instance.rect.centerx+4
         player_instance.rect.bottom = player_hitbox_instance.rect.bottom-2
         hall.play()
+        zvonek_0.play()
         if outcome: return health
         else: return health-1
     else:
@@ -101,6 +107,7 @@ def play_minigame():
         player_instance.rect.centerx = player_hitbox_instance.rect.centerx+4
         player_instance.rect.bottom = player_hitbox_instance.rect.bottom-2
         hall.play()
+        zvonek_0.play()
         return health
 
 #vytvoření textu
@@ -286,7 +293,7 @@ while True:
         text(50, "CREDITS", 23*32 - 225, 200, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False)
         text(50, "EXIT", 23*32 - 225, 300, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False)
         
-        #kolize myši s tlačítky v menu
+        #mačkání tlačítek
         if text(50, "START", 23*32 - 225, 100, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) or menu_state == 0:
             screen.blit(start_highlight, start_highlight_rect)
             menu_state = 0
@@ -305,6 +312,7 @@ while True:
             menu_state = None
             typing.stop()
             hall.play()
+            zvonek_0.play()
         
         if (text(50, "CREDITS", 23*32 - 225, 200, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]) or ((pressed[pygame.K_KP_ENTER] or pressed[pygame.K_RETURN]) and menu_state == 1):
             print("Zde budou kredity")
@@ -481,6 +489,8 @@ while True:
         elif current_time > 0 : text(30, (str(int(current_time))), 24, 25, "red", "rockwellcondensedtučné", "center", True)
         else:
             hall.stop()
+            if not pygame.mixer.get_busy():
+                zvonek_1.play()
             if not skolnik.completed:
                 postavy_display_grp.update()
                 postavy_display_grp.draw(screen)
