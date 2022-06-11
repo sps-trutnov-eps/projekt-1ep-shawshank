@@ -53,4 +53,3 @@ for screen_ind,screen in enumerate(list_of_screens):
     if new[2][0]: screens_with_doors.append(new)
     else: screens_without_doors.append(new)
     #os.rename(path+"\\"+screen,f"{path}\\{binary}_{str(new[2][0])}({screen_ind}).tmx")
-    print(f"lo: {new}")

@@ -8,7 +8,7 @@ screens_with_doors = []
 
 #vytvoření seznamu obrazovek
 for screen_ind,screen in enumerate(list_of_screens):
-    new = ["map","binary",[None,"sem_příjde_třída"],["prozatím_nepoužitá_kolonka_pro_bullyho"]]
+    new = []
     
     #mapka
     try:
@@ -25,29 +25,8 @@ for screen_ind,screen in enumerate(list_of_screens):
             if symbol != "":
                 new_line.append(symbol)
         mapka[line_ind] = new_line
-    new[0] = mapka
+    new = mapka
     
-    #dveře
-    for line in mapka:
-        if "1" in line or "2" in line or "3" in line or "4" in line:
-            new[2][0] = True
-    
-    #průchody
-    binary = ""
-    if mapka[0][6] == "5": binary += "1"
-    else: binary += "0"
-    if mapka[0][15] == "5": binary += "1"
-    else: binary += "0"
-    if mapka[6][-1] == "5": binary += "1"
-    else: binary += "0"
-    if mapka[-1][15] == "5": binary += "1"
-    else: binary += "0"
-    if mapka[-1][6] == "5": binary += "1"
-    else: binary += "0"
-    if mapka[6][0] == "5": binary += "1"
-    else: binary += "0"
-    
-    new[1] = binary
-    
-    if new[2][0]: screens_with_doors.append(new)
+    screens_with_doors.append(new)
+    print(screens_with_doors)
     #os.rename(path+"\\"+screen,f"{path}\\{binary}_{str(new[2][0])}({screen_ind}).tmx")
