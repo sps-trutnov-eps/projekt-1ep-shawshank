@@ -191,7 +191,7 @@ def main_generation():
 
 def generate():
     global screen
-    #možné opakování generace
+    #možné opakování gemerace
     while True:
         mapa,screen,master = main_generation()
         počet_všech = 0
@@ -252,5 +252,3 @@ def generate():
             if part != []: draw_screen(part,(part_ind*20,line_ind*12),drawing_positions)
     
     return game_map,master,screen
-
-print(f"gm: {generate}")

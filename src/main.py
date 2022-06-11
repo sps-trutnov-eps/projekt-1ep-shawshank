@@ -205,7 +205,7 @@ for line_ind,line in enumerate(game_map):
             new.append(random_zdi(something[0],[line_ind,something_ind],something[2][1]))
         else: new.append(None)
     wall_map.append(new)
-    
+print (game_map)
 podlaha,dvere = urceni_sprite_group(game_map[current_position[0]][current_position[1]])
 zdi = wall_map[current_position[0]][current_position[1]]
 
@@ -449,16 +449,43 @@ while True:
                     player_hitbox_instance.rect.center = vystup(current_position)
                     player_instance.rect.centerx = player_hitbox_instance.rect.centerx+4
                     player_instance.rect.bottom = player_hitbox_instance.rect.bottom-2
+
+                    #kod
+                    player_hitbox_instance.rect.left = 0
+                    current_position[1] +=1
+                    
+                    podlaha,dvere = urceni_sprite_group(game_map[current_position[0]][current_position[1]])
+                    zdi = wall_map[current_position[0]][current_position[1]]
+                    #kod
+                    
                     if not invKey.completed: inventoryKey_grp.update()
                 elif door.door_type == "LOCKER_ROOM":
                     player_hitbox_instance.rect.center = vystup(current_position)
                     player_instance.rect.centerx = player_hitbox_instance.rect.centerx+4
                     player_instance.rect.bottom = player_hitbox_instance.rect.bottom-2
+                    
+                    #kod
+                    player_hitbox_instance.rect.left = 0
+                    current_position[1] +=1
+                    
+                    podlaha,dvere = urceni_sprite_group(game_map[current_position[0]][current_position[1]])
+                    zdi = wall_map[current_position[0]][current_position[1]]
+                    #kod
+                    
                     if not invBoots.completed and invKey.completed: inventoryBoots_grp.update()
                 elif door.door_type == "EXIT":
                     player_hitbox_instance.rect.center = vystup(current_position)
                     player_instance.rect.centerx = player_hitbox_instance.rect.centerx+4
                     player_instance.rect.bottom = player_hitbox_instance.rect.bottom-2
+                    
+                    #kod
+                    player_hitbox_instance.rect.left = 0
+                    current_position[1] +=1
+                    
+                    podlaha,dvere = urceni_sprite_group(game_map[current_position[0]][current_position[1]])
+                    zdi = wall_map[current_position[0]][current_position[1]]
+                    #kod
+                    
                     if invBoots.completed:
                         inGame = False
                         vyhra = True

@@ -1,11 +1,10 @@
 import os
 
 #určení základních proměných + cesty k "projekt-1ep-shawshank"
-path = os.path.join(os.getcwd(),"..","data","tiles")
+path = os.path.join(os.getcwd(),"..","data","special_mistnosti")
 list_of_screens = os.listdir(path)
     
 screens_with_doors = []
-screens_without_doors = []
 
 #vytvoření seznamu obrazovek
 for screen_ind,screen in enumerate(list_of_screens):
@@ -51,6 +50,4 @@ for screen_ind,screen in enumerate(list_of_screens):
     new[1] = binary
     
     if new[2][0]: screens_with_doors.append(new)
-    else: screens_without_doors.append(new)
     #os.rename(path+"\\"+screen,f"{path}\\{binary}_{str(new[2][0])}({screen_ind}).tmx")
-    print(f"lo: {new}")
