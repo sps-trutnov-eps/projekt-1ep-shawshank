@@ -28,5 +28,4 @@ for screen_ind,screen in enumerate(list_of_screens):
     new = mapka
     
     screens_with_doors.append(new)
-    print(screens_with_doors)
     #os.rename(path+"\\"+screen,f"{path}\\{binary}_{str(new[2][0])}({screen_ind}).tmx")
