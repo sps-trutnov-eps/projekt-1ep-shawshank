@@ -24,6 +24,7 @@ game_map,master,minimap = generate()
 
 clock = pygame.time.Clock()
 
+jasot = pygame.mixer.Sound("../data/music/jásot.mp3")
 zvonek_0 = pygame.mixer.Sound("../data/music/zvonek_0.mp3")
 zvonek_1 = pygame.mixer.Sound("../data/music/zvonek_1.mp3")
 hall = pygame.mixer.Sound("../data/music/þE_hALL.mp3")
@@ -571,6 +572,7 @@ while True:
         nabidka = "q - odejít   m - \"menu\""
             
         while vyhra:
+            if not pygame.mixer.get_busy(): jasot.play()
             udalost = pygame.event.get()
             stisknuto = pygame.key.get_pressed()
             for u in udalost:
@@ -587,6 +589,7 @@ while True:
                     if u.key == pygame.K_m:
                         inMenu = True
                         vyhra = False
+                        jasot.stop()
                         
             time.sleep(0.05)
             
