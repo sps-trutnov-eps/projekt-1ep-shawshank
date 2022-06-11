@@ -24,6 +24,9 @@ def speak(text,pos,screen):
     writing = ""
     text = text.split("\n")
     for symbol in text[0]:
+        pressed = pygame.key.get_pressed()
+        if pressed[pygame.K_SPACE] or pressed[pygame.K_RETURN] or pressed[pygame.K_KP_ENTER]:
+            break
         writing += symbol
         screen.blit(font.render(writing,False,"black"),(pos[0]+20,pos[1]+20))
         pygame.display.update()
