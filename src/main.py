@@ -549,20 +549,9 @@ while True:
                     
                     if not invBoots.completed and invKey.completed: inventoryBoots_grp.update()
                 elif door.door_type == "EXIT":
-                    #test kod
-                    
                     player_hitbox_instance.rect.center = vystup(current_position)
                     player_instance.rect.centerx = player_hitbox_instance.rect.centerx+4
                     player_instance.rect.bottom = player_hitbox_instance.rect.bottom-2
-                    
-                    prevPlayerPos = player_hitbox_instance.rect.center
-                    player_hitbox_instance.rect.center = (10, 200)
-                    
-                    podlaha,dvere = specialni_podlahy(screens_with_doors[0])
-                    zdi = specialni_zdi(screens_with_doors[0])
-                    #test kod
-                    
-                    inSpecialRoom = True
                     
                     if invBoots.completed:
                         inGame = False
