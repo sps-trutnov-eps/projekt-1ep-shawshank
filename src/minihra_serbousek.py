@@ -35,6 +35,10 @@ abeceda = [
     {"znak": "Y", "stav": True , "stav2": False},
     {"znak": "Z", "stav": True , "stav2": False}
     ]
+znaky_nahoda = []
+for pismeno in nahoda:
+    znaky_nahoda.append({"znak": pismeno, "stav": False})
+    
 while not game_over:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -55,14 +59,30 @@ while not game_over:
                 text = font.render(pismeno["znak"],True,white)
             elif pismeno["stav2"] == True:
                 text = font.render(pismeno["znak"],True,red)
+            rozmery_pismene = font.size(pismeno["znak"])
         elif pismeno["stav"] == False:
             text = font.render("_",True,white)
+            rozmery_pismene = font.size("_")
         textRect = text.get_rect()
-        rozmery_pismene = font.size(pismeno["znak"])
         textRect.center = (rozmery_pismene[0]//2 + odsazeni, Y // 1.05)
         window.blit(text, textRect)
         odsazeni += rozmery_pismene[0] + 7.5
+   
+    odsazeni = 10
+    for x in znaky_nahoda:
+        if x["stav"] == True:
+            text = font.render(x["znak"],True,white)
+            rozmery_pismene = font.size(x["znak"])
+        elif x["stav"] == False:
+            text = font.render("_",True,white)
+            rozmery_pismene = font.size("_")
+        textRect = text.get_rect()
+        textRect.center = (rozmery_pismene[0]//2 + odsazeni, Y // 2)
+        window.blit(text, textRect)
+        odsazeni += rozmery_pismene[0] + 7.5
     stisk = pygame.key.get_pressed()
+        
+    
         #OVLÁDÁNÍ DOPRAVA
     if stisk[pygame.K_RIGHT]:
         for p, pismeno in enumerate(abeceda):
@@ -104,4 +124,4 @@ while not game_over:
         
         
     pygame.time.delay(60)
-    pygame.display.update()   
+    pygame.display.update()    
