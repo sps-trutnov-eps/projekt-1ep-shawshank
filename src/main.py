@@ -25,6 +25,7 @@ game_map,master,minimap = generate()
 clock = pygame.time.Clock()
 
 jasot = pygame.mixer.Sound("../data/music/jásot.mp3")
+rozmluva = pygame.mixer.Sound("../data/music/mírumilovná_rozmluva.mp3")
 zvonek_0 = pygame.mixer.Sound("../data/music/zvonek_0.mp3")
 zvonek_1 = pygame.mixer.Sound("../data/music/zvonek_1.mp3")
 hall = pygame.mixer.Sound("../data/music/þE_hALL.mp3")
@@ -38,6 +39,16 @@ counter_texture = pygame.image.load("../data/hud/counter.png").convert_alpha()
 counter_surface = counter_texture.get_rect()
 menu_background = pygame.Surface((23*32,14*32))
 menu_background.blit(pygame.transform.rotozoom(pygame.image.load("../data/textury_miniher/Nature.jpg").convert(),0,1/6),(0,-120))
+
+g_over_font = pygame.font.Font("../data/fonts/ARCADECLASSIC.TTF", 125)
+return_font = pygame.font.Font("../data/fonts/ARCADECLASSIC.TTF", 50)
+g_over_font_render = g_over_font.render("GAME OVER", True, (255, 0, 0))
+return_font_render = return_font.render("PRESS   ENTER", True, (100, 0, 0))
+g_over_font_rect = g_over_font_render.get_rect(center=(23*32/2, 14*32/2))
+return_font_rect = return_font_render.get_rect(center=(23*32/2, 14*32/2 + 75))
+g_over_font_render.set_alpha(0)
+return_font_render.set_alpha(0)
+
 clip = True
 hitbox = False
 show_minigame = True
@@ -508,14 +519,6 @@ while True:
         
         #prohra
         if health == 0:
-            g_over_font = pygame.font.Font("../data/fonts/ARCADECLASSIC.TTF", 125)
-            return_font = pygame.font.Font("../data/fonts/ARCADECLASSIC.TTF", 50)
-            g_over_font_render = g_over_font.render("GAME OVER", True, (255, 0, 0))
-            return_font_render = return_font.render("PRESS   ENTER", True, (100, 0, 0))
-            g_over_font_rect = g_over_font_render.get_rect(center=(23*32/2, 14*32/2))
-            return_font_rect = return_font_render.get_rect(center=(23*32/2, 14*32/2 + 75))
-            g_over_font_render.set_alpha(0)
-            return_font_render.set_alpha(0)
             
             while pruhlednost <= 12:
                 pruhlednost += 0.1
@@ -533,6 +536,8 @@ while True:
             inGame = False
             gameOver = True
             hall.stop()
+            zvonek_0.stop()
+            zvonek_1.stop()
             pruhlednost = 255
             fade.set_alpha(pruhlednost)
             g_over_font_render.set_alpha(pruhlednost)
@@ -545,16 +550,21 @@ while True:
             janitor(x_hrace, y_hrace)
             
     if gameOver:
+        if not pygame.mixer.get_busy():
+            rozmluva.play()
         pruhlednost = 0
         if pressed[pygame.K_RETURN]:
             gameOver = False
             inMenu = True
+            rozmluva.stop()
             restart()
             current_time = default_time
             health = health_max
     
     #vyhra
     if vyhra:
+        zvonek_0.stop()
+        zvonek_1.stop()
         BARVA_POZADI = (0, 0, 0)
         barva_zpravy = (0, 0, 0)
         barva_textu = (0, 0, 0)
