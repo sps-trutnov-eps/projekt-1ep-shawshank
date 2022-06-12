@@ -5,13 +5,14 @@ window = pygame.display.set_mode((640,480))
 pygame.display.update()
 pygame.display.set_caption("Šibenice")
 game_over = False
-slova = ["tabule", "krida"]
+slova = ["TABULE", "KRIDA",]
 nahoda = random.choice(slova)
+chyby = 0
 abeceda = [
     {"znak": "A", "stav": True , "stav2": True},
     {"znak": "B", "stav": True , "stav2": False},
     {"znak": "C", "stav": True , "stav2": False},
-    {"znak": "D", "stav": False , "stav2": False},
+    {"znak": "D", "stav": True , "stav2": False},
     {"znak": "E", "stav": True , "stav2": False},
     {"znak": "F", "stav": True , "stav2": False},
     {"znak": "G", "stav": True , "stav2": False},
@@ -114,14 +115,23 @@ while not game_over:
         #POUŽÍVÁNÍ PÍSMEN
     if stisk[pygame.K_SPACE]:
         for p, pismeno in enumerate(abeceda):
-            if pismeno["stav2"] == False:
+            if pismeno["stav2"] == False or pismeno["stav"] == False:
                 pass
-            elif pismeno["stav2"] == True:
+            elif pismeno["stav2"] == True and pismeno["stav"] == True:
                 pozice = p
+                nalezeno = False
+                for znak in znaky_nahoda:
+                    if znak["znak"] == pismeno["znak"]:
+                        znak["stav"] = True
+                        nalezeno = True
+                    else:
+                        pass
+                if nalezeno == False:
+                    chyby += 1
                 break
         abeceda[pozice]["stav"] = False
-    
+    print(chyby)
         
         
     pygame.time.delay(60)
-    pygame.display.update()    
+    pygame.display.update()     
