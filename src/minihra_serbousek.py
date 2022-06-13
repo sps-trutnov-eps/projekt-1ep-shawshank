@@ -1,5 +1,6 @@
 import pygame
 import random
+import sys
 pygame.init()
 window = pygame.display.set_mode((640,480))
 pygame.display.update()
@@ -7,7 +8,9 @@ pygame.display.set_caption("Šibenice")
 game_over = False
 slova = ["TABULE", "KRIDA",]
 nahoda = random.choice(slova)
+font2 = pygame.font.SysFont('forte', 50)
 chyby = 0
+spravne = 0
 abeceda = [
     {"znak": "A", "stav": True , "stav2": True},
     {"znak": "B", "stav": True , "stav2": False},
@@ -38,13 +41,18 @@ abeceda = [
     ]
 znaky_nahoda = []
 for pismeno in nahoda:
-    znaky_nahoda.append({"znak": pismeno, "stav": False})
+    znaky_nahoda.append({"znak": pismeno, "stav": False, "pripocteni": False})
     
 while not game_over:
+    stisk = pygame.key.get_pressed()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             game_over = True
             quit()
+    if stisk[pygame.K_ESCAPE]:
+        pygame.quit()
+        sys.exit()
+        
     color = (0,44,0)
     white = (255, 255, 255)
     red = (255, 0, 0)
@@ -111,7 +119,7 @@ while not game_over:
             abeceda[25]["stav2"] = True
         else:
             abeceda[pozice-1]["stav2"] = True
-            
+        
         #POUŽÍVÁNÍ PÍSMEN
     if stisk[pygame.K_SPACE]:
         for p, pismeno in enumerate(abeceda):
@@ -143,7 +151,32 @@ while not game_over:
     if chyby >= 5:
         pygame.draw.line(window, white, (488, 102), (488, 140),5)
     if chyby >= 6:
-        pygame.draw.circle
+        pygame.draw.circle(window, white, (488, 170), 30, 5)
+    if chyby >= 7:
+        pygame.draw.line(window, white, (488, 200), (488, 280), 5)
+    if chyby >= 8:
+        pygame.draw.line(window, white, (488, 200), (520, 260), 5)
+    if chyby >= 9:
+        pygame.draw.line(window, white, (488, 200), (456, 260), 5)
+    if chyby >= 10: 
+        pygame.draw.line(window, white, (488, 280), (520, 340), 5)
+    if chyby >= 11:
+        pygame.draw.line(window, white, (488, 280), (456, 340), 5)
         
+        text = font2.render("Prohrál jsi", True, red)
+        textRect.center = (320, 240)
+        window.blit(text, textRect)
+        
+        #KONTROLA VÝHRY
+    for znak in znaky_nahoda:
+        if znak["stav"] == True and znak["pripocteni"] == False:
+            spravne += 1
+            znak["pripocteni"] = True
+    if spravne == len(znaky_nahoda):
+        text2 = font2.render("Vyhrál jsi", True, red)
+        textRect.center = (320, 240)
+        window.blit(text2, textRect)
+       
     pygame.time.delay(60)
-    pygame.display.update()      
+    pygame.display.update()
+pygame.display.update() 
