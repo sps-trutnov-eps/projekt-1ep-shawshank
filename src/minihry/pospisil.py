@@ -16,8 +16,11 @@ def main():
     
     panacek = True
     
+<<<<<<< HEAD
     theme = pygame.mixer.Sound("../data/music/minigame_theme.mp3")
     
+=======
+>>>>>>> main
     obrazek = pygame.image.load(os.path.join(os.getcwd(), "minihry", "pospisil", "pixil-frame-0.png"))
     
     font = pygame.font.SysFont ("Arial" , 50)
@@ -45,8 +48,11 @@ def main():
     cas_zacatek = pygame.time.get_ticks() 
 
     while True:
+<<<<<<< HEAD
         if not pygame.mixer.get_busy():
             theme.play()
+=======
+>>>>>>> main
         if generování:
             xs = random.randint(36,964)
             ys = random.randint(36,631)
@@ -104,6 +110,7 @@ def main():
         
         
         if smer is "sever":
+<<<<<<< HEAD
             v2 = v2-6
         if smer is "jih":
             v2 = v2+6
@@ -111,6 +118,15 @@ def main():
             v1 = v1+6
         if smer is "západ":
             v1 = v1-6
+=======
+            v2 = v2-0.5
+        if smer is "jih":
+            v2 = v2+0.5
+        if smer is "východ":
+            v1 = v1+0.5
+        if smer is "západ":
+            v1 = v1-0.5
+>>>>>>> main
         
         okno.fill((0,0,0))
         
@@ -133,7 +149,10 @@ def main():
             panacek = False
             okno.blit(nadpis2, (rozliseni_x/2 - nadpis2.get_rect().width/2, rozliseni_y/2 - nadpis2.get_rect().height/2))
         if konec1 == True and ubehly_cas1 >=70:
+<<<<<<< HEAD
             theme.stop()
+=======
+>>>>>>> main
             return(True)
         
         
@@ -143,7 +162,10 @@ def main():
             panacek = False
             okno.blit(nadpis1, (rozliseni_x/2 - nadpis1.get_rect().width/2, rozliseni_y/2 - nadpis1.get_rect().height/2))
         if konec == True and ubehly_cas1 >=10:
+<<<<<<< HEAD
             theme.stop()
+=======
+>>>>>>> main
             return(True)
         
 
@@ -153,10 +175,17 @@ def main():
 
         
         pygame.display.update()
+<<<<<<< HEAD
         clock.tick(60)
+=======
+        
+>>>>>>> main
         if udalost.type is pygame.QUIT:
                 pygame.quit()
                 sys.exit()
                 
         #konec
+<<<<<<< HEAD
     theme.stop()
+=======
+>>>>>>> main
