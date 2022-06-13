@@ -43,9 +43,10 @@ hitbox = False
 show_minigame = True
 player_x = 23 * 32 / 2
 player_y = 14 * 32 / 2
-player_speed = 30
+player_speed = 10
 health_max = health = 5
 mozne_prechody = []
+interactive = pygame.sprite.Group()
 player_movable = True
 
 default_time = 60
@@ -208,12 +209,15 @@ def specialni_zdi(mapka):
             elif symbol == "38":
                 zdi.add(zed((symbol_ind*32,radek_ind*32),"stul_dole",mapka[2][1]))
                 podlaha.add(specialni_podlahy(screens_with_doors[1], True, symbol_ind, radek_ind, "34"))
+                interactive.add(zed((symbol_ind*32,radek_ind*32),"stul_dole",mapa[2][1]))
             elif symbol == "40":
                 zdi.add(zed((symbol_ind*32,radek_ind*32),"stul_stred",mapka[2][1]))
                 podlaha.add(specialni_podlahy(screens_with_doors[1], True, symbol_ind, radek_ind, "34"))
+                interactive.add(zed((symbol_ind*32,radek_ind*32),"stul_stred",mapa[2][1]))
             elif symbol == "39":
                 zdi.add(zed((symbol_ind*32,radek_ind*32),"stul_hore",mapka[2][1]))
                 podlaha.add(specialni_podlahy(screens_with_doors[1], True, symbol_ind, radek_ind, "34"))
+                interactive.add(zed((symbol_ind*32,radek_ind*32),"stul_hore",mapa[2][1]))
     return zdi
 
 #načtení podlahy speciální místnosti
@@ -556,6 +560,13 @@ while True:
         player_instance.rect.centerx = player_hitbox_instance.rect.centerx
         player_instance.rect.bottom = player_hitbox_instance.rect.bottom+1
         
+        if pygame.sprite.spritecollide(hrac_hitbox, interactive, False):
+            for objekt in interactive:
+                if objekt.objekt_type == "stul_stred" or objekt.objekt_type == "stul_hore" or objekt.objekt_type == "stul_dole":
+                    if not invKey.completed: inventoryKey_grp.update()
+                if objekt.objekt_type == "skrinka_horizontalni_zamek":
+                    if not invBoots.completed and invKey.completed: inventoryBoots_grp.update()
+        
         #kolize s dvermi
         if pygame.sprite.spritecollide(hrac_hitbox, dvere, False):
             for door in dvere:
@@ -574,8 +585,6 @@ while True:
                     zdi = specialni_zdi(screens_with_doors[1])
                     
                     inSpecialRoom = True
-                    
-                    if not invKey.completed: inventoryKey_grp.update()
                 elif door.door_type == "LOCKER_ROOM":
                     player_hitbox_instance.rect.center = vystup(current_position)
                     player_instance.rect.centerx = player_hitbox_instance.rect.centerx+4
@@ -588,8 +597,6 @@ while True:
                     zdi = specialni_zdi(screens_with_doors[0])
                     
                     inSpecialRoom = True
-                    
-                    if not invBoots.completed and invKey.completed: inventoryBoots_grp.update()
                 elif door.door_type == "EXIT":
                     player_hitbox_instance.rect.center = vystup(current_position)
                     player_instance.rect.centerx = player_hitbox_instance.rect.centerx+4
