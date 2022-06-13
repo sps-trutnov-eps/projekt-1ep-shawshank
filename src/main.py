@@ -43,7 +43,7 @@ hitbox = False
 show_minigame = True
 player_x = 23 * 32 / 2
 player_y = 14 * 32 / 2
-player_speed = 3
+player_speed = 30
 health_max = health = 5
 mozne_prechody = []
 player_movable = True
@@ -146,6 +146,7 @@ def text(text_size, text, x, y, text_color, text_font, align, sysfont):
     
 #načtení zdí speciální místnosti
 def specialni_zdi(mapka):
+    global podlaha
     zdi = pygame.sprite.Group()
     for radek_ind,radek in enumerate(mapka):
         for symbol_ind,symbol in enumerate(radek):
@@ -175,28 +176,45 @@ def specialni_zdi(mapka):
                 zdi.add(zed((symbol_ind*32,radek_ind*32),"vnější_roh_3",mapka[2][1]))
             elif symbol == "29":
                 zdi.add(zed((symbol_ind*32,radek_ind*32),"skrinka_horizontalni",mapka[2][1]))
+            elif symbol == "21":
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"skrinka_vertikalni",mapka[2][1]))
+                podlaha.add(specialni_podlahy(screens_with_doors[1], True, symbol_ind, radek_ind, "24"))
+            elif symbol == "23":
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"skrinka_vertikalni_vrsek",mapka[2][1]))
+                podlaha.add(specialni_podlahy(screens_with_doors[1], True, symbol_ind, radek_ind, "24"))
             elif symbol == "25":
                 zdi.add(zed((symbol_ind*32,radek_ind*32),"kos",mapka[2][1]))
+                podlaha.add(specialni_podlahy(screens_with_doors[1], True, symbol_ind, radek_ind, "24"))
             elif symbol == "20":
                 zdi.add(zed((symbol_ind*32,radek_ind*32),"lavicka_horizontalni",mapka[2][1]))
+                podlaha.add(specialni_podlahy(screens_with_doors[1], True, symbol_ind, radek_ind, "24"))
             elif symbol == "19":
-                zdi.add(zed((symbol_ind*32,radek_ind*32),"lavicka_horizontalni_konec",mapka[2][1]))
+                zdi.add(zed((symbol_ind*32 + 5,radek_ind*32),"lavicka_horizontalni_konec_leva",mapka[2][1]))
+                podlaha.add(specialni_podlahy(screens_with_doors[1], True, symbol_ind, radek_ind, "24"))
+            elif symbol == "42":
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"lavicka_horizontalni_konec_prava",mapka[2][1]))
+                podlaha.add(specialni_podlahy(screens_with_doors[1], True, symbol_ind, radek_ind, "24"))
             elif symbol == "31":
                 zdi.add(zed((symbol_ind*32,radek_ind*32),"skrinka_horizontalni_zamek",mapka[2][1]))
     return zdi
 
 #načtení podlahy speciální místnosti
-def specialni_podlahy(mapka):
+def specialni_podlahy(mapka, under, symbolpos, radekpos, symbol):
     podlaha = pygame.sprite.Group()
     dvere = pygame.sprite.Group()
-    for radek_ind,radek in enumerate(mapka):
-        for symbol_ind,symbol in enumerate(radek):
-            if symbol == "18":
-                podlaha.add(zed((symbol_ind*32,radek_ind*32),"void",mapka[2][1]))
-            elif symbol == "24":
-                podlaha.add(zed((symbol_ind*32,radek_ind*32),"podlaha_kachlicky",mapka[2][1]))
-            elif symbol == "32":
-                podlaha.add(zed((symbol_ind*32,radek_ind*32),"podlaha_dark",mapka[2][1]))
+    if under != True:
+        for radek_ind,radek in enumerate(mapka):
+            for symbol_ind,symbol in enumerate(radek):
+                True
+                if symbol == "18":
+                    podlaha.add(zed((symbol_ind*32,radek_ind*32),"void",mapka[2][1]))
+                elif symbol == "24":
+                    podlaha.add(zed((symbol_ind*32,radek_ind*32),"podlaha_kachlicky",mapka[2][1]))
+                elif symbol == "32":
+                    podlaha.add(zed((symbol_ind*32,radek_ind*32),"podlaha_dark",mapka[2][1]))
+    else:
+        if symbol == "24":
+            podlaha.add(zed((symbolpos*32,radekpos*32),"podlaha_kachlicky",mapka[2][1]))
     return podlaha,dvere
     
 #načtení zdí specificky
@@ -322,7 +340,7 @@ while True:
         screen.blit(menu_background,(0,0))
         if not pygame.mixer.get_busy():
             typing.play()
-        #pohyb přetz tab
+        #pohyb přes tab
         if pressed[pygame.K_TAB] and cheat_timeout < 0:
             if pressed[pygame.K_RSHIFT] or pressed[pygame.K_LSHIFT]:
                 if menu_state == None: menu_state = 2
@@ -528,7 +546,7 @@ while True:
                     prevPlayerPos = player_hitbox_instance.rect.center
                     player_hitbox_instance.rect.center = (500, 10)
 
-                    podlaha,dvere = specialni_podlahy(screens_with_doors[1])
+                    podlaha,dvere = specialni_podlahy(screens_with_doors[1], False, 0, 0, "0")
                     zdi = specialni_zdi(screens_with_doors[1])
                     
                     inSpecialRoom = True
@@ -542,7 +560,7 @@ while True:
                     prevPlayerPos = player_hitbox_instance.rect.center
                     player_hitbox_instance.rect.center = (10, 200)
                     
-                    podlaha,dvere = specialni_podlahy(screens_with_doors[0])
+                    podlaha,dvere = specialni_podlahy(screens_with_doors[0], False, 0, 0, "0")
                     zdi = specialni_zdi(screens_with_doors[0])
                     
                     inSpecialRoom = True
@@ -560,8 +578,8 @@ while True:
         
         #vykreslování
         screen.fill("black")
-        zdi.draw(screen)
         podlaha.draw(screen)
+        zdi.draw(screen)
         dvere.draw(screen)
         if show_minimap:
             screen.blit(minimap,mimimap_pos)

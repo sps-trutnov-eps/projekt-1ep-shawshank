@@ -41,7 +41,8 @@ images = {"zeď_0" : pygame.image.load("../data/textury_hry/zeď_0.png").convert
           "podlaha_kachlicky" : pygame.image.load("../data/textury_hry/kachličky.png").convert(),
           
           "lavicka_horizontalni" : pygame.image.load("../data/textury_hry/horizontalni_lavicka_base.png").convert(),
-          "lavicka_horizontalni_konec" : pygame.image.load("../data/textury_hry/horizontální_lavička.png").convert(),
+          "lavicka_horizontalni_konec_leva" : pygame.image.load("../data/textury_hry/horizontální_lavička.png").convert(),
+          "lavicka_horizontalni_konec_prava" : pygame.transform.flip(pygame.image.load("../data/textury_hry/horizontální_lavička.png").convert(), True, False),
           "lavicka_vertikalni" : pygame.image.load("../data/textury_hry/lavička_vertikální.png").convert(),
           "lavicka_vertikalni_konec1" : pygame.image.load("../data/textury_hry/lavička_vertikální_konec.png").convert(),
           "lavicka_vertikalni_konec2" : pygame.image.load("../data/textury_hry/lavička_vertikální_konec_1.png").convert(),
