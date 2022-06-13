@@ -36,8 +36,8 @@ images = {"zeď_0" : pygame.image.load("../data/textury_hry/zeď_0.png").convert
           "special_2" : pygame.image.load("../data/textury_hry/special_dveře_2.png").convert(),
           
           "podlaha_dark" : pygame.image.load("../data/textury_hry/dark_podlaha.png").convert(),
-          "podlaha_dark_blood" : pygame.image.load("../data/textury_hry/podlaha.png").convert(),
-          "podlaha_dark_blooood" : pygame.image.load("../data/textury_hry/podlaha.png").convert(),
+          "podlaha_dark_blood" : pygame.image.load("../data/textury_hry/dark_podlaha_blood.png").convert(),
+          "podlaha_dark_blooood" : pygame.image.load("../data/textury_hry/dark_podlaha_blooood.png").convert(),
           "podlaha_kachlicky" : pygame.image.load("../data/textury_hry/kachličky.png").convert(),
           
           "lavicka_horizontalni" : pygame.image.load("../data/textury_hry/horizontalni_lavicka_base.png").convert(),

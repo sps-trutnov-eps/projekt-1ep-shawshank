@@ -196,6 +196,24 @@ def specialni_zdi(mapka):
                 podlaha.add(specialni_podlahy(screens_with_doors[1], True, symbol_ind, radek_ind, "24"))
             elif symbol == "31":
                 zdi.add(zed((symbol_ind*32,radek_ind*32),"skrinka_horizontalni_zamek",mapka[2][1]))
+            elif symbol == "35":
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"odpatkove_pytle",mapka[2][1]))
+                podlaha.add(specialni_podlahy(screens_with_doors[1], True, symbol_ind, radek_ind, "34"))
+            elif symbol == "36":
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"skrin",mapka[2][1]))
+                podlaha.add(specialni_podlahy(screens_with_doors[1], True, symbol_ind, radek_ind, "34"))
+            elif symbol == "37":
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"skrin_bok",mapka[2][1]))
+                podlaha.add(specialni_podlahy(screens_with_doors[1], True, symbol_ind, radek_ind, "34"))
+            elif symbol == "38":
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"stul_dole",mapka[2][1]))
+                podlaha.add(specialni_podlahy(screens_with_doors[1], True, symbol_ind, radek_ind, "34"))
+            elif symbol == "40":
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"stul_stred",mapka[2][1]))
+                podlaha.add(specialni_podlahy(screens_with_doors[1], True, symbol_ind, radek_ind, "34"))
+            elif symbol == "39":
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"stul_hore",mapka[2][1]))
+                podlaha.add(specialni_podlahy(screens_with_doors[1], True, symbol_ind, radek_ind, "34"))
     return zdi
 
 #načtení podlahy speciální místnosti
@@ -212,9 +230,15 @@ def specialni_podlahy(mapka, under, symbolpos, radekpos, symbol):
                     podlaha.add(zed((symbol_ind*32,radek_ind*32),"podlaha_kachlicky",mapka[2][1]))
                 elif symbol == "32":
                     podlaha.add(zed((symbol_ind*32,radek_ind*32),"podlaha_dark",mapka[2][1]))
+                elif symbol == "33":
+                    podlaha.add(zed((symbol_ind*32,radek_ind*32),"podlaha_dark_blood",mapka[2][1]))
+                elif symbol == "34":
+                    podlaha.add(zed((symbol_ind*32,radek_ind*32),"podlaha_dark_blooood",mapka[2][1]))
     else:
         if symbol == "24":
             podlaha.add(zed((symbolpos*32,radekpos*32),"podlaha_kachlicky",mapka[2][1]))
+        if symbol == "34":
+            podlaha.add(zed((symbolpos*32,radekpos*32),"podlaha_dark_blooood",mapka[2][1]))
     return podlaha,dvere
     
 #načtení zdí specificky
