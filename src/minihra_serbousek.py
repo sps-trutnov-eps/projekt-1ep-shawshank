@@ -130,8 +130,20 @@ while not game_over:
                     chyby += 1
                 break
         abeceda[pozice]["stav"] = False
-    print(chyby)
-        
+    
+        #VYKRESLENÍ ŠIBENICE
+    if chyby >= 1:
+        pygame.draw.line(window, white, (250, 400), (450, 400),5)
+    if chyby >= 2:
+        pygame.draw.line(window, white, (350, 400), (350, 100),5)
+    if chyby >= 3:
+        pygame.draw.line(window, white, (350, 102), (490, 102),5)
+    if chyby >= 4:
+        pygame.draw.line(window, white, (350, 180), (430, 102),5)
+    if chyby >= 5:
+        pygame.draw.line(window, white, (488, 102), (488, 140),5)
+    if chyby >= 6:
+        pygame.draw.circle
         
     pygame.time.delay(60)
-    pygame.display.update()     
+    pygame.display.update()      
