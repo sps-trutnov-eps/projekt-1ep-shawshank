@@ -275,7 +275,6 @@ def specialni_podlahy(mapka, under, symbolpos, radekpos, symbol):
     
 #načtení zdí specificky
 def random_zdi(mapka,ind,door):
-    #print (mapka)
     global mozne_prechody
     zdi = pygame.sprite.Group()
     for radek_ind,radek in enumerate(mapka):
@@ -560,7 +559,6 @@ while True:
                 if objekt.textura == "stul_stred" or objekt.textura == "stul_hore" or objekt.textura == "stul_dole":
                     if not invKey.completed: inventoryKey_grp.update()
                 elif objekt.textura == "skrinka_horizontalni_zamek":
-                    print(interactive)
                     if not invBoots.completed and invKey.completed:
                         inventoryBoots_grp.update()
                         zdi.remove(objekt)
@@ -582,7 +580,6 @@ while True:
                 if objekt.textura == "stul_stred" or objekt.textura == "stul_hore" or objekt.textura == "stul_dole":
                     if not invKey.completed: inventoryKey_grp.update()
                 elif objekt.textura == "skrinka_horizontalni_zamek":
-                    print(interactive)
                     if not invBoots.completed and invKey.completed:
                         inventoryBoots_grp.update()
                         zdi.remove(objekt)
