@@ -42,14 +42,21 @@ counter_surface = counter_texture.get_rect()
 menu_background = pygame.Surface((23*32,14*32))
 menu_background.blit(pygame.transform.rotozoom(pygame.image.load("../data/textury_miniher/Nature.jpg").convert(),0,1/6),(0,-120))
 
+#fonty a rendery pro game over text
 g_over_font = pygame.font.Font("../data/fonts/ARCADECLASSIC.TTF", 125)
 return_font = pygame.font.Font("../data/fonts/ARCADECLASSIC.TTF", 50)
-g_over_font_render = g_over_font.render("GAME OVER", True, (255, 0, 0))
+g_over_font_render = g_over_font.render("GAME  OVER", True, (255, 0, 0))
 return_font_render = return_font.render("PRESS   ENTER", True, (100, 0, 0))
 g_over_font_rect = g_over_font_render.get_rect(center=(23*32/2, 14*32/2))
 return_font_rect = return_font_render.get_rect(center=(23*32/2, 14*32/2 + 75))
 g_over_font_render.set_alpha(0)
 return_font_render.set_alpha(0)
+
+#fonty a rendery pro win
+win_font = pygame.font.Font("../data/fonts/ARCADECLASSIC.TTF", 125)
+win_font_render = win_font.render("YOU  WON", True, (0, 0, 0))
+win_font_rect = win_font_render.get_rect(center=(23*32/2, 14*32/2))
+win_font_render.set_alpha(0)
 
 clip = True
 hitbox = False
@@ -357,12 +364,15 @@ def restart():
     inventoryKey_grp.update()
     inventoryBoots_grp.update()
 
-#kód pro ztmavení obrazovky
-fade = pygame.Surface((23*32, 14*32))
-fade.fill("black")
+#kód pro ztmavení / zesvětlení obrazovky
+fade_white = pygame.Surface((23*32, 14*32))
+fade_black = pygame.Surface((23*32, 14*32))
+fade_white.fill("white")
+fade_black.fill("black")
 pruhlednost = 0
 pruhlednost_textu = 0
-fade.set_alpha(pruhlednost)
+fade_white.set_alpha(pruhlednost)
+fade_black.set_alpha(pruhlednost)
 fade_speed = 10
 
 #gamestates
@@ -681,10 +691,10 @@ while True:
             while pruhlednost <= 12:
                 pruhlednost += 0.1
                 pruhlednost_textu += 1.5
-                fade.set_alpha(pruhlednost)
+                fade_black.set_alpha(pruhlednost)
                 g_over_font_render.set_alpha(pruhlednost_textu)
                 return_font_render.set_alpha(pruhlednost_textu)
-                screen.blit(fade, (0, 0))
+                screen.blit(fade_black, (0, 0))
                 screen.blit(g_over_font_render, g_over_font_rect)
                 screen.blit(return_font_render, return_font_rect)
                 pygame.display.update()
@@ -697,7 +707,7 @@ while True:
             zvonek_0.stop()
             zvonek_1.stop()
             pruhlednost = 255
-            fade.set_alpha(pruhlednost)
+            fade_black.set_alpha(pruhlednost)
             g_over_font_render.set_alpha(pruhlednost)
             return_font_render.set_alpha(pruhlednost)
             
@@ -720,75 +730,79 @@ while True:
             health = health_max
     
     #win
-    if win:
+    if win:     
+        while pruhlednost <= 20:
+            pruhlednost += 0.1
+            pruhlednost_textu += 1.5
+            fade_white.set_alpha(pruhlednost)
+            win_font_render.set_alpha(pruhlednost_textu)
+            screen.blit(fade_white, (0, 0))
+            screen.blit(win_font_render, win_font_rect)
+            pygame.display.update()
+            pygame.time.wait(fade_speed)
+        
+        health = -1
+        inGame = False
+        gameOver = True
+        hall.stop()
         zvonek_0.stop()
         zvonek_1.stop()
-        BARVA_POZADI = (0, 0, 0)
-        barva_zpravy = (0, 0, 0)
-        barva_textu = (0, 0, 0)
-        okno = pygame.display.set_mode((736,448))
-        font = pygame.font.SysFont("Comic Sans MS", 42)
+        pruhlednost = 255
+        fade_white.set_alpha(pruhlednost)
+        win_font_render.set_alpha(pruhlednost)
+        time.sleep(2)
+        win = False
+        Credits = True
         
-        if not gameOver:
-            zprava = "Vyhráls."
-        else:
-            zprava = "Nevyhráls."
-            
-        pygame.display.set_caption(zprava)
-
-            
-        nabidka = "q - odejít   m - \"menu\""
-            
-        while win:
-            if not pygame.mixer.get_busy(): jasot.play()
-            udalost = pygame.event.get()
-            stisknuto = pygame.key.get_pressed()
-            for u in udalost:
-                if u.type == pygame.QUIT:
-                    pygame.quit()
-                    pygame.mixer.quit()
-                    sys.exit()
-                    
-                elif u.type == pygame.KEYDOWN:
-                    if u.key == pygame.K_q:
-                        pygame.quit()
-                        pygame.mixer.quit()
-                        sys.exit()
-                    if u.key == pygame.K_m:
-                        inMenu = True
-                        win = False
-                        jasot.stop()
-                        
-            time.sleep(0.05)
-            
-            if barva_zpravy == (0, 255, 0):
-                barva_zpravy = (255, 255, 0)
-            else:
-                barva_zpravy = (0, 255, 0)  
-            if barva_textu == (255, 255, 255):
-                barva_textu = (255, 255, 0)
-            else:
-                barva_textu = (255, 255, 255)
-            
-            win_text = font.render(zprava, True, barva_zpravy)
-            text_win = font.render(nabidka, True, barva_textu)
-            
-            okno.fill(BARVA_POZADI)
-            okno.blit(win_text, (0,0))
-            okno.blit(text_win, (0,50))
-            
-            pygame.display.update()
-        else:
-            restart()
-            current_time = default_time
-            health = health_max
-            
     if Credits:
         text_size = 30
         credits_font = pygame.font.Font("../data/fonts/ambitsek.ttf",text_size)
-        credits_text= '''Týpek 1
-Týpek dva kámo
-A tady další týpek
+        credits_text= '''Projekt vypracován
+třídou 1.EP skupina 2
+
+---Generace mapy---
+
+Jakub Polák
+Karel Kříž
+Jan Štěpánek
+
+---Mechanika hráče---
+
+Vojtěch Nepimach
+Karel Kříž
+Jakub Polák
+
+---Textury---
+
+Jakub Polák
+Karel Kříž
+Vojtěch Nepimach
+
+---Zvuky---
+
+Jakub Polák
+
+---Minihry---
+
+Marek Langer
+Jan Pospíšil
+Tadeáš Udatný
+Martin Michálek
+Tomáš Svoboda
+Jakub Polák
+Stanislav Lang
+Votjtěch Laňka
+Jan Serbousek
+
+---Použitý Software---
+
+Thonny
+Tiled
+Pixel Studio
+Aseprite
+Ardour
+
+(více naleznete na githubu)
 '''
         screen.fill("black")
         delta_y -= 1
