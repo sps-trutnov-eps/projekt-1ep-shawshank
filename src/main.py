@@ -7,12 +7,9 @@ import time
 from inventory import inventoryHasKey, inventoryHasBoots
 
 minigames = []
-try:
-    path = os.path.join(os.getcwd()+"\\minihry")
-    names = os.listdir(path)
-except:
-    path = os.path.join(os.getcwd()+"/minihry")
-    names = os.listdir(path)
+path = os.path.join(os.getcwd(),"minihry")
+names = os.listdir(path)
+
 
 for name in names:
     if ".py" in name:
@@ -26,6 +23,11 @@ pygame.mixer.init()
 game_map,master,minimap = generate()
 
 clock = pygame.time.Clock()
+
+jasot = pygame.mixer.Sound("../data/music/jásot.mp3")
+rozmluva = pygame.mixer.Sound("../data/music/mírumilovná_rozmluva.mp3")
+zvonek_0 = pygame.mixer.Sound("../data/music/zvonek_0.mp3")
+zvonek_1 = pygame.mixer.Sound("../data/music/zvonek_1.mp3")
 hall = pygame.mixer.Sound("../data/music/þE_hALL.mp3")
 typing = pygame.mixer.Sound("../data/music/demonic_typing.mp3")
 credits_file = "../data/credits.txt"
@@ -38,6 +40,16 @@ counter_texture = pygame.image.load("../data/hud/counter.png").convert_alpha()
 counter_surface = counter_texture.get_rect()
 menu_background = pygame.Surface((23*32,14*32))
 menu_background.blit(pygame.transform.rotozoom(pygame.image.load("../data/textury_miniher/Nature.jpg").convert(),0,1/6),(0,-120))
+
+g_over_font = pygame.font.Font("../data/fonts/ARCADECLASSIC.TTF", 125)
+return_font = pygame.font.Font("../data/fonts/ARCADECLASSIC.TTF", 50)
+g_over_font_render = g_over_font.render("GAME OVER", True, (255, 0, 0))
+return_font_render = return_font.render("PRESS   ENTER", True, (100, 0, 0))
+g_over_font_rect = g_over_font_render.get_rect(center=(23*32/2, 14*32/2))
+return_font_rect = return_font_render.get_rect(center=(23*32/2, 14*32/2 + 75))
+g_over_font_render.set_alpha(0)
+return_font_render.set_alpha(0)
+
 clip = True
 hitbox = False
 show_minigame = True
@@ -90,9 +102,11 @@ def vystup(pos):
             elif symbol == "2": return ((symbol_ind-1)*32+16,line_ind*32+16)
             elif symbol == "3": return (symbol_ind*32+16,(line_ind-1)*32+16)
             elif symbol == "4": return ((symbol_ind+1)*32+16,line_ind*32+16)
-##aktivace miniher
+#aktivace miniher
 def play_minigame():
     hall.stop()
+    zvonek_1.stop()
+    zvonek_0.stop()
     if show_minigame:
         outcome = random.choice(minigames).main()
         screen = pygame.display.set_mode((width,heigth))
@@ -101,6 +115,7 @@ def play_minigame():
         player_instance.rect.centerx = player_hitbox_instance.rect.centerx+4
         player_instance.rect.bottom = player_hitbox_instance.rect.bottom-2
         hall.play()
+        zvonek_0.play()
         if outcome: return health
         else: return health-1
     else:
@@ -108,6 +123,7 @@ def play_minigame():
         player_instance.rect.centerx = player_hitbox_instance.rect.centerx+4
         player_instance.rect.bottom = player_hitbox_instance.rect.bottom-2
         hall.play()
+        zvonek_0.play()
         return health
 
 #vytvoření textu
@@ -294,7 +310,7 @@ while True:
         text(50, "CREDITS", 23*32 - 225, 200, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False)
         text(50, "EXIT", 23*32 - 225, 300, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False)
         
-        #kolize myši s tlačítky v menu
+        #mačkání tlačítek
         if text(50, "START", 23*32 - 225, 100, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) or menu_state == 0:
             screen.blit(start_highlight, start_highlight_rect)
             menu_state = 0
@@ -313,6 +329,7 @@ while True:
             menu_state = None
             typing.stop()
             hall.play()
+            zvonek_0.play()
         
         if (text(50, "CREDITS", 23*32 - 225, 200, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]) or ((pressed[pygame.K_KP_ENTER] or pressed[pygame.K_RETURN]) and menu_state == 1):
             Credits = True
@@ -489,6 +506,8 @@ while True:
         elif current_time > 0 : text(30, (str(int(current_time))), 24, 25, "red", "rockwellcondensedtučné", "center", True)
         else:
             hall.stop()
+            if not pygame.mixer.get_busy():
+                zvonek_1.play()
             if not skolnik.completed:
                 postavy_display_grp.update()
                 postavy_display_grp.draw(screen)
@@ -505,14 +524,6 @@ while True:
         
         #prohra
         if health == 0:
-            g_over_font = pygame.font.Font("../data/fonts/ARCADECLASSIC.TTF", 125)
-            return_font = pygame.font.Font("../data/fonts/ARCADECLASSIC.TTF", 50)
-            g_over_font_render = g_over_font.render("GAME OVER", True, (255, 0, 0))
-            return_font_render = return_font.render("PRESS   ENTER", True, (100, 0, 0))
-            g_over_font_rect = g_over_font_render.get_rect(center=(23*32/2, 14*32/2))
-            return_font_rect = return_font_render.get_rect(center=(23*32/2, 14*32/2 + 75))
-            g_over_font_render.set_alpha(0)
-            return_font_render.set_alpha(0)
             
             while pruhlednost <= 12:
                 pruhlednost += 0.1
@@ -530,6 +541,8 @@ while True:
             inGame = False
             gameOver = True
             hall.stop()
+            zvonek_0.stop()
+            zvonek_1.stop()
             pruhlednost = 255
             fade.set_alpha(pruhlednost)
             g_over_font_render.set_alpha(pruhlednost)
@@ -542,16 +555,21 @@ while True:
             janitor(x_hrace, y_hrace)
             
     if gameOver:
+        if not pygame.mixer.get_busy():
+            rozmluva.play()
         pruhlednost = 0
         if pressed[pygame.K_RETURN]:
             gameOver = False
             inMenu = True
+            rozmluva.stop()
             restart()
             current_time = default_time
             health = health_max
     
     #win
     if win:
+        zvonek_0.stop()
+        zvonek_1.stop()
         BARVA_POZADI = (0, 0, 0)
         barva_zpravy = (0, 0, 0)
         barva_textu = (0, 0, 0)
@@ -569,6 +587,7 @@ while True:
         nabidka = "q - odejít   m - \"menu\""
             
         while win:
+            if not pygame.mixer.get_busy(): jasot.play()
             udalost = pygame.event.get()
             stisknuto = pygame.key.get_pressed()
             for u in udalost:
@@ -585,6 +604,7 @@ while True:
                     if u.key == pygame.K_m:
                         inMenu = True
                         win = False
+                        jasot.stop()
                         
             time.sleep(0.05)
             
