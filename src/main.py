@@ -79,6 +79,9 @@ skolnik = janitor(player_instance)
 postavy_display_grp.add(skolnik)
 menu_state = None
 
+#credits
+delta_y = screen.get_rect().centery + 60
+
 #výstup ze dveří
 def vystup(pos):
     for line_ind,line in enumerate(game_map[pos[0]][pos[1]][0]):
@@ -608,8 +611,14 @@ while True:
             health = health_max
             
     if Credits:
+        text_size = 30
+        credits_font = pygame.font.Font("../data/fonts/ambitsek.ttf",text_size)
+        credits_text= '''Týpek 1
+Týpek dva kámo
+A tady další týpek
+'''
         screen.fill("black")
-        delta_y = -1
+        delta_y -= 1
         centerx, centery = screen.get_rect().centerx, screen.get_rect().centery
         if pressed[pygame.K_RETURN]:
             Credits = False
@@ -618,23 +627,20 @@ while True:
         text_list = []
         pos_list = []
         i = 0
-        load = open(credits_file, 'r', encoding = 'utf-8')
-        read_all = load.read()
-        if len(read_all) > 0:
-            load.seek(0)
-            for line in load:
-                line_str = line[:-1]
-                line_list = line_str.split(',')
-                text_line = text(50, line_list, screen.get_rect().centerx, screen.get_rect().centery, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False)
-                text_list.append(text_line)
-                text_pos = text_line.get_rect(center = (centerx, centery + delta_y + i*30))
-                pos_list.append(text_pos)
-                i = i+1
-                
-        load.close()
-        for l in range(i):
-            screen.blit(text_list[l], pos_list[l])
-        https://www.youtube.com/watch?v=Vbj-CtchRSI  ---  34:03
         
+        for line in credits_text.split('\n'):
+            text_line = credits_font.render(line, True, (255,255,255))
+            text_list.append(text_line)
+            pos = text_line.get_rect(center=(centerx, centery + delta_y + i * text_size))
+            pos_list.append(pos)
+            i = i + 1
+         
+        if (centery + delta_y + text_size * (len(credits_text.split('\n'))) < 0):
+            Credits = False
+            inMenu = True
+         
+        for j in range(i):
+            screen.blit(text_list[j], pos_list[j])
+            
     pygame.display.update()
     clock.tick(60)
