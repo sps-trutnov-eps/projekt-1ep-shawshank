@@ -99,6 +99,7 @@ pygame.display.set_icon(images["special_1"])
 class zed(pygame.sprite.Sprite):
     def __init__(self,pozice,textura,door_type):
         super().__init__()
+        self.textura = textura
         if "zeď" in textura:
             if random.randint(0,15): self.image = images[textura]
             else:

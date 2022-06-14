@@ -196,7 +196,12 @@ def specialni_zdi(mapka):
                 zdi.add(zed((symbol_ind*32,radek_ind*32),"lavicka_horizontalni_konec_prava",mapka[2][1]))
                 podlaha.add(specialni_podlahy(screens_with_doors[1], True, symbol_ind, radek_ind, "24"))
             elif symbol == "31":
-                zdi.add(zed((symbol_ind*32,radek_ind*32),"skrinka_horizontalni_zamek",mapka[2][1]))
+                if not invBoots.completed:
+                    zdi.add(zed((symbol_ind*32,radek_ind*32),"skrinka_horizontalni_zamek",mapka[2][1]))
+                    interactive.add(zed((symbol_ind*32,radek_ind*32),"skrinka_horizontalni_zamek",mapka[2][1]))
+                else:
+                    zdi.add(zed((symbol_ind*32,radek_ind*32),"skrinka_horizontalni_otevrena",mapka[2][1]))
+                    interactive.add(zed((symbol_ind*32,radek_ind*32),"skrinka_horizontalni_otevrena",mapka[2][1]))
             elif symbol == "35":
                 zdi.add(zed((symbol_ind*32,radek_ind*32),"odpatkove_pytle",mapka[2][1]))
                 podlaha.add(specialni_podlahy(screens_with_doors[1], True, symbol_ind, radek_ind, "34"))
@@ -209,15 +214,15 @@ def specialni_zdi(mapka):
             elif symbol == "38":
                 zdi.add(zed((symbol_ind*32,radek_ind*32),"stul_dole",mapka[2][1]))
                 podlaha.add(specialni_podlahy(screens_with_doors[1], True, symbol_ind, radek_ind, "34"))
-                interactive.add(zed((symbol_ind*32,radek_ind*32),"stul_dole",mapa[2][1]))
+                interactive.add(zed((symbol_ind*32,radek_ind*32),"stul_dole",mapka[2][1]))
             elif symbol == "40":
                 zdi.add(zed((symbol_ind*32,radek_ind*32),"stul_stred",mapka[2][1]))
                 podlaha.add(specialni_podlahy(screens_with_doors[1], True, symbol_ind, radek_ind, "34"))
-                interactive.add(zed((symbol_ind*32,radek_ind*32),"stul_stred",mapa[2][1]))
+                interactive.add(zed((symbol_ind*32,radek_ind*32),"stul_stred",mapka[2][1]))
             elif symbol == "39":
                 zdi.add(zed((symbol_ind*32,radek_ind*32),"stul_hore",mapka[2][1]))
                 podlaha.add(specialni_podlahy(screens_with_doors[1], True, symbol_ind, radek_ind, "34"))
-                interactive.add(zed((symbol_ind*32,radek_ind*32),"stul_hore",mapa[2][1]))
+                interactive.add(zed((symbol_ind*32,radek_ind*32),"stul_hore",mapka[2][1]))
     return zdi
 
 #načtení podlahy speciální místnosti
@@ -499,6 +504,16 @@ while True:
                 image = "player_f"
             
             player_hitbox_instance.posun_x(posun_x)
+            
+        if pygame.sprite.spritecollide(hrac_hitbox, interactive, False):
+            for objekt in interactive:
+                if objekt.textura == "stul_stred" or objekt.textura == "stul_hore" or objekt.textura == "stul_dole":
+                    if not invKey.completed: inventoryKey_grp.update()
+                elif objekt.textura == "skrinka_horizontalni_zamek":
+                    if not invBoots.completed and invKey.completed:
+                        inventoryBoots_grp.update()
+                        zdi.remove(objekt)
+                        zdi.add(zed((objekt.rect.x,objekt.rect.y),"skrinka_horizontalni_otevrena","×"))
 
         #kolize se zdmi
         if clip:
@@ -560,12 +575,7 @@ while True:
         player_instance.rect.centerx = player_hitbox_instance.rect.centerx
         player_instance.rect.bottom = player_hitbox_instance.rect.bottom+1
         
-        if pygame.sprite.spritecollide(hrac_hitbox, interactive, False):
-            for objekt in interactive:
-                if objekt.objekt_type == "stul_stred" or objekt.objekt_type == "stul_hore" or objekt.objekt_type == "stul_dole":
-                    if not invKey.completed: inventoryKey_grp.update()
-                if objekt.objekt_type == "skrinka_horizontalni_zamek":
-                    if not invBoots.completed and invKey.completed: inventoryBoots_grp.update()
+        
         
         #kolize s dvermi
         if pygame.sprite.spritecollide(hrac_hitbox, dvere, False):
