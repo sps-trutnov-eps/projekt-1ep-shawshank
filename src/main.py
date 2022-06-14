@@ -420,7 +420,7 @@ while True:
     
     if inMenu:
         if backgroundMove <= 0:
-            backgroundMove = menu_background.get_rect().width/2
+            backgroundMove = menu_background.get_rect().width - 23 * 32
         else:
             backgroundMove -= 15
         screen.blit(menu_background,(0, 0), (backgroundMove, 0, menu_background.get_rect().width, menu_background.get_rect().height))
