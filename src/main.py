@@ -381,6 +381,7 @@ gameOver = False
 inMenu = True
 win = False
 Credits = False
+cheaty = False
 
 #main loop
 while True:
@@ -469,63 +470,70 @@ while True:
     
     elif inGame:
         #cheaty
-        if pressed[pygame.K_h] and cheat_timeout < 0:
-            if hitbox == False:
-                hitbox = True
-                player_hitbox_instance.showHitBox()
-            else:
-                hitbox = False
-                player_hitbox_instance.hideHitBox()
-            cheat_timeout = 20
-                
-        if pressed[pygame.K_n] and cheat_timeout < 0:
-            if clip: clip = False
-            else: clip = True
-            cheat_timeout = 20
-            
-        if pressed[pygame.K_m] and cheat_timeout < 0:
-            if show_minimap: show_minimap = False
-            else: show_minimap = True
-            cheat_timeout = 20
-            
-        if pressed[pygame.K_g] and cheat_timeout < 0:
-            health = 0
-            cheat_timeout = 20
-        
-        if pressed[pygame.K_t] and cheat_timeout < 0:
-            current_time = default_time
-            hall.stop()
-            hall.play()
-            cheat_timeout = 20
-            
-        if pressed[pygame.K_1] and cheat_timeout < 0:
-            inventoryKey_grp.update()
-            cheat_timeout = 20
-            
-        if pressed[pygame.K_2] and cheat_timeout < 0:
-            inventoryBoots_grp.update()
-            cheat_timeout = 20
-            
-        if pressed[pygame.K_3] and cheat_timeout < 0:
-            inGame = False
-            win = True
-            cheat_timeout = 20
-            hall.stop()
-            
-        if pressed[pygame.K_p] and cheat_timeout < 0:
-            if show_minigame == False:
-                show_minigame = True
-            else:
-                show_minigame = False
+
+        if pressed[pygame.K_SEMICOLON] and cheat_timeout < 0:
+            if cheaty: cheaty = False
+            else: cheaty = True
             cheat_timeout = 20
         cheat_timeout -= 1
 
-        if pressed[pygame.K_r] and cheat_timeout < 0:
-            if player_speed == 3:
-                player_speed = 10
-            else:
-                player_speed = 3
-            cheat_timeout = 20
+        if cheaty:
+            if pressed[pygame.K_h] and cheat_timeout < 0:
+                if hitbox == False:
+                    hitbox = True
+                    player_hitbox_instance.showHitBox()
+                else:
+                    hitbox = False
+                    player_hitbox_instance.hideHitBox()
+                cheat_timeout = 20
+                    
+            elif pressed[pygame.K_n] and cheat_timeout < 0:
+                if clip: clip = False
+                else: clip = True
+                cheat_timeout = 20
+                
+            elif pressed[pygame.K_m] and cheat_timeout < 0:
+                if show_minimap: show_minimap = False
+                else: show_minimap = True
+                cheat_timeout = 20
+                
+            elif pressed[pygame.K_g] and cheat_timeout < 0:
+                health = 0
+                cheat_timeout = 20
+            
+            elif pressed[pygame.K_t] and cheat_timeout < 0:
+                current_time = default_time
+                hall.stop()
+                hall.play()
+                cheat_timeout = 20
+                
+            elif pressed[pygame.K_1] and cheat_timeout < 0:
+                inventoryKey_grp.update()
+                cheat_timeout = 20
+                
+            elif pressed[pygame.K_2] and cheat_timeout < 0:
+                inventoryBoots_grp.update()
+                cheat_timeout = 20
+                
+            elif pressed[pygame.K_3] and cheat_timeout < 0:
+                inGame = False
+                win = True
+                cheat_timeout = 20
+                hall.stop()
+                
+            elif pressed[pygame.K_p] and cheat_timeout < 0:
+                if show_minigame == False:
+                    show_minigame = True
+                else:
+                    show_minigame = False
+                cheat_timeout = 20
+
+            elif pressed[pygame.K_r] and cheat_timeout < 0:
+                if player_speed == 3:
+                    player_speed = 10
+                else:
+                    player_speed = 3
+                cheat_timeout = 20
         
         #pohyb
         posun_x = 0
@@ -546,11 +554,13 @@ while True:
             
             player_hitbox_instance.posun_x(posun_x)
             
+        #kolize se stolem a skříňkou
         if pygame.sprite.spritecollide(hrac_hitbox, interactive, False):
             for objekt in interactive:
                 if objekt.textura == "stul_stred" or objekt.textura == "stul_hore" or objekt.textura == "stul_dole":
                     if not invKey.completed: inventoryKey_grp.update()
                 elif objekt.textura == "skrinka_horizontalni_zamek":
+                    print(interactive)
                     if not invBoots.completed and invKey.completed:
                         inventoryBoots_grp.update()
                         zdi.remove(objekt)
@@ -565,6 +575,18 @@ while True:
                     player_hitbox_instance.rect.right = wall.rect.left-1
                     
         player_hitbox_instance.posun_y(posun_y)
+
+        #kolize se stolem a skříňkou
+        if pygame.sprite.spritecollide(hrac_hitbox, interactive, False):
+            for objekt in interactive:
+                if objekt.textura == "stul_stred" or objekt.textura == "stul_hore" or objekt.textura == "stul_dole":
+                    if not invKey.completed: inventoryKey_grp.update()
+                elif objekt.textura == "skrinka_horizontalni_zamek":
+                    print(interactive)
+                    if not invBoots.completed and invKey.completed:
+                        inventoryBoots_grp.update()
+                        zdi.remove(objekt)
+                        zdi.add(zed((objekt.rect.x,objekt.rect.y),"skrinka_horizontalni_otevrena","×"))
             
         if clip:
             for wall in zdi:
