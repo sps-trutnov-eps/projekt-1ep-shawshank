@@ -63,8 +63,8 @@ hitbox = False
 show_minigame = True
 player_x = 23 * 32 / 2
 player_y = 14 * 32 / 2
-player_speed = 3
-health_max = health = 5
+player_speed = 10
+health_max = health = 1
 mozne_prechody = []
 interactive = pygame.sprite.Group()
 player_movable = True
@@ -361,8 +361,10 @@ def restart():
     zdi = wall_map[current_position[0]][current_position[1]]
     invKey.completed = True
     invBoots.completed = True
+    invBoots.unlocked = True
     inventoryKey_grp.update()
-    inventoryBoots_grp.update()
+    inventoryBoots_grp.update("sebrat")
+    inventoryBoots_grp.update("odemknout")
 
 #kód pro ztmavení / zesvětlení obrazovky
 fade_white = pygame.Surface((23*32, 14*32))
@@ -496,7 +498,7 @@ while True:
             cheat_timeout = 20
             
         if pressed[pygame.K_2] and cheat_timeout < 0:
-            inventoryBoots_grp.update()
+            inventoryBoots_grp.update("sebrat")
             cheat_timeout = 20
             
         if pressed[pygame.K_3] and cheat_timeout < 0:
@@ -535,10 +537,13 @@ while True:
         if pygame.sprite.spritecollide(hrac_hitbox, interactive, False):
             for objekt in interactive:
                 if objekt.textura == "stul_stred" or objekt.textura == "stul_hore" or objekt.textura == "stul_dole":
-                    if not invKey.completed: inventoryKey_grp.update()
+                    if not invKey.completed:
+                        inventoryKey_grp.update()
+                        invBoots.unlocked = True;
+                        inventoryBoots_grp.update("odemknout")
                 elif objekt.textura == "skrinka_horizontalni_zamek":
                     if not invBoots.completed and invKey.completed:
-                        inventoryBoots_grp.update()
+                        inventoryBoots_grp.update("sebrat")
                         zdi.remove(objekt)
                         zdi.add(zed((objekt.rect.x,objekt.rect.y),"skrinka_horizontalni_otevrena","×"))
 

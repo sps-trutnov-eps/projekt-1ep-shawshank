@@ -24,16 +24,34 @@ class inventoryHasKey(pygame.sprite.Sprite):
 class inventoryHasBoots(pygame.sprite.Sprite):
     def __init__(self, pos_x, pos_y):
         super().__init__()
-        self.image = getImage(96, 0, 32, 32, inventoryImages)
+        self.image = getImage(128, 0, 32, 32, inventoryImages)
         self.rect = self.image.get_rect()
         self.rect.center = (pos_x, pos_y)
         self.completed = False
+        self.unlocked = False
 
-    def update(self):
-        if self.completed: self.completed = False
-        else: self.completed = True
-
-        if self.completed:
-            self.image = getImage(64, 0, 32, 32, inventoryImages)
-        else:
-            self.image = getImage(96, 0, 32, 32, inventoryImages)
+    def update(self, state):
+        
+        if state == "odemknout":
+            if self.unlocked:
+                self.unlocked = False
+            else:
+                self.unlocked = True
+                
+            if self.unlocked:
+                self.image = getImage(96, 0, 32, 32, inventoryImages)
+            else:
+                self.image = getImage(128, 0, 32, 32, inventoryImages)
+        
+        if state == "sebrat":
+            if self.completed:
+                self.completed = False
+            else:
+                self.completed = True
+            
+            if self.completed:
+                self.image = getImage(64, 0, 32, 32, inventoryImages)
+            else:
+                self.image = getImage(96, 0, 32, 32, inventoryImages)
+            
+        print(state, self.completed, self.unlocked)
