@@ -61,7 +61,7 @@ def main():
         return otazka
         
         
-    theme = pygame.mixer.Sound("../data/music/minigame_theme.mp3") 
+    theme = pygame.mixer.Sound("./data/music/minigame_theme.mp3") 
     odpovedi = cteni_dat_list("odpovedi.csv")
     otazky = cteni_dat_list("otazky.csv")
     rozliseni_okna = rozliseni_x, rozliseni_y = (1200,800)

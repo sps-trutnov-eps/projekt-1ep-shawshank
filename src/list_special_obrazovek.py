@@ -1,7 +1,7 @@
 import os
 
 #určení základních proměných + cesty k "projekt-1ep-shawshank"
-path = os.path.join(os.getcwd(),"..","data","special_mistnosti")
+path = os.path.join(os.getcwd(),"data","special_mistnosti")
 list_of_screens = os.listdir(path)
     
 screens_with_doors = []

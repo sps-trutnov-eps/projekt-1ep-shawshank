@@ -8,7 +8,7 @@ pg.init()
 pg.mixer.init()
 
 def main():
-    theme = pg.mixer.Sound("../data/music/minigame_theme.mp3")
+    theme = pg.mixer.Sound("./data/music/minigame_theme.mp3")
     UKOL="Vzpočti Diskriminant"
     BARVA_POZADI = (0, 20, 0)
     okno = pg.display.set_mode((736,448))

@@ -17,7 +17,7 @@ def main():
     panacek = True
     
 
-    theme = pygame.mixer.Sound("../data/music/minigame_theme.mp3")
+    theme = pygame.mixer.Sound("./data/music/minigame_theme.mp3")
     
     obrazek = pygame.image.load(os.path.join(os.getcwd(), "minihry", "pospisil", "pixil-frame-0.png"))
     

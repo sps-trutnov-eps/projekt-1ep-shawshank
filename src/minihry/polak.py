@@ -52,9 +52,9 @@ class speaker_class():
     def __init__(self,screen):
         self.screen = screen
         self.bc0 = pygame.Surface((23*32,14*32))
-        self.bc0.blit(pygame.transform.rotozoom(pygame.image.load("../data/textury_miniher/classroom.jpg").convert(),0,1/6),(0,-120))
+        self.bc0.blit(pygame.transform.rotozoom(pygame.image.load("./data/textury_miniher/classroom.jpg").convert(),0,1/6),(0,-120))
         self.bc1 = pygame.Surface((23*32,14*32))
-        self.bc1.blit(pygame.transform.rotozoom(pygame.image.load("../data/textury_miniher/Nature.jpg").convert(),0,1/6),(0,-120))
+        self.bc1.blit(pygame.transform.rotozoom(pygame.image.load("./data/textury_miniher/Nature.jpg").convert(),0,1/6),(0,-120))
         self.textbox = pygame.Surface((620,74))
         self.textbox.fill("limegreen")
         extra_surface = pygame.Surface((600,74))
@@ -64,24 +64,24 @@ class speaker_class():
         self.textbox_rect.midbottom = (23*16,14*32)
         self.progress = 0
         
-        self.normal_stand = pygame.transform.rotozoom(pygame.image.load("../data/textury_miniher/normal_stand.png").convert_alpha(),0,1/6)
-        self.less_normal_stand = pygame.transform.rotozoom(pygame.image.load("../data/textury_miniher/less_normal_stand.png").convert_alpha(),0,1/6)
-        self.hahaha = pygame.transform.rotozoom(pygame.image.load("../data/textury_miniher/hahaha.png").convert_alpha(),0,1/4)
-        self.muhahaha = pygame.transform.rotozoom(pygame.image.load("../data/textury_miniher/muhahaha.png").convert_alpha(),0,1/4)
-        self.reading = pygame.transform.rotozoom(pygame.image.load("../data/textury_miniher/reading.png").convert_alpha(),0,1/5)
-        self.gun_0 = pygame.transform.rotozoom(pygame.image.load("../data/textury_miniher/gun_0.png").convert_alpha(),0,1/6)
-        self.gun_1 = pygame.transform.rotozoom(pygame.image.load("../data/textury_miniher/gun_1.png").convert_alpha(),0,1/4)
-        self.gun_2 = pygame.transform.rotozoom(pygame.image.load("../data/textury_miniher/gun_2.png").convert_alpha(),0,1/6)
-        self.gun_3 = pygame.transform.rotozoom(pygame.image.load("../data/textury_miniher/gun_3.png").convert_alpha(),0,1/6)
+        self.normal_stand = pygame.transform.rotozoom(pygame.image.load("./data/textury_miniher/normal_stand.png").convert_alpha(),0,1/6)
+        self.less_normal_stand = pygame.transform.rotozoom(pygame.image.load("./data/textury_miniher/less_normal_stand.png").convert_alpha(),0,1/6)
+        self.hahaha = pygame.transform.rotozoom(pygame.image.load("./data/textury_miniher/hahaha.png").convert_alpha(),0,1/4)
+        self.muhahaha = pygame.transform.rotozoom(pygame.image.load("./data/textury_miniher/muhahaha.png").convert_alpha(),0,1/4)
+        self.reading = pygame.transform.rotozoom(pygame.image.load("./data/textury_miniher/reading.png").convert_alpha(),0,1/5)
+        self.gun_0 = pygame.transform.rotozoom(pygame.image.load("./data/textury_miniher/gun_0.png").convert_alpha(),0,1/6)
+        self.gun_1 = pygame.transform.rotozoom(pygame.image.load("./data/textury_miniher/gun_1.png").convert_alpha(),0,1/4)
+        self.gun_2 = pygame.transform.rotozoom(pygame.image.load("./data/textury_miniher/gun_2.png").convert_alpha(),0,1/6)
+        self.gun_3 = pygame.transform.rotozoom(pygame.image.load("./data/textury_miniher/gun_3.png").convert_alpha(),0,1/6)
         
         self.anim_0 = pygame.Surface((23*32,14*32))
-        self.anim_0.blit(pygame.transform.rotozoom(pygame.image.load("../data/textury_miniher/animation_0.jpg").convert(),0,1/2),(0,-120))
+        self.anim_0.blit(pygame.transform.rotozoom(pygame.image.load("./data/textury_miniher/animation_0.jpg").convert(),0,1/2),(0,-120))
         self.anim_1 = pygame.Surface((23*32,14*32))
-        self.anim_1.blit(pygame.transform.rotozoom(pygame.image.load("../data/textury_miniher/animation_1.jpg").convert(),0,1/2),(0,-120))
+        self.anim_1.blit(pygame.transform.rotozoom(pygame.image.load("./data/textury_miniher/animation_1.jpg").convert(),0,1/2),(0,-120))
         self.anim_2 = pygame.Surface((23*32,14*32))
-        self.anim_2.blit(pygame.transform.rotozoom(pygame.image.load("../data/textury_miniher/animation_2.jpg").convert(),0,1/2),(0,-120))
+        self.anim_2.blit(pygame.transform.rotozoom(pygame.image.load("./data/textury_miniher/animation_2.jpg").convert(),0,1/2),(0,-120))
         self.anim_3 = pygame.Surface((23*32,14*32))
-        self.anim_3.blit(pygame.transform.rotozoom(pygame.image.load("../data/textury_miniher/animation_3.jpg").convert(),0,1/2),(0,-120))
+        self.anim_3.blit(pygame.transform.rotozoom(pygame.image.load("./data/textury_miniher/animation_3.jpg").convert(),0,1/2),(0,-120))
         #věc, co mi nešla přez os modul
         try:
             GetUserNameEx = ctypes.windll.secur32.GetUserNameExW
@@ -299,7 +299,7 @@ class speaker_class():
 #hra samotná
 def main():
     #základní proměnné
-    theme = pygame.mixer.Sound("../data/music/minigame_theme.mp3")
+    theme = pygame.mixer.Sound("./data/music/minigame_theme.mp3")
     width,heigth = 23*32,14*32
     screen = pygame.display.set_mode((width,heigth))
     pygame.display.set_caption("¤___¤")
@@ -318,26 +318,26 @@ def main():
     over = True
     space_fix = True
     
-    spin = pygame.transform.rotozoom(pygame.image.load("../data/textury_miniher/weeee.jpg"),90,1/4).convert()
+    spin = pygame.transform.rotozoom(pygame.image.load("./data/textury_miniher/weeee.jpg"),90,1/4).convert()
     spin_rect = spin.get_rect()
     spin_rect.topleft = (0,-40)
-    grass = pygame.transform.rotozoom(pygame.image.load("../data/textury_miniher/I_touched_grass.jpg").convert(),90,0.5).convert()
+    grass = pygame.transform.rotozoom(pygame.image.load("./data/textury_miniher/I_touched_grass.jpg").convert(),90,0.5).convert()
     grass_rect = grass.get_rect()
     grass_rect.bottomright = (width,heigth)
     grass_fliped = pygame.transform.flip(grass,True,False).convert()
     grass_fliped_rect = grass_fliped.get_rect()
     grass_fliped_rect.bottomright = grass_rect.bottomleft
     
-    player_sheet = pygame.transform.scale2x(pygame.image.load("../data/textury_hrac/Player_sprite.png")).convert()
+    player_sheet = pygame.transform.scale2x(pygame.image.load("./data/textury_hrac/Player_sprite.png")).convert()
     
-    t_0 = pygame.image.load("../data/textury_miniher/kvetinka.png").convert_alpha()
-    t_1 = pygame.image.load("../data/textury_miniher/not_spon.png").convert_alpha()
-    t_2 = pygame.image.load("../data/textury_miniher/vosäk.png").convert_alpha()
+    t_0 = pygame.image.load("./data/textury_miniher/kvetinka.png").convert_alpha()
+    t_1 = pygame.image.load("./data/textury_miniher/not_spon.png").convert_alpha()
+    t_2 = pygame.image.load("./data/textury_miniher/vosäk.png").convert_alpha()
     texture_mix_1 = (t_0,t_1,t_2)
     texture_mix_2 = (t_0,t_1,pygame.transform.flip(t_2,True,False).convert_alpha())
     
     
-    win_image = pygame.image.load("../data/textury_miniher/křída.png").convert_alpha()
+    win_image = pygame.image.load("./data/textury_miniher/křída.png").convert_alpha()
     win_rect = win_image.get_rect()
     
     play_line = create(25)
@@ -490,7 +490,7 @@ def main():
                         win_rect.center = (width+symbol_ind*64,floor-32)
                 player_rect.midbottom = (128,floor)
                 jump_timeout_base = 40
-                win_image = pygame.image.load("../data/textury_miniher/cil.png").convert_alpha()
+                win_image = pygame.image.load("./data/textury_miniher/cil.png").convert_alpha()
                 info_text = info_font.render("Press ||SEMICOLON|| to secret.",False,"green")
                 player_jump_texture.blit(player_sheet,(-160,0))
                 jump_timeout = 2

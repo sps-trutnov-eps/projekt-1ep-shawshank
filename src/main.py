@@ -25,26 +25,26 @@ game_map,master,minimap = generate()
 
 clock = pygame.time.Clock()
 
-jasot = pygame.mixer.Sound("../data/music/jásot.mp3")
-rozmluva = pygame.mixer.Sound("../data/music/mírumilovná_rozmluva.mp3")
-zvonek_0 = pygame.mixer.Sound("../data/music/zvonek_0.mp3")
-zvonek_1 = pygame.mixer.Sound("../data/music/zvonek_1.mp3")
-hall = pygame.mixer.Sound("../data/music/þE_hALL.mp3")
-typing = pygame.mixer.Sound("../data/music/demonic_typing.mp3")
-credits_file = "../data/credits.txt"
+jasot = pygame.mixer.Sound("./data/music/jásot.mp3")
+rozmluva = pygame.mixer.Sound("./data/music/mírumilovná_rozmluva.mp3")
+zvonek_0 = pygame.mixer.Sound("./data/music/zvonek_0.mp3")
+zvonek_1 = pygame.mixer.Sound("./data/music/zvonek_1.mp3")
+hall = pygame.mixer.Sound("./data/music/þE_hALL.mp3")
+typing = pygame.mixer.Sound("./data/music/demonic_typing.mp3")
+credits_file = "./data/credits.txt"
 
 cheat_timeout = 20
 show_minimap = False
 mimimap_pos = (width - len(game_map[0])*20,heigth - len(game_map)*12)
-ukazatel = pygame.image.load("../data/hud/ukazatel_na_mapce.png").convert_alpha()
-counter_texture = pygame.image.load("../data/hud/counter.png").convert_alpha()
+ukazatel = pygame.image.load("./data/hud/ukazatel_na_mapce.png").convert_alpha()
+counter_texture = pygame.image.load("./data/hud/counter.png").convert_alpha()
 counter_surface = counter_texture.get_rect()
 menu_background = pygame.Surface((23*32,14*32))
-menu_background.blit(pygame.transform.rotozoom(pygame.image.load("../data/textury_miniher/Nature.jpg").convert(),0,1/6),(0,-120))
+menu_background.blit(pygame.transform.rotozoom(pygame.image.load("./data/textury_miniher/Nature.jpg").convert(),0,1/6),(0,-120))
 
 #fonty a rendery pro game over text
-g_over_font = pygame.font.Font("../data/fonts/ARCADECLASSIC.TTF", 125)
-return_font = pygame.font.Font("../data/fonts/ARCADECLASSIC.TTF", 50)
+g_over_font = pygame.font.Font("./data/fonts/ARCADECLASSIC.TTF", 125)
+return_font = pygame.font.Font("./data/fonts/ARCADECLASSIC.TTF", 50)
 g_over_font_render = g_over_font.render("GAME  OVER", True, (255, 0, 0))
 return_font_render = return_font.render("PRESS   ENTER", True, (100, 0, 0))
 g_over_font_rect = g_over_font_render.get_rect(center=(23*32/2, 14*32/2))
@@ -53,7 +53,7 @@ g_over_font_render.set_alpha(0)
 return_font_render.set_alpha(0)
 
 #fonty a rendery pro win
-win_font = pygame.font.Font("../data/fonts/ARCADECLASSIC.TTF", 125)
+win_font = pygame.font.Font("./data/fonts/ARCADECLASSIC.TTF", 125)
 win_font_render = win_font.render("YOU  WON", True, (0, 0, 0))
 win_font_rect = win_font_render.get_rect(center=(23*32/2, 14*32/2))
 win_font_render.set_alpha(0)
@@ -414,35 +414,35 @@ while True:
         cheat_timeout -=1
         
         #povrchy
-        txt_bg = pygame.image.load("../data/menu/text_bg.png").convert_alpha()
+        txt_bg = pygame.image.load("./data/menu/text_bg.png").convert_alpha()
         txt_bg_rect = txt_bg.get_rect(topright=(23*32, 0))
-        start_highlight = pygame.image.load("../data/menu/start_highlight.png").convert_alpha()
+        start_highlight = pygame.image.load("./data/menu/start_highlight.png").convert_alpha()
         start_highlight_rect = start_highlight.get_rect(topright=(23*32 - 8, 8))
-        credits_highlight = pygame.image.load("../data/menu/credits_highlight.png").convert_alpha()
+        credits_highlight = pygame.image.load("./data/menu/credits_highlight.png").convert_alpha()
         credits_highlight_rect = credits_highlight.get_rect(topright=(23*32 - 10, 13))
-        exit_highlight = pygame.image.load("../data/menu/exit_highlight.png").convert_alpha()
+        exit_highlight = pygame.image.load("./data/menu/exit_highlight.png").convert_alpha()
         exit_highlight_rect = exit_highlight.get_rect(topright=(23*32 - 15, 15))
         
         #vykreslování
         screen.blit(txt_bg, txt_bg_rect)
-        text(50, "START", 23*32 - 225, 100, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False)
-        text(50, "CREDITS", 23*32 - 225, 200, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False)
-        text(50, "EXIT", 23*32 - 225, 300, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False)
+        text(50, "START", 23*32 - 225, 100, (255, 255, 255), "./data/fonts/ARCADECLASSIC.TTF", "topleft", False)
+        text(50, "CREDITS", 23*32 - 225, 200, (255, 255, 255), "./data/fonts/ARCADECLASSIC.TTF", "topleft", False)
+        text(50, "EXIT", 23*32 - 225, 300, (255, 255, 255), "./data/fonts/ARCADECLASSIC.TTF", "topleft", False)
         
         #mačkání tlačítek
-        if text(50, "START", 23*32 - 225, 100, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) or menu_state == 0:
+        if text(50, "START", 23*32 - 225, 100, (255, 255, 255), "./data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) or menu_state == 0:
             screen.blit(start_highlight, start_highlight_rect)
             menu_state = 0
             
-        if text(50, "CREDITS", 23*32 - 225, 200, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) or menu_state == 1:
+        if text(50, "CREDITS", 23*32 - 225, 200, (255, 255, 255), "./data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) or menu_state == 1:
             screen.blit(credits_highlight, credits_highlight_rect)
             menu_state = 1
             
-        if text(50, "EXIT", 23*32 - 225, 300, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) or menu_state == 2:
+        if text(50, "EXIT", 23*32 - 225, 300, (255, 255, 255), "./data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) or menu_state == 2:
             screen.blit(exit_highlight, exit_highlight_rect)
             menu_state = 2
             
-        if (text(50, "START", 23*32 - 225, 100, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]) or ((pressed[pygame.K_KP_ENTER] or pressed[pygame.K_RETURN]) and menu_state == 0):
+        if (text(50, "START", 23*32 - 225, 100, (255, 255, 255), "./data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]) or ((pressed[pygame.K_KP_ENTER] or pressed[pygame.K_RETURN]) and menu_state == 0):
             inMenu = False
             inGame = True
             menu_state = None
@@ -450,12 +450,12 @@ while True:
             hall.play()
             zvonek_0.play()
         
-        if (text(50, "CREDITS", 23*32 - 225, 200, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]) or ((pressed[pygame.K_KP_ENTER] or pressed[pygame.K_RETURN]) and menu_state == 1):
+        if (text(50, "CREDITS", 23*32 - 225, 200, (255, 255, 255), "./data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]) or ((pressed[pygame.K_KP_ENTER] or pressed[pygame.K_RETURN]) and menu_state == 1):
             Credits = True
             menu_state = None
         
 
-        if (text(50, "EXIT", 23*32 - 225, 300, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]) or ((pressed[pygame.K_KP_ENTER] or pressed[pygame.K_RETURN]) and menu_state == 2):
+        if (text(50, "EXIT", 23*32 - 225, 300, (255, 255, 255), "./data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]) or ((pressed[pygame.K_KP_ENTER] or pressed[pygame.K_RETURN]) and menu_state == 2):
             pygame.quit()
             pygame.mixer.quit()
             sys.exit()
@@ -756,7 +756,7 @@ while True:
         
     if Credits:
         text_size = 30
-        credits_font = pygame.font.Font("../data/fonts/ambitsek.ttf",text_size)
+        credits_font = pygame.font.Font("./data/fonts/ambitsek.ttf",text_size)
         credits_text= '''Projekt vypracován
 třídou 1.EP skupina 2
 
