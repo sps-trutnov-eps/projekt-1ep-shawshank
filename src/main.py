@@ -64,7 +64,7 @@ show_minigame = True
 player_x = 23 * 32 / 2
 player_y = 14 * 32 / 2
 player_speed = 10
-health_max = health = 1
+health_max = health = 5
 mozne_prechody = []
 interactive = pygame.sprite.Group()
 player_movable = True
@@ -99,6 +99,14 @@ current_position = master
 skolnik = janitor(player_instance)
 postavy_display_grp.add(skolnik)
 menu_state = None
+
+ukolFont = pygame.font.SysFont("Consolas", 12)
+ukolKlic = ukolFont.render("Najdi a seber klíč.", True, (255, 255, 255))
+ukolBoty = ukolFont.render("Najdi a seber boty.", True, (255, 255, 255))
+ukolVen = ukolFont.render("Uteč!", True, (255, 255, 255))
+
+hasKlic = False
+hasBoty = False
 
 #credits
 delta_y = screen.get_rect().centery + 60
@@ -343,7 +351,7 @@ zdi = wall_map[current_position[0]][current_position[1]]
 
 #restart
 def restart():
-    global current_position,podlaha,dvere,zdi,minimap,game_map,wall_map,master
+    global current_position,podlaha,dvere,zdi,minimap,game_map,wall_map,master, hasKlic, hasBoty
     game_map,master,minimap = generate()
     current_position = master
     player_hitbox_instance.rect.center = (width//2,heigth//2)
@@ -361,10 +369,13 @@ def restart():
     zdi = wall_map[current_position[0]][current_position[1]]
     invKey.completed = True
     invBoots.completed = True
-    invBoots.unlocked = True
+    invBoots.unlocked = False
     inventoryKey_grp.update()
     inventoryBoots_grp.update("sebrat")
     inventoryBoots_grp.update("odemknout")
+    
+    hasKlic = False
+    hasBoty = False
 
 #kód pro ztmavení / zesvětlení obrazovky
 fade_white = pygame.Surface((23*32, 14*32))
@@ -538,14 +549,16 @@ while True:
             for objekt in interactive:
                 if objekt.textura == "stul_stred" or objekt.textura == "stul_hore" or objekt.textura == "stul_dole":
                     if not invKey.completed:
+                        inventoryBoots_grp.update("odemknout")
                         inventoryKey_grp.update()
                         invBoots.unlocked = True;
-                        inventoryBoots_grp.update("odemknout")
+                        hasKlic = True
                 elif objekt.textura == "skrinka_horizontalni_zamek":
                     if not invBoots.completed and invKey.completed:
                         inventoryBoots_grp.update("sebrat")
                         zdi.remove(objekt)
                         zdi.add(zed((objekt.rect.x,objekt.rect.y),"skrinka_horizontalni_otevrena","×"))
+                        hasBoty = True
 
         #kolize se zdmi
         if clip:
@@ -667,6 +680,23 @@ while True:
         inventoryBoots_grp.draw(screen)
         counter_surface.topleft = (8,6)
         screen.blit(counter_texture, counter_surface)
+        
+        
+        screen.blit(ukolKlic, (menu_background.get_rect().width - ukolKlic.get_rect().width - 5, 47))
+        screen.blit(ukolBoty, (menu_background.get_rect().width - ukolBoty.get_rect().width - 5, 47 + ukolBoty.get_rect().height + 5))
+        screen.blit(ukolVen, (menu_background.get_rect().width - ukolVen.get_rect().width - 5, 47 + 17 + ukolVen.get_rect().height + 5))
+        if hasKlic and not hasBoty:
+            ukolKlic = ukolFont.render("ajdi a seber klíč.", True, (255, 255, 255))
+            ukolBoty = ukolFont.render(">Najdi a seber boty.", True, (255, 255, 255))
+            ukolVen = ukolFont.render("Uteč!", True, (200, 200, 200))
+        elif hasBoty and hasKlic:
+            ukolKlic = ukolFont.render("Najdi a seber klíč.", True, (255, 255, 255))
+            ukolBoty = ukolFont.render("Najdi a seber boty.", True, (255, 255, 255))
+            ukolVen = ukolFont.render(">Uteč!", True, (255, 255, 255))
+        else:
+            ukolKlic = ukolFont.render(">Najdi a seber klíč.", True, (255, 255, 255))
+            ukolBoty = ukolFont.render("Najdi a seber boty.", True, (200, 200, 200))
+            ukolVen = ukolFont.render("Uteč!", True, (200, 200, 200))
         
         #časomíra
         current_time -= 0.016
