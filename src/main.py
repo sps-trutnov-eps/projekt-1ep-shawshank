@@ -270,7 +270,7 @@ def specialni_podlahy(mapka, under, symbolpos, radekpos, symbol):
         if symbol == "24":
             podlaha.add(zed((symbolpos*32,radekpos*32),"podlaha_kachlicky",mapka[2][1]))
         if symbol == "34":
-            podlaha.add(zed((symbolpos*32,radekpos*32),"podlaha_dark_blooood",mapka[2][1]))
+            podlaha.add(zed((symbolpos*32,radekpos*32),"podlaha_dark",mapka[2][1]))
     return podlaha,dvere
     
 #načtení zdí specificky
