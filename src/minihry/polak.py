@@ -20,6 +20,8 @@ def create(amount):
 
 #postupné vykreslování dialogu
 def speak(text,pos,screen):
+    uder = pygame.mixer.Sound("../data/music/úder.mp3")
+    timeout = 3
     font = pygame.font.SysFont("Courier New",17)
     writing = ""
     text = text.split("\n")
@@ -37,6 +39,10 @@ def speak(text,pos,screen):
         writing += symbol
         screen.blit(font.render(writing,False,"black"),(pos[0]+20,pos[1]+20))
         pygame.display.update()
+        timeout -= 1
+        if timeout == 0:
+            uder.play()
+            timeout = 3
         pygame.time.wait(65)
     try:
         writing = ""
@@ -44,6 +50,10 @@ def speak(text,pos,screen):
             writing += symbol
             screen.blit(font.render(writing,False,"black"),(pos[0]+20,pos[1]+40))
             pygame.display.update()
+            timeout -= 1
+            if timeout == 0:
+                uder.play()
+                timeout = 3
             pygame.time.wait(65)
     except: pass
    

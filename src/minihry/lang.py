@@ -4,8 +4,10 @@ import random
 import time
 
 pg.init()
+pg.mixer.init()
 
 def main():
+    theme = pg.mixer.Sound("../data/music/minigame_theme.mp3") 
     opakovat = 0
     znamka = 1
     vyhra = True
@@ -78,7 +80,8 @@ def main():
             pg.display.update()
 
     while opakovat < 4:
-        
+        if not pg.mixer.get_busy():
+            theme.play()
         rnd = (random.randint(1,10))
         
         opakovat = opakovat + 1
@@ -113,5 +116,5 @@ def main():
         elif rnd == 10:
             vyhra = vyhra and otazka(90, 100, (97, random.randint(1000, 10000000)))
                         
-       
+    theme.stop()
     return vyhra
