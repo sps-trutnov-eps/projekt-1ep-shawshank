@@ -446,11 +446,18 @@ while True:
             inMenu = False
             inGame = True
             menu_state = None
+            health = health_max
+            rozmluva.stop()
             typing.stop()
             hall.play()
             zvonek_0.play()
         
         if (text(50, "CREDITS", 23*32 - 225, 200, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]) or ((pressed[pygame.K_KP_ENTER] or pressed[pygame.K_RETURN]) and menu_state == 1):
+            rozmluva.stop()
+            typing.stop()
+            hall.play()
+            zvonek_0.play()
+            jasot.play()
             Credits = True
             menu_state = None
         
@@ -512,6 +519,13 @@ while True:
                 show_minigame = False
             cheat_timeout = 20
         cheat_timeout -= 1
+
+        if pressed[pygame.K_r] and cheat_timeout < 0:
+            if player_speed == 3:
+                player_speed = 10
+            else:
+                player_speed = 3
+            cheat_timeout = 20
         
         #pohyb
         posun_x = 0
@@ -616,10 +630,10 @@ while True:
                     player_instance.rect.bottom = player_hitbox_instance.rect.bottom-2
 
                     prevPlayerPos = player_hitbox_instance.rect.center
-                    player_hitbox_instance.rect.center = (500, 10)
+                    player_hitbox_instance.rect.center = (500, 32)
 
-                    podlaha,dvere = specialni_podlahy(screens_with_doors[1], False, 0, 0, "0")
-                    zdi = specialni_zdi(screens_with_doors[1])
+                    podlaha,dvere = specialni_podlahy(screens_with_doors[0], False, 0, 0, "0")
+                    zdi = specialni_zdi(screens_with_doors[0])
                     
                     inSpecialRoom = True
                 elif door.door_type == "LOCKER_ROOM":
@@ -628,10 +642,10 @@ while True:
                     player_instance.rect.bottom = player_hitbox_instance.rect.bottom-2
                     
                     prevPlayerPos = player_hitbox_instance.rect.center
-                    player_hitbox_instance.rect.center = (10, 200)
+                    player_hitbox_instance.rect.center = (32, 200)
                     
-                    podlaha,dvere = specialni_podlahy(screens_with_doors[0], False, 0, 0, "0")
-                    zdi = specialni_zdi(screens_with_doors[0])
+                    podlaha,dvere = specialni_podlahy(screens_with_doors[1], False, 0, 0, "0")
+                    zdi = specialni_zdi(screens_with_doors[1])
                     
                     inSpecialRoom = True
                 elif door.door_type == "EXIT":
@@ -755,6 +769,8 @@ while True:
         Credits = True
         
     if Credits:
+        if not pygame.mixer.get_busy():
+            jasot.play()
         text_size = 30
         credits_font = pygame.font.Font("../data/fonts/ambitsek.ttf",text_size)
         credits_text= '''Projekt vypracován
@@ -781,6 +797,7 @@ Vojtěch Nepimach
 ---Zvuky---
 
 Jakub Polák
+Anna Poláková
 
 ---Minihry---
 
@@ -803,6 +820,8 @@ Aseprite
 Ardour
 
 (více naleznete na githubu)
+
+
 '''
         screen.fill("black")
         delta_y -= 1
@@ -810,6 +829,7 @@ Ardour
         if pressed[pygame.K_RETURN]:
             Credits = False
             inMenu = True
+            jasot.stop()
         
         text_list = []
         pos_list = []
@@ -825,6 +845,7 @@ Ardour
         if (centery + delta_y + text_size * (len(credits_text.split('\n'))) < 0):
             Credits = False
             inMenu = True
+            jasot.stop()
          
         for j in range(i):
             screen.blit(text_list[j], pos_list[j])
