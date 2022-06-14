@@ -23,9 +23,16 @@ def speak(text,pos,screen):
     font = pygame.font.SysFont("Courier New",17)
     writing = ""
     text = text.split("\n")
+    pygame.time.wait(20)
+    screen.blit(font.render("|s   |",False,"red"),(pos[0]-60,pos[1]+10))
+    screen.blit(font.render("|+   |",False,"red"),(pos[0]-60,pos[1]+20))
+    screen.blit(font.render("|next|",False,"red"),(pos[0]-60,pos[1]+30))
+    screen.blit(font.render("|to  |",False,"red"),(pos[0]-60,pos[1]+40))
+    screen.blit(font.render("|skip|",False,"red"),(pos[0]-60,pos[1]+50))
     for symbol in text[0]:
         pressed = pygame.key.get_pressed()
-        if pressed[pygame.K_SPACE] or pressed[pygame.K_RETURN] or pressed[pygame.K_KP_ENTER]:
+        if pressed[pygame.K_s]:
+            screen.blit(font.render(text[0],False,"black"),(pos[0]+20,pos[1]+20))
             break
         writing += symbol
         screen.blit(font.render(writing,False,"black"),(pos[0]+20,pos[1]+20))
