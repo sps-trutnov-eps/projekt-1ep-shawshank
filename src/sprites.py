@@ -1,6 +1,6 @@
 import pygame,random
 
-from animations import playerAnim, janitorAnim
+from animations import playerAnim, janitorAnim, playerMenuAnim, janitorMenuAnim
 pygame.init()
 
 width,heigth = 23*32,14*32
@@ -149,6 +149,28 @@ class player(pygame.sprite.Sprite):
         
         self.prevPosX = self.rect.centerx
         self.prevPosY = self.rect.centery
+        
+class menuPlayer(pygame.sprite.Sprite):
+    def __init__(self, player_x, player_y):
+        super().__init__()
+        
+        self.image = playerMenuAnim(100, 200)
+        self.rect = self.image.get_rect()
+        self.rect.center = (player_y, player_x)
+        
+    def update(self):
+        self.image = playerMenuAnim(100, 200)
+        
+class menuJanitor(pygame.sprite.Sprite):
+    def __init__(self, player_x, player_y):
+        super().__init__()
+        
+        self.image = janitorMenuAnim(300, 400)
+        self.rect = self.image.get_rect()
+        self.rect.center = (player_y, player_x)
+        
+    def update(self):
+        self.image = janitorMenuAnim(300, 400)
         
 class player_hitbox(pygame.sprite.Sprite):
     def __init__(self, player_x, player_y):

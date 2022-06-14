@@ -178,3 +178,42 @@ def janitorAnim(posX, posY, prevPosX, prevPosY):
                 jLastMoveDiff = "janitor_f"
                 
     return jImage, completed
+
+#Billy v menu
+menu_player = pygame.image.load("../data/textury_hrac/Player_sprite.png")
+updownWalkingSpeed = 100
+
+def playerMenuAnim(sizex, sizey):
+    global walk, animStart, animDiff, lastMoveDiff, image, sideWalkingSpeed, updownWalkingSpeed
+
+        
+    animStart = pygame.time.get_ticks() - animDiff
+    if animStart > sideWalkingSpeed:
+        animDiff = pygame.time.get_ticks()
+        if (walk <= 9):
+            imageResize = pygame.transform.scale(getImage(16*walk, 32, 16, 32, menu_player), (sizex, sizey))
+            image =imageResize
+            walk += 1
+        else:
+            walk = 0
+            
+    return(image)
+
+#Willy v menu
+menu_janitor = (pygame.image.load("../data/textures_janitor/Janitor_sprite.png"))
+jupdownWalkingSpeed = 100
+
+def janitorMenuAnim(sizex, sizey):
+    global jImage, jWalk, jApear, jApearStart, jApearDiff, jAnimStart, jAnimDiff, jLastMoveDiff, jApearingAnimSpeed, jSideWalkingSpeed, jupdownWalkingSpeed, completed
+                
+    jAnimStart = pygame.time.get_ticks() - jAnimDiff
+    if jAnimStart > jSideWalkingSpeed:
+        jAnimDiff = pygame.time.get_ticks()
+        if (jWalk <= 9):
+            imageResize = pygame.transform.scale(getImage(42*jWalk, 59, 42, 59, menu_janitor), (sizex, sizey))
+            jImage = imageResize
+            jWalk += 1
+        else:
+            jWalk = 0
+                
+    return jImage

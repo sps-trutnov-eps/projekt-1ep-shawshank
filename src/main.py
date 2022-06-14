@@ -39,8 +39,7 @@ mimimap_pos = (width - len(game_map[0])*20,heigth - len(game_map)*12)
 ukazatel = pygame.image.load("../data/hud/ukazatel_na_mapce.png").convert_alpha()
 counter_texture = pygame.image.load("../data/hud/counter.png").convert_alpha()
 counter_surface = counter_texture.get_rect()
-menu_background = pygame.Surface((23*32,14*32))
-menu_background.blit(pygame.transform.rotozoom(pygame.image.load("../data/textury_miniher/Nature.jpg").convert(),0,1/6),(0,-120))
+
 
 #fonty a rendery pro game over text
 g_over_font = pygame.font.Font("../data/fonts/ARCADECLASSIC.TTF", 125)
@@ -86,6 +85,12 @@ hrac_hitbox_grp.add(player_hitbox_instance)
 hrac_hitbox = hrac_hitbox_grp.sprites()[0]
 health_bar = Health_bar((23*32/2, 24), screen)
 
+hrac_menu_grp = pygame.sprite.Group()
+hrac_menu_grp.add(menuPlayer(320, player_y - 100))
+
+janitor_menu_grp = pygame.sprite.Group()
+janitor_menu_grp.add(menuJanitor(250, player_y + 100))
+
 #inventář
 inventoryKey_grp = pygame.sprite.Group()
 invKey = inventoryHasKey(23*32-32-16-16, 16+8)
@@ -107,6 +112,10 @@ ukolVen = ukolFont.render("Uteč!", True, (255, 255, 255))
 
 hasKlic = False
 hasBoty = False
+
+#menu
+backgroundMove = 0
+menu_background = pygame.image.load("../data/menu/background.png")
 
 #credits
 delta_y = screen.get_rect().centery + 60
@@ -410,7 +419,11 @@ while True:
             pygame.mixer.quit()
     
     if inMenu:
-        screen.blit(menu_background,(0,0))
+        if backgroundMove <= 0:
+            backgroundMove = menu_background.get_rect().width/2
+        else:
+            backgroundMove -= 15
+        screen.blit(menu_background,(0, 0), (backgroundMove, 0, menu_background.get_rect().width, menu_background.get_rect().height))
         if not pygame.mixer.get_busy():
             typing.play()
         #pohyb přetz tab
@@ -425,6 +438,12 @@ while True:
                 else: menu_state = 0
             cheat_timeout = 10
         cheat_timeout -=1
+        
+        janitor_menu_grp.update()
+        janitor_menu_grp.draw(screen)
+        
+        hrac_menu_grp.update()
+        hrac_menu_grp.draw(screen)
         
         #povrchy
         txt_bg = pygame.image.load("../data/menu/text_bg.png").convert_alpha()
@@ -472,6 +491,8 @@ while True:
             pygame.quit()
             pygame.mixer.quit()
             sys.exit()
+        
+        clock.tick(30)
     
     elif inGame:
         #cheaty
