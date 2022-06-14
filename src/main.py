@@ -30,6 +30,7 @@ zvonek_0 = pygame.mixer.Sound("../data/music/zvonek_0.mp3")
 zvonek_1 = pygame.mixer.Sound("../data/music/zvonek_1.mp3")
 hall = pygame.mixer.Sound("../data/music/þE_hALL.mp3")
 typing = pygame.mixer.Sound("../data/music/demonic_typing.mp3")
+credits_file = "../data/credits.txt"
 
 cheat_timeout = 20
 show_minimap = False
@@ -89,6 +90,9 @@ current_position = master
 skolnik = janitor(player_instance)
 postavy_display_grp.add(skolnik)
 menu_state = None
+
+#credits
+delta_y = screen.get_rect().centery + 60
 
 #výstup ze dveří
 def vystup(pos):
@@ -256,7 +260,8 @@ fade_speed = 10
 inGame = False
 gameOver = False
 inMenu = True
-vyhra = False
+win = False
+Credits = False
 
 #main loop
 while True:
@@ -276,7 +281,7 @@ while True:
         screen.blit(menu_background,(0,0))
         if not pygame.mixer.get_busy():
             typing.play()
-        #pohyb přetz tab
+        #pohyb přez tab
         if pressed[pygame.K_TAB] and cheat_timeout < 0:
             if pressed[pygame.K_RSHIFT] or pressed[pygame.K_LSHIFT]:
                 if menu_state == None: menu_state = 2
@@ -327,7 +332,7 @@ while True:
             zvonek_0.play()
         
         if (text(50, "CREDITS", 23*32 - 225, 200, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]) or ((pressed[pygame.K_KP_ENTER] or pressed[pygame.K_RETURN]) and menu_state == 1):
-            print("Zde budou kredity")
+            Credits = True
             menu_state = None
         
 
@@ -377,7 +382,7 @@ while True:
             
         if pressed[pygame.K_3] and cheat_timeout < 0:
             inGame = False
-            vyhra = True
+            win = True
             cheat_timeout = 20
             hall.stop()
             
@@ -473,7 +478,7 @@ while True:
                     player_instance.rect.bottom = player_hitbox_instance.rect.bottom-2
                     if invBoots.completed:
                         inGame = False
-                        vyhra = True
+                        win = True
                         hall.stop()
         
         #vykreslování
@@ -561,8 +566,8 @@ while True:
             current_time = default_time
             health = health_max
     
-    #vyhra
-    if vyhra:
+    #win
+    if win:
         zvonek_0.stop()
         zvonek_1.stop()
         BARVA_POZADI = (0, 0, 0)
@@ -581,7 +586,7 @@ while True:
             
         nabidka = "q - odejít   m - \"menu\""
             
-        while vyhra:
+        while win:
             if not pygame.mixer.get_busy(): jasot.play()
             udalost = pygame.event.get()
             stisknuto = pygame.key.get_pressed()
@@ -598,7 +603,7 @@ while True:
                         sys.exit()
                     if u.key == pygame.K_m:
                         inMenu = True
-                        vyhra = False
+                        win = False
                         jasot.stop()
                         
             time.sleep(0.05)
@@ -612,17 +617,50 @@ while True:
             else:
                 barva_textu = (255, 255, 255)
             
-            vyhra_text = font.render(zprava, True, barva_zpravy)
-            text_vyhra = font.render(nabidka, True, barva_textu)
+            win_text = font.render(zprava, True, barva_zpravy)
+            text_win = font.render(nabidka, True, barva_textu)
             
             okno.fill(BARVA_POZADI)
-            okno.blit(vyhra_text, (0,0))
-            okno.blit(text_vyhra, (0,50))
+            okno.blit(win_text, (0,0))
+            okno.blit(text_win, (0,50))
             
             pygame.display.update()
         else:
             restart()
             current_time = default_time
             health = health_max
+            
+    if Credits:
+        text_size = 30
+        credits_font = pygame.font.Font("../data/fonts/ambitsek.ttf",text_size)
+        credits_text= '''Týpek 1
+Týpek dva kámo
+A tady další týpek
+'''
+        screen.fill("black")
+        delta_y -= 1
+        centerx, centery = screen.get_rect().centerx, screen.get_rect().centery
+        if pressed[pygame.K_RETURN]:
+            Credits = False
+            inMenu = True
+        
+        text_list = []
+        pos_list = []
+        i = 0
+        
+        for line in credits_text.split('\n'):
+            text_line = credits_font.render(line, True, (255,255,255))
+            text_list.append(text_line)
+            pos = text_line.get_rect(center=(centerx, centery + delta_y + i * text_size))
+            pos_list.append(pos)
+            i = i + 1
+         
+        if (centery + delta_y + text_size * (len(credits_text.split('\n'))) < 0):
+            Credits = False
+            inMenu = True
+         
+        for j in range(i):
+            screen.blit(text_list[j], pos_list[j])
+            
     pygame.display.update()
     clock.tick(60)
