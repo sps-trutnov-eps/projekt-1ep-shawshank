@@ -23,7 +23,7 @@ timeOut = 0
 vyberPozice = (10, 400)
 vyberVelikost = (rozliseni_x/3-20, 150)
 
-precti = open("priklady.txt", "r")
+precti = open("langer/priklady.txt", "r")
 p = precti.read()
 precti.close()
 p = p.strip().split("\n")
@@ -84,7 +84,7 @@ def vyberPrikladu():
         spatnaOdpovedText1 = font2.render(str(spatnaOdpoved1), True, (255, 255, 255))
         spatnaOdpovedText2 = font2.render(str(spatnaOdpoved2), True, (255, 255, 255))
 
-def pocitaniPrikladu():
+def main():
     global hotovozInt, rozliseni, font1, font2, font3, font4, nadpis, vysledek, prikladuSpatne, prikladuDobre, hotovoz, screen, timeOut, vyberPozice, vyberVelikost, p, priklad, prikladText, spravnyVyber, spravnaOdpoved, spatnaOdpoved1, spatnaOdpoved2, spravnaOdpovedText, spatnaOdpovedText1, spatnaOdpovedText2
     vyberPrikladu()
 
@@ -171,4 +171,3 @@ def pocitaniPrikladu():
         
         pygame.display.update()
         
-pocitaniPrikladu()
