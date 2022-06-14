@@ -17,7 +17,6 @@ prikladuDobre = 0
 hotovozInt = 0
 hotovoz = font4.render(f"{hotovozInt}/10", True, (0, 0, 0))
 screen = pygame.display.set_mode((rozliseni_x, rozliseni_y))
-pygame.display.set_caption('Počítání příkladů')
 
 timeOut = 0
 
@@ -86,8 +85,10 @@ def vyberPrikladu():
         spatnaOdpovedText2 = font2.render(str(spatnaOdpoved2), True, (255, 255, 255))
 
 def main():
+    pygame.display.set_caption('Počítání příkladů')
     global hotovozInt, rozliseni, font1, font2, font3, font4, nadpis, vysledek, prikladuSpatne, prikladuDobre, hotovoz, screen, timeOut, vyberPozice, vyberVelikost, p, priklad, prikladText, spravnyVyber, spravnaOdpoved, spatnaOdpoved1, spatnaOdpoved2, spravnaOdpovedText, spatnaOdpovedText1, spatnaOdpovedText2
     vyberPrikladu()
+    screen = pygame.display.set_mode((rozliseni_x, rozliseni_y))
     
     pygame.display.set_mode(rozliseni)
     
