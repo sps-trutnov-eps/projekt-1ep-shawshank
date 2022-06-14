@@ -7,7 +7,7 @@ list_of_screens = os.listdir(path)
 screens_with_doors = []
 screens_without_doors = []
 
-#vytvoření seznamu oprazovek
+#vytvoření seznamu obrazovek
 for screen_ind,screen in enumerate(list_of_screens):
     new = ["map","binary",[None,"sem_příjde_třída"],["prozatím_nepoužitá_kolonka_pro_bullyho"]]
     

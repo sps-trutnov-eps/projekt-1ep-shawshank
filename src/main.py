@@ -2,6 +2,7 @@ import sys
 import os
 import importlib
 from generace_mapy import generate
+from list_special_obrazovek import screens_with_doors
 from sprites import *
 import time
 from inventory import inventoryHasKey, inventoryHasBoots
@@ -58,6 +59,7 @@ player_y = 14 * 32 / 2
 player_speed = 3
 health_max = health = 5
 mozne_prechody = []
+interactive = pygame.sprite.Group()
 player_movable = True
 
 default_time = 60
@@ -93,6 +95,8 @@ menu_state = None
 
 #credits
 delta_y = screen.get_rect().centery + 60
+
+inSpecialRoom = False
 
 #výstup ze dveří
 def vystup(pos):
@@ -157,8 +161,114 @@ def text(text_size, text, x, y, text_color, text_font, align, sysfont):
     return text_rect
     
     
+#načtení zdí speciální místnosti
+def specialni_zdi(mapka):
+    global podlaha
+    zdi = pygame.sprite.Group()
+    for radek_ind,radek in enumerate(mapka):
+        for symbol_ind,symbol in enumerate(radek):
+            if symbol == "6":
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"zeď_0",mapka[2][1]))
+            elif symbol == "9":
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"zeď_1",mapka[2][1]))
+            elif symbol == "12":
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"zeď_2",mapka[2][1]))
+            elif symbol == "15":
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"zeď_3",mapka[2][1])) 
+            elif symbol == "7":
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnitřní_roh_0",mapka[2][1])) 
+            elif symbol == "10":
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnitřní_roh_1",mapka[2][1]))
+            elif symbol == "13":
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnitřní_roh_2",mapka[2][1])) 
+            elif symbol == "16":
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnitřní_roh_3",mapka[2][1]))  
+            elif symbol == "8":
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnější_roh_0",mapka[2][1]))  
+            elif symbol == "11":
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnější_roh_1",mapka[2][1]))  
+            elif symbol == "14":
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnější_roh_2",mapka[2][1]))
+            elif symbol == "17":
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnější_roh_3",mapka[2][1]))
+            elif symbol == "29":
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"skrinka_horizontalni",mapka[2][1]))
+            elif symbol == "21":
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"skrinka_vertikalni",mapka[2][1]))
+                podlaha.add(specialni_podlahy(screens_with_doors[1], True, symbol_ind, radek_ind, "24"))
+            elif symbol == "23":
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"skrinka_vertikalni_vrsek",mapka[2][1]))
+                podlaha.add(specialni_podlahy(screens_with_doors[1], True, symbol_ind, radek_ind, "24"))
+            elif symbol == "25":
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"kos",mapka[2][1]))
+                podlaha.add(specialni_podlahy(screens_with_doors[1], True, symbol_ind, radek_ind, "24"))
+            elif symbol == "20":
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"lavicka_horizontalni",mapka[2][1]))
+                podlaha.add(specialni_podlahy(screens_with_doors[1], True, symbol_ind, radek_ind, "24"))
+            elif symbol == "19":
+                zdi.add(zed((symbol_ind*32 + 5,radek_ind*32),"lavicka_horizontalni_konec_leva",mapka[2][1]))
+                podlaha.add(specialni_podlahy(screens_with_doors[1], True, symbol_ind, radek_ind, "24"))
+            elif symbol == "42":
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"lavicka_horizontalni_konec_prava",mapka[2][1]))
+                podlaha.add(specialni_podlahy(screens_with_doors[1], True, symbol_ind, radek_ind, "24"))
+            elif symbol == "31":
+                if not invBoots.completed:
+                    zdi.add(zed((symbol_ind*32,radek_ind*32),"skrinka_horizontalni_zamek",mapka[2][1]))
+                    interactive.add(zed((symbol_ind*32,radek_ind*32),"skrinka_horizontalni_zamek",mapka[2][1]))
+                else:
+                    zdi.add(zed((symbol_ind*32,radek_ind*32),"skrinka_horizontalni_otevrena",mapka[2][1]))
+                    interactive.add(zed((symbol_ind*32,radek_ind*32),"skrinka_horizontalni_otevrena",mapka[2][1]))
+            elif symbol == "35":
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"odpatkove_pytle",mapka[2][1]))
+                podlaha.add(specialni_podlahy(screens_with_doors[1], True, symbol_ind, radek_ind, "34"))
+            elif symbol == "36":
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"skrin",mapka[2][1]))
+                podlaha.add(specialni_podlahy(screens_with_doors[1], True, symbol_ind, radek_ind, "34"))
+            elif symbol == "37":
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"skrin_bok",mapka[2][1]))
+                podlaha.add(specialni_podlahy(screens_with_doors[1], True, symbol_ind, radek_ind, "34"))
+            elif symbol == "38":
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"stul_dole",mapka[2][1]))
+                podlaha.add(specialni_podlahy(screens_with_doors[1], True, symbol_ind, radek_ind, "34"))
+                interactive.add(zed((symbol_ind*32,radek_ind*32),"stul_dole",mapka[2][1]))
+            elif symbol == "40":
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"stul_stred",mapka[2][1]))
+                podlaha.add(specialni_podlahy(screens_with_doors[1], True, symbol_ind, radek_ind, "34"))
+                interactive.add(zed((symbol_ind*32,radek_ind*32),"stul_stred",mapka[2][1]))
+            elif symbol == "39":
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"stul_hore",mapka[2][1]))
+                podlaha.add(specialni_podlahy(screens_with_doors[1], True, symbol_ind, radek_ind, "34"))
+                interactive.add(zed((symbol_ind*32,radek_ind*32),"stul_hore",mapka[2][1]))
+    return zdi
+
+#načtení podlahy speciální místnosti
+def specialni_podlahy(mapka, under, symbolpos, radekpos, symbol):
+    podlaha = pygame.sprite.Group()
+    dvere = pygame.sprite.Group()
+    if under != True:
+        for radek_ind,radek in enumerate(mapka):
+            for symbol_ind,symbol in enumerate(radek):
+                True
+                if symbol == "18":
+                    podlaha.add(zed((symbol_ind*32,radek_ind*32),"void",mapka[2][1]))
+                elif symbol == "24":
+                    podlaha.add(zed((symbol_ind*32,radek_ind*32),"podlaha_kachlicky",mapka[2][1]))
+                elif symbol == "32":
+                    podlaha.add(zed((symbol_ind*32,radek_ind*32),"podlaha_dark",mapka[2][1]))
+                elif symbol == "33":
+                    podlaha.add(zed((symbol_ind*32,radek_ind*32),"podlaha_dark_blood",mapka[2][1]))
+                elif symbol == "34":
+                    podlaha.add(zed((symbol_ind*32,radek_ind*32),"podlaha_dark_blooood",mapka[2][1]))
+    else:
+        if symbol == "24":
+            podlaha.add(zed((symbolpos*32,radekpos*32),"podlaha_kachlicky",mapka[2][1]))
+        if symbol == "34":
+            podlaha.add(zed((symbolpos*32,radekpos*32),"podlaha_dark_blooood",mapka[2][1]))
+    return podlaha,dvere
+    
 #načtení zdí specificky
 def random_zdi(mapka,ind,door):
+    #print (mapka)
     global mozne_prechody
     zdi = pygame.sprite.Group()
     for radek_ind,radek in enumerate(mapka):
@@ -221,7 +331,6 @@ for line_ind,line in enumerate(game_map):
             new.append(random_zdi(something[0],[line_ind,something_ind],something[2][1]))
         else: new.append(None)
     wall_map.append(new)
-    
 podlaha,dvere = urceni_sprite_group(game_map[current_position[0]][current_position[1]])
 zdi = wall_map[current_position[0]][current_position[1]]
 
@@ -281,7 +390,7 @@ while True:
         screen.blit(menu_background,(0,0))
         if not pygame.mixer.get_busy():
             typing.play()
-        #pohyb přez tab
+        #pohyb přetz tab
         if pressed[pygame.K_TAB] and cheat_timeout < 0:
             if pressed[pygame.K_RSHIFT] or pressed[pygame.K_LSHIFT]:
                 if menu_state == None: menu_state = 2
@@ -412,6 +521,16 @@ while True:
                 image = "player_f"
             
             player_hitbox_instance.posun_x(posun_x)
+            
+        if pygame.sprite.spritecollide(hrac_hitbox, interactive, False):
+            for objekt in interactive:
+                if objekt.textura == "stul_stred" or objekt.textura == "stul_hore" or objekt.textura == "stul_dole":
+                    if not invKey.completed: inventoryKey_grp.update()
+                elif objekt.textura == "skrinka_horizontalni_zamek":
+                    if not invBoots.completed and invKey.completed:
+                        inventoryBoots_grp.update()
+                        zdi.remove(objekt)
+                        zdi.add(zed((objekt.rect.x,objekt.rect.y),"skrinka_horizontalni_otevrena","×"))
 
         #kolize se zdmi
         if clip:
@@ -432,29 +551,48 @@ while True:
         
         #pohyb mezi obrazovkami
         if player_hitbox_instance.rect.left < 0:
-            player_hitbox_instance.rect.right = width
-            current_position[1] -=1
+            if inSpecialRoom:
+                player_hitbox_instance.rect.center = prevPlayerPos
+                inSpecialRoom = False
+            else:
+                player_hitbox_instance.rect.right = width
+                current_position[1] -=1
+            
             podlaha,dvere = urceni_sprite_group(game_map[current_position[0]][current_position[1]])
             zdi = wall_map[current_position[0]][current_position[1]]
         elif player_hitbox_instance.rect.right > width:
-            player_hitbox_instance.rect.left = 0
-            current_position[1] +=1
+            if inSpecialRoom:
+                player_hitbox_instance.rect.center = prevPlayerPos
+                inSpecialRoom = False
+            else:
+                player_hitbox_instance.rect.left = 0
+                current_position[1] +=1
             podlaha,dvere = urceni_sprite_group(game_map[current_position[0]][current_position[1]])
             zdi = wall_map[current_position[0]][current_position[1]]
         elif player_hitbox_instance.rect.top < 0:
-            player_hitbox_instance.rect.bottom = heigth
-            current_position[0] -=1
+            if inSpecialRoom:
+                player_hitbox_instance.rect.center = prevPlayerPos
+                inSpecialRoom = False
+            else:
+                player_hitbox_instance.rect.bottom = heigth
+                current_position[0] -=1
             podlaha,dvere = urceni_sprite_group(game_map[current_position[0]][current_position[1]])
             zdi = wall_map[current_position[0]][current_position[1]]
         elif player_hitbox_instance.rect.bottom > heigth:
-            player_hitbox_instance.rect.top = 0
-            current_position[0] +=1
+            if inSpecialRoom:
+                player_hitbox_instance.rect.center = prevPlayerPos
+                inSpecialRoom = False
+            else:
+                player_hitbox_instance.rect.top = 0
+                current_position[0] +=1
             podlaha,dvere = urceni_sprite_group(game_map[current_position[0]][current_position[1]])
             zdi = wall_map[current_position[0]][current_position[1]]
             
         #zbytek pohybu
         player_instance.rect.centerx = player_hitbox_instance.rect.centerx
         player_instance.rect.bottom = player_hitbox_instance.rect.bottom+1
+        
+        
         
         #kolize s dvermi
         if pygame.sprite.spritecollide(hrac_hitbox, dvere, False):
@@ -466,16 +604,31 @@ while True:
                     player_hitbox_instance.rect.center = vystup(current_position)
                     player_instance.rect.centerx = player_hitbox_instance.rect.centerx+4
                     player_instance.rect.bottom = player_hitbox_instance.rect.bottom-2
-                    if not invKey.completed: inventoryKey_grp.update()
+
+                    prevPlayerPos = player_hitbox_instance.rect.center
+                    player_hitbox_instance.rect.center = (500, 10)
+
+                    podlaha,dvere = specialni_podlahy(screens_with_doors[1], False, 0, 0, "0")
+                    zdi = specialni_zdi(screens_with_doors[1])
+                    
+                    inSpecialRoom = True
                 elif door.door_type == "LOCKER_ROOM":
                     player_hitbox_instance.rect.center = vystup(current_position)
                     player_instance.rect.centerx = player_hitbox_instance.rect.centerx+4
                     player_instance.rect.bottom = player_hitbox_instance.rect.bottom-2
-                    if not invBoots.completed and invKey.completed: inventoryBoots_grp.update()
+                    
+                    prevPlayerPos = player_hitbox_instance.rect.center
+                    player_hitbox_instance.rect.center = (10, 200)
+                    
+                    podlaha,dvere = specialni_podlahy(screens_with_doors[0], False, 0, 0, "0")
+                    zdi = specialni_zdi(screens_with_doors[0])
+                    
+                    inSpecialRoom = True
                 elif door.door_type == "EXIT":
                     player_hitbox_instance.rect.center = vystup(current_position)
                     player_instance.rect.centerx = player_hitbox_instance.rect.centerx+4
                     player_instance.rect.bottom = player_hitbox_instance.rect.bottom-2
+                    
                     if invBoots.completed:
                         inGame = False
                         win = True
@@ -483,8 +636,8 @@ while True:
         
         #vykreslování
         screen.fill("black")
-        zdi.draw(screen)
         podlaha.draw(screen)
+        zdi.draw(screen)
         dvere.draw(screen)
         if show_minimap:
             screen.blit(minimap,mimimap_pos)

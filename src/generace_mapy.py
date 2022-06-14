@@ -48,7 +48,7 @@ def test(pos,master):
             pos[0] += 1
     return pos,new_pos
 
-#umištěňování obrazovek
+#umisťování obrazovek
 def umisteni(pos,mapa,new_pos):
     state_of_door = None
     if mapa[pos[0]][pos[1]] != []:
@@ -191,7 +191,7 @@ def main_generation():
 
 def generate():
     global screen
-    #možné opakování gemerace
+    #možné opakování generace
     while True:
         mapa,screen,master = main_generation()
         počet_všech = 0
