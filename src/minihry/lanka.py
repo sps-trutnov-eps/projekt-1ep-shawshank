@@ -25,6 +25,8 @@ def vyberOtazekaspol(otazky):
 def main():
     global spravne_odpovedi, spatne_odpovedi1, spatne_odpovedi2
     
+    opakovani=5
+    
     sirka_okna = 736
     vyska_okna = 448
 
@@ -78,6 +80,9 @@ def main():
 
     otazkaText, (spravnaOdpovedText,spatnaOdpovedText1, spatnaOdpovedText2), (spatnaOdpovedMainText, spravnaOdpovedMainText), spravneTlacitko = vyberOtazekaspol(otazky)
     spatnaOdpoved = 0
+    
+    pocetOdpovedi = 0
+    pocetBodu = 0
 
     while(True):
         udalosti = pygame.event.get()
@@ -95,9 +100,11 @@ def main():
                     if spravneTlacitko == 0:
                         spatnaOdpoved = 2
                         print("Správně")
+                        pocetBodu += 1
                     else:
                         print("Špatně")
                         spatnaOdpoved = 1
+                    pocetOdpovedi += 1
                 
             if pygame.mouse.get_pos()[0] > moznostiPozice[1] and pygame.mouse.get_pos()[0] < moznostiPozice[1] + moznostiSirka[0] and pygame.mouse.get_pos()[1] > moznostiPozice[3] and pygame.mouse.get_pos()[1] < moznostiPozice[3] + moznostiSirka[1]:
                 if timeOut < 1:
@@ -105,9 +112,11 @@ def main():
                     if spravneTlacitko == 1:
                         spatnaOdpoved = 2
                         print("Správně")
+                        pocetBodu += 1
                     else:
                         print("Špatně")
                         spatnaOdpoved = 1
+                    pocetOdpovedi += 1
                     
             if pygame.mouse.get_pos()[0] > moznostiPozice[2] and pygame.mouse.get_pos()[0] < moznostiPozice[2] + moznostiSirka[0] and pygame.mouse.get_pos()[1] > moznostiPozice[3] and pygame.mouse.get_pos()[1] < moznostiPozice[3] + moznostiSirka[1]:
                 if timeOut < 1:
@@ -115,9 +124,11 @@ def main():
                     if spravneTlacitko == 2:
                         spatnaOdpoved = 2
                         print("Správně")
+                        pocetBodu += 1
                     else:
                         print("Špatně")
                         spatnaOdpoved = 1
+                    pocetOdpovedi += 1
         
         #otázka
         pygame.draw.rect(screen, (20, 121, 160), pygame.Rect(0, 0, sirka_okna, 100))
@@ -159,6 +170,13 @@ def main():
             otazkaText, (spravnaOdpovedText,spatnaOdpovedText1, spatnaOdpovedText2), (spatnaOdpovedMainText, spravnaOdpovedMainText), spravneTlacitko = vyberOtazekaspol(otazky)
             spatnaOdpoved = 0
         
+        if pocetOdpovedi >= 5:
+            if pocetBodu > 3:
+                return True
+            elif pocetBodu < 2:
+                return False
+        
+            
         pygame.display.update()
         
 main()
