@@ -5,12 +5,12 @@ block_cipher = None
 
 
 a = Analysis(
-    ['main.py'],
+    ['src/main.py'],
     pathex=[],
     binaries=[],
     datas=[
-        ('../data', './data'),
-        ('./minihry', './minihry'),
+        ('./data', 'data'),
+        ('src/minihry', 'minihry'),
     ],
     hiddenimports=[],
     hookspath=[],
@@ -29,12 +29,12 @@ exe = EXE(
     a.scripts,
     [],
     exclude_binaries=True,
-    name='main',
+    name='shawshank',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
     upx=True,
-    console=True,
+    console=False,
     disable_windowed_traceback=False,
     argv_emulation=False,
     target_arch=None,
