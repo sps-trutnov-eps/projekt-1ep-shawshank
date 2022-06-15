@@ -45,8 +45,7 @@ mimimap_pos = (width - len(game_map[0])*20,heigth - len(game_map)*12)
 ukazatel = pygame.image.load(DATA_ROOT + "/data/hud/ukazatel_na_mapce.png").convert_alpha()
 counter_texture = pygame.image.load(DATA_ROOT + "/data/hud/counter.png").convert_alpha()
 counter_surface = counter_texture.get_rect()
-menu_background = pygame.Surface((23*32,14*32))
-menu_background.blit(pygame.transform.rotozoom(pygame.image.load(DATA_ROOT + "/data/textury_miniher/Nature.jpg").convert(),0,1/6),(0,-120))
+
 
 #fonty a rendery pro game over text
 g_over_font = pygame.font.Font(DATA_ROOT + "/data/fonts/ARCADECLASSIC.TTF", 125)
@@ -92,6 +91,12 @@ hrac_hitbox_grp.add(player_hitbox_instance)
 hrac_hitbox = hrac_hitbox_grp.sprites()[0]
 health_bar = Health_bar((23*32/2, 24), screen)
 
+hrac_menu_grp = pygame.sprite.Group()
+hrac_menu_grp.add(menuPlayer(320, player_y - 100))
+
+janitor_menu_grp = pygame.sprite.Group()
+janitor_menu_grp.add(menuJanitor(250, player_y + 100))
+
 #inventář
 inventoryKey_grp = pygame.sprite.Group()
 invKey = inventoryHasKey(23*32-32-16-16, 16+8)
@@ -105,6 +110,18 @@ current_position = master
 skolnik = janitor(player_instance)
 postavy_display_grp.add(skolnik)
 menu_state = None
+
+ukolFont = pygame.font.SysFont("Consolas", 12)
+ukolKlic = ukolFont.render("Najdi a seber klíč.", True, (255, 255, 255))
+ukolBoty = ukolFont.render("Najdi a seber boty.", True, (255, 255, 255))
+ukolVen = ukolFont.render("Uteč!", True, (255, 255, 255))
+
+hasKlic = False
+hasBoty = False
+
+#menu
+backgroundMove = 0
+menu_background = pygame.image.load(DATA_ROOT + "/data/menu/background.png")
 
 #credits
 delta_y = screen.get_rect().centery + 60
@@ -348,7 +365,7 @@ zdi = wall_map[current_position[0]][current_position[1]]
 
 #restart
 def restart():
-    global current_position,podlaha,dvere,zdi,minimap,game_map,wall_map,master
+    global current_position,podlaha,dvere,zdi,minimap,game_map,wall_map,master, hasKlic, hasBoty
     game_map,master,minimap = generate()
     current_position = master
     player_hitbox_instance.rect.center = (width//2,heigth//2)
@@ -366,8 +383,13 @@ def restart():
     zdi = wall_map[current_position[0]][current_position[1]]
     invKey.completed = True
     invBoots.completed = True
+    invBoots.unlocked = False
     inventoryKey_grp.update()
-    inventoryBoots_grp.update()
+    inventoryBoots_grp.update("sebrat")
+    inventoryBoots_grp.update("odemknout")
+    
+    hasKlic = False
+    hasBoty = False
 
 #kód pro ztmavení / zesvětlení obrazovky
 fade_white = pygame.Surface((23*32, 14*32))
@@ -403,7 +425,11 @@ while True:
             pygame.mixer.quit()
     
     if inMenu:
-        screen.blit(menu_background,(0,0))
+        if backgroundMove <= 0:
+            backgroundMove = menu_background.get_rect().width - 23 * 32
+        else:
+            backgroundMove -= 15
+        screen.blit(menu_background,(0, 0), (backgroundMove, 0, menu_background.get_rect().width, menu_background.get_rect().height))
         if not pygame.mixer.get_busy():
             typing.play()
         #pohyb přetz tab
@@ -418,6 +444,12 @@ while True:
                 else: menu_state = 0
             cheat_timeout = 10
         cheat_timeout -=1
+        
+        janitor_menu_grp.update()
+        janitor_menu_grp.draw(screen)
+        
+        hrac_menu_grp.update()
+        hrac_menu_grp.draw(screen)
         
         #povrchy
         txt_bg = pygame.image.load(DATA_ROOT + "/data/menu/text_bg.png").convert_alpha()
@@ -472,6 +504,8 @@ while True:
             pygame.quit()
             pygame.mixer.quit()
             sys.exit()
+        
+        clock.tick(30)
     
     elif inGame:
         #cheaty
@@ -540,6 +574,34 @@ while True:
                     player_speed = 3
                 cheat_timeout = 20
         
+        if pressed[pygame.K_t] and cheat_timeout < 0:
+            current_time = default_time
+            hall.stop()
+            hall.play()
+            cheat_timeout = 20
+            
+        if pressed[pygame.K_1] and cheat_timeout < 0:
+            inventoryKey_grp.update()
+            cheat_timeout = 20
+            
+        if pressed[pygame.K_2] and cheat_timeout < 0:
+            inventoryBoots_grp.update("sebrat")
+            cheat_timeout = 20
+            
+        if pressed[pygame.K_3] and cheat_timeout < 0:
+            inGame = False
+            win = True
+            cheat_timeout = 20
+            hall.stop()
+            
+        if pressed[pygame.K_p] and cheat_timeout < 0:
+            if show_minigame == False:
+                show_minigame = True
+            else:
+                show_minigame = False
+            cheat_timeout = 20
+        cheat_timeout -= 1
+        
         #pohyb
         posun_x = 0
         posun_y = 0
@@ -563,12 +625,17 @@ while True:
         if pygame.sprite.spritecollide(hrac_hitbox, interactive, False):
             for objekt in interactive:
                 if objekt.textura == "stul_stred" or objekt.textura == "stul_hore" or objekt.textura == "stul_dole":
-                    if not invKey.completed: inventoryKey_grp.update()
+                    if not invKey.completed:
+                        inventoryBoots_grp.update("odemknout")
+                        inventoryKey_grp.update()
+                        invBoots.unlocked = True;
+                        hasKlic = True
                 elif objekt.textura == "skrinka_horizontalni_zamek":
                     if not invBoots.completed and invKey.completed:
-                        inventoryBoots_grp.update()
+                        inventoryBoots_grp.update("sebrat")
                         zdi.remove(objekt)
                         zdi.add(zed((objekt.rect.x,objekt.rect.y),"skrinka_horizontalni_otevrena","×"))
+                        hasBoty = True
 
         #kolize se zdmi
         if clip:
@@ -701,6 +768,23 @@ while True:
         inventoryBoots_grp.draw(screen)
         counter_surface.topleft = (8,6)
         screen.blit(counter_texture, counter_surface)
+        
+        
+        screen.blit(ukolKlic, (menu_background.get_rect().width - ukolKlic.get_rect().width - 5, 47))
+        screen.blit(ukolBoty, (menu_background.get_rect().width - ukolBoty.get_rect().width - 5, 47 + ukolBoty.get_rect().height + 5))
+        screen.blit(ukolVen, (menu_background.get_rect().width - ukolVen.get_rect().width - 5, 47 + 17 + ukolVen.get_rect().height + 5))
+        if hasKlic and not hasBoty:
+            ukolKlic = ukolFont.render("ajdi a seber klíč.", True, (255, 255, 255))
+            ukolBoty = ukolFont.render(">Najdi a seber boty.", True, (255, 255, 255))
+            ukolVen = ukolFont.render("Uteč!", True, (200, 200, 200))
+        elif hasBoty and hasKlic:
+            ukolKlic = ukolFont.render("Najdi a seber klíč.", True, (255, 255, 255))
+            ukolBoty = ukolFont.render("Najdi a seber boty.", True, (255, 255, 255))
+            ukolVen = ukolFont.render(">Uteč!", True, (255, 255, 255))
+        else:
+            ukolKlic = ukolFont.render(">Najdi a seber klíč.", True, (255, 255, 255))
+            ukolBoty = ukolFont.render("Najdi a seber boty.", True, (200, 200, 200))
+            ukolVen = ukolFont.render("Uteč!", True, (200, 200, 200))
         
         #časomíra
         current_time -= 0.016
