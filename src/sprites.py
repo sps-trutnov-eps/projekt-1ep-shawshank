@@ -94,7 +94,7 @@ dekorace_3 = (pygame.image.load("./data/decorations/missing_poster_3.png").conve
               pygame.image.load("./data/decorations/šipka_3.png").convert(),
               pygame.image.load("./data/decorations/trofeje_3.png").convert())
 
-pygame.display.set_icon(images["special_1"])
+pygame.display.set_icon(images["special_0"])
 
 class zed(pygame.sprite.Sprite):
     def __init__(self,pozice,textura,door_type):
