@@ -1,5 +1,13 @@
-import random,pygame,sys
+import sys
+
+if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
+    DATA_ROOT = '.'
+else:
+    DATA_ROOT = '..'
+
+import random,pygame
 from list_obrazovek import screens_with_doors,screens_without_doors
+
 pygame.init()
 
 screen = None
@@ -213,7 +221,7 @@ def generate():
     for row in mapa[0]:
         for line in game_map:
             line.append([])
-
+    
     for line_ind,line in enumerate(mapa):
         for part_ind,part in enumerate(line):
             if part != []:

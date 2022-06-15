@@ -1,7 +1,14 @@
+import sys
+
+if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
+    DATA_ROOT = '.'
+else:
+    DATA_ROOT = '..'
+
 import os
 
-#určení základních proměných + cesty k "projekt-1ep-shawshank"
-path = os.path.join(os.getcwd(),"..","data","special_mistnosti")
+#určení základních proměných + cesty k datum
+path = DATA_ROOT + "/data/special_mistnosti"
 list_of_screens = os.listdir(path)
     
 screens_with_doors = []
@@ -11,10 +18,7 @@ for screen_ind,screen in enumerate(list_of_screens):
     new = []
     
     #mapka
-    try:
-        file = open(path+"\\"+screen,"r",encoding = "utf8")
-    except:
-        file = open(path+"/"+screen,"r",encoding = "utf8")
+    file = open(path+"/"+screen,"r",encoding = "utf8")
     mapka = file.read()
     file.close()
     mapka = mapka.split("\n</data>")[0].split("<data encoding=\"csv\">\n")[1].split("\n")
@@ -28,4 +32,3 @@ for screen_ind,screen in enumerate(list_of_screens):
     new = mapka
     
     screens_with_doors.append(new)
-    #os.rename(path+"\\"+screen,f"{path}\\{binary}_{str(new[2][0])}({screen_ind}).tmx")

@@ -1,10 +1,16 @@
+import sys
+
+if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
+    DATA_ROOT = '.'
+else:
+    DATA_ROOT = '..'
+
 import pygame
 import random
-import sys
 pygame.init()
 pygame.mixer.init()
 def main():
-    theme = pygame.mixer.Sound("../data/music/minigame_theme.mp3")
+    theme = pygame.mixer.Sound(DATA_ROOT + "/data/music/minigame_theme.mp3")
     window = pygame.display.set_mode((640,480))
     pygame.display.update()
     pygame.display.set_caption("Šibenice")

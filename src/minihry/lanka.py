@@ -1,5 +1,11 @@
-import random
 import sys
+
+if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
+    DATA_ROOT = '.'
+else:
+    DATA_ROOT = '..'
+
+import random
 import os
 import pygame
 pygame.mixer.init()
@@ -26,7 +32,7 @@ def vyberOtazekaspol(otazky):
     
 def main():
     global spravne_odpovedi, spatne_odpovedi1, spatne_odpovedi2
-    theme = pygame.mixer.Sound("../data/music/minigame_theme.mp3")
+    theme = pygame.mixer.Sound(DATA_ROOT + "/data/music/minigame_theme.mp3")
     
     opakovani=5
     
@@ -47,21 +53,21 @@ def main():
     moznostiSirka = (sirka_okna/3-18, 125)
 
     #nacteni-otazek
-    handle = open(os.path.join(os.getcwd(), "minihry", "lanka", "otazky.txt"), "r", encoding = "utf-8")
+    handle = open("./minihry/lanka/otazky.txt", "r", encoding = "utf-8")
     vsechny_otazky = handle.read()
     handle.close()
 
     #nacteni-odpovedi
-    handle = open(os.path.join(os.getcwd(), "minihry", "lanka", "odpovedi.txt"), "r", encoding = "utf-8")
+    handle = open("./minihry/lanka/odpovedi.txt", "r", encoding = "utf-8")
     vsechny_odpovedi = handle.read()
     handle.close()
 
     #nacteni-spatnych-odpovedi
-    handle = open(os.path.join(os.getcwd(), "minihry", "lanka", "spatna_odpoved1.txt"), "r", encoding = "utf-8")
+    handle = open("./minihry/lanka/spatna_odpoved1.txt", "r", encoding = "utf-8")
     spatna_odpoved1 = handle.read()
     handle.close()
 
-    handle = open(os.path.join(os.getcwd(), "minihry", "lanka", "spatna_odpoved2.txt"), "r", encoding = "utf-8")
+    handle = open("./minihry/lanka/spatna_odpoved2.txt", "r", encoding = "utf-8")
     spatna_odpoved2 = handle.read()
     handle.close()
 

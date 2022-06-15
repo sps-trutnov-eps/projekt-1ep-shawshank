@@ -1,5 +1,11 @@
-import pygame as pg
 import sys
+
+if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
+    DATA_ROOT = '.'
+else:
+    DATA_ROOT = '..'
+
+import pygame as pg
 import random
 import time
 
@@ -7,7 +13,7 @@ pg.init()
 pg.mixer.init()
 
 def main():
-    theme = pg.mixer.Sound("../data/music/minigame_theme.mp3") 
+    theme = pg.mixer.Sound(DATA_ROOT + "/data/music/minigame_theme.mp3") 
     opakovat = 0
     znamka = 1
     vyhra = True

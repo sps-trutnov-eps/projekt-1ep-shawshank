@@ -1,5 +1,11 @@
 from email.headerregistry import Group
 import sys
+
+if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
+    DATA_ROOT = '.'
+else:
+    DATA_ROOT = '..'
+
 import os
 import importlib
 from generace_mapy import generate
@@ -26,26 +32,25 @@ game_map,master,minimap = generate()
 
 clock = pygame.time.Clock()
 
-jasot = pygame.mixer.Sound("../data/music/jásot.mp3")
-rozmluva = pygame.mixer.Sound("../data/music/mírumilovná_rozmluva.mp3")
-zvonek_0 = pygame.mixer.Sound("../data/music/zvonek_0.mp3")
-zvonek_1 = pygame.mixer.Sound("../data/music/zvonek_1.mp3")
-hall = pygame.mixer.Sound("../data/music/þE_hALL.mp3")
-typing = pygame.mixer.Sound("../data/music/demonic_typing.mp3")
-credits_file = "../data/credits.txt"
+jasot = pygame.mixer.Sound(DATA_ROOT + "/data/music/jásot.mp3")
+rozmluva = pygame.mixer.Sound(DATA_ROOT + "/data/music/mírumilovná_rozmluva.mp3")
+zvonek_0 = pygame.mixer.Sound(DATA_ROOT + "/data/music/zvonek_0.mp3")
+zvonek_1 = pygame.mixer.Sound(DATA_ROOT + "/data/music/zvonek_1.mp3")
+hall = pygame.mixer.Sound(DATA_ROOT + "/data/music/þE_hALL.mp3")
+typing = pygame.mixer.Sound(DATA_ROOT + "/data/music/demonic_typing.mp3")
+credits_file = DATA_ROOT + "/data/credits.txt"
 
 cheat_timeout = 20
 show_minimap = False
 mimimap_pos = (width - len(game_map[0])*20,heigth - len(game_map)*12)
-ukazatel = pygame.image.load("../data/hud/ukazatel_na_mapce.png").convert_alpha()
-counter_texture = pygame.image.load("../data/hud/counter.png").convert_alpha()
+ukazatel = pygame.image.load(DATA_ROOT + "/data/hud/ukazatel_na_mapce.png").convert_alpha()
+counter_texture = pygame.image.load(DATA_ROOT + "/data/hud/counter.png").convert_alpha()
 counter_surface = counter_texture.get_rect()
-menu_background = pygame.Surface((23*32,14*32))
-menu_background.blit(pygame.transform.rotozoom(pygame.image.load("../data/textury_miniher/Nature.jpg").convert(),0,1/6),(0,-120))
+
 
 #fonty a rendery pro game over text
-g_over_font = pygame.font.Font("../data/fonts/ARCADECLASSIC.TTF", 125)
-return_font = pygame.font.Font("../data/fonts/ARCADECLASSIC.TTF", 50)
+g_over_font = pygame.font.Font(DATA_ROOT + "/data/fonts/ARCADECLASSIC.TTF", 125)
+return_font = pygame.font.Font(DATA_ROOT + "/data/fonts/ARCADECLASSIC.TTF", 50)
 g_over_font_render = g_over_font.render("GAME  OVER", True, (255, 0, 0))
 return_font_render = return_font.render("PRESS   ENTER", True, (100, 0, 0))
 g_over_font_rect = g_over_font_render.get_rect(center=(23*32/2, 14*32/2))
@@ -54,7 +59,7 @@ g_over_font_render.set_alpha(0)
 return_font_render.set_alpha(0)
 
 #fonty a rendery pro win
-win_font = pygame.font.Font("../data/fonts/ARCADECLASSIC.TTF", 125)
+win_font = pygame.font.Font(DATA_ROOT + "/data/fonts/ARCADECLASSIC.TTF", 125)
 win_font_render = win_font.render("YOU  WON", True, (0, 0, 0))
 win_font_rect = win_font_render.get_rect(center=(23*32/2, 14*32/2))
 win_font_render.set_alpha(0)
@@ -87,6 +92,12 @@ hrac_hitbox_grp.add(player_hitbox_instance)
 hrac_hitbox = hrac_hitbox_grp.sprites()[0]
 health_bar = Health_bar((23*32/2, 24), screen)
 
+hrac_menu_grp = pygame.sprite.Group()
+hrac_menu_grp.add(menuPlayer(320, player_y - 100))
+
+janitor_menu_grp = pygame.sprite.Group()
+janitor_menu_grp.add(menuJanitor(250, player_y + 100))
+
 #inventář
 inventoryKey_grp = pygame.sprite.Group()
 invKey = inventoryHasKey(23*32-32-16-16, 16+8)
@@ -100,6 +111,18 @@ current_position = master
 skolnik = janitor(player_instance)
 postavy_display_grp.add(skolnik)
 menu_state = None
+
+ukolFont = pygame.font.SysFont("Consolas", 12)
+ukolKlic = ukolFont.render("Najdi a seber klíč.", True, (255, 255, 255))
+ukolBoty = ukolFont.render("Najdi a seber boty.", True, (255, 255, 255))
+ukolVen = ukolFont.render("Uteč!", True, (255, 255, 255))
+
+hasKlic = False
+hasBoty = False
+
+#menu
+backgroundMove = 0
+menu_background = pygame.image.load(DATA_ROOT + "/data/menu/background.png")
 
 #credits
 delta_y = screen.get_rect().centery + 60
@@ -123,7 +146,7 @@ def play_minigame():
     if show_minigame:
         outcome = random.choice(minigames).main()
         screen = pygame.display.set_mode((width,heigth))
-        pygame.display.set_caption("¤Útěk ze střední průmyslové Shawshank¤")
+        pygame.display.set_caption("¤ Útěk ze střední průmyslové Shawshank ¤")
         player_hitbox_instance.rect.center = vystup(current_position)
         player_instance.rect.centerx = player_hitbox_instance.rect.centerx+4
         player_instance.rect.bottom = player_hitbox_instance.rect.bottom-2
@@ -347,7 +370,7 @@ zdi = wall_map[current_position[0]][current_position[1]]
 
 #restart
 def restart():
-    global current_position,podlaha,dvere,zdi,minimap,game_map,wall_map,master
+    global current_position,podlaha,dvere,zdi,minimap,game_map,wall_map,master, hasKlic, hasBoty
     game_map,master,minimap = generate()
     current_position = master
     player_hitbox_instance.rect.center = (width//2,heigth//2)
@@ -365,8 +388,13 @@ def restart():
     zdi = wall_map[current_position[0]][current_position[1]]
     invKey.completed = True
     invBoots.completed = True
+    invBoots.unlocked = False
     inventoryKey_grp.update()
-    inventoryBoots_grp.update()
+    inventoryBoots_grp.update("sebrat")
+    inventoryBoots_grp.update("odemknout")
+    
+    hasKlic = False
+    hasBoty = False
 
 #kód pro ztmavení / zesvětlení obrazovky
 fade_white = pygame.Surface((23*32, 14*32))
@@ -402,7 +430,11 @@ while True:
             pygame.mixer.quit()
     
     if inMenu:
-        screen.blit(menu_background,(0,0))
+        if backgroundMove <= 0:
+            backgroundMove = menu_background.get_rect().width - 23 * 32
+        else:
+            backgroundMove -= 15
+        screen.blit(menu_background,(0, 0), (backgroundMove, 0, menu_background.get_rect().width, menu_background.get_rect().height))
         if not pygame.mixer.get_busy():
             typing.play()
         #pohyb přetz tab
@@ -418,36 +450,42 @@ while True:
             cheat_timeout = 10
         cheat_timeout -=1
         
+        janitor_menu_grp.update()
+        janitor_menu_grp.draw(screen)
+        
+        hrac_menu_grp.update()
+        hrac_menu_grp.draw(screen)
+        
         #povrchy
-        txt_bg = pygame.image.load("../data/menu/text_bg.png").convert_alpha()
+        txt_bg = pygame.image.load(DATA_ROOT + "/data/menu/text_bg.png").convert_alpha()
         txt_bg_rect = txt_bg.get_rect(topright=(23*32, 0))
-        start_highlight = pygame.image.load("../data/menu/start_highlight.png").convert_alpha()
+        start_highlight = pygame.image.load(DATA_ROOT + "/data/menu/start_highlight.png").convert_alpha()
         start_highlight_rect = start_highlight.get_rect(topright=(23*32 - 8, 8))
-        credits_highlight = pygame.image.load("../data/menu/credits_highlight.png").convert_alpha()
+        credits_highlight = pygame.image.load(DATA_ROOT + "/data/menu/credits_highlight.png").convert_alpha()
         credits_highlight_rect = credits_highlight.get_rect(topright=(23*32 - 10, 13))
-        exit_highlight = pygame.image.load("../data/menu/exit_highlight.png").convert_alpha()
+        exit_highlight = pygame.image.load(DATA_ROOT + "/data/menu/exit_highlight.png").convert_alpha()
         exit_highlight_rect = exit_highlight.get_rect(topright=(23*32 - 15, 15))
         
         #vykreslování
         screen.blit(txt_bg, txt_bg_rect)
-        text(50, "START", 23*32 - 225, 100, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False)
-        text(50, "CREDITS", 23*32 - 225, 200, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False)
-        text(50, "EXIT", 23*32 - 225, 300, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False)
+        text(50, "START", 23*32 - 225, 100, (255, 255, 255), DATA_ROOT + "/data/fonts/ARCADECLASSIC.TTF", "topleft", False)
+        text(50, "CREDITS", 23*32 - 225, 200, (255, 255, 255), DATA_ROOT + "/data/fonts/ARCADECLASSIC.TTF", "topleft", False)
+        text(50, "EXIT", 23*32 - 225, 300, (255, 255, 255), DATA_ROOT + "/data/fonts/ARCADECLASSIC.TTF", "topleft", False)
         
         #mačkání tlačítek
-        if text(50, "START", 23*32 - 225, 100, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) or menu_state == 0:
+        if text(50, "START", 23*32 - 225, 100, (255, 255, 255), DATA_ROOT + "/data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) or menu_state == 0:
             screen.blit(start_highlight, start_highlight_rect)
             menu_state = 0
             
-        if text(50, "CREDITS", 23*32 - 225, 200, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) or menu_state == 1:
+        if text(50, "CREDITS", 23*32 - 225, 200, (255, 255, 255), DATA_ROOT + "/data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) or menu_state == 1:
             screen.blit(credits_highlight, credits_highlight_rect)
             menu_state = 1
             
-        if text(50, "EXIT", 23*32 - 225, 300, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) or menu_state == 2:
+        if text(50, "EXIT", 23*32 - 225, 300, (255, 255, 255), DATA_ROOT + "/data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) or menu_state == 2:
             screen.blit(exit_highlight, exit_highlight_rect)
             menu_state = 2
             
-        if (text(50, "START", 23*32 - 225, 100, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]) or ((pressed[pygame.K_KP_ENTER] or pressed[pygame.K_RETURN]) and menu_state == 0):
+        if (text(50, "START", 23*32 - 225, 100, (255, 255, 255), DATA_ROOT + "/data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]) or ((pressed[pygame.K_KP_ENTER] or pressed[pygame.K_RETURN]) and menu_state == 0):
             inMenu = False
             inGame = True
             menu_state = None
@@ -457,7 +495,7 @@ while True:
             hall.play()
             zvonek_0.play()
         
-        if (text(50, "CREDITS", 23*32 - 225, 200, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]) or ((pressed[pygame.K_KP_ENTER] or pressed[pygame.K_RETURN]) and menu_state == 1):
+        if (text(50, "CREDITS", 23*32 - 225, 200, (255, 255, 255), DATA_ROOT + "/data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]) or ((pressed[pygame.K_KP_ENTER] or pressed[pygame.K_RETURN]) and menu_state == 1):
             rozmluva.stop()
             typing.stop()
             hall.play()
@@ -467,10 +505,12 @@ while True:
             menu_state = None
         
 
-        if (text(50, "EXIT", 23*32 - 225, 300, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]) or ((pressed[pygame.K_KP_ENTER] or pressed[pygame.K_RETURN]) and menu_state == 2):
+        if (text(50, "EXIT", 23*32 - 225, 300, (255, 255, 255), DATA_ROOT + "/data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]) or ((pressed[pygame.K_KP_ENTER] or pressed[pygame.K_RETURN]) and menu_state == 2):
             pygame.quit()
             pygame.mixer.quit()
             sys.exit()
+        
+        clock.tick(30)
     
     elif inGame:
 
@@ -539,6 +579,34 @@ while True:
                     player_speed = 3
                 cheat_timeout = 20
         
+        if pressed[pygame.K_t] and cheat_timeout < 0:
+            current_time = default_time
+            hall.stop()
+            hall.play()
+            cheat_timeout = 20
+            
+        if pressed[pygame.K_1] and cheat_timeout < 0:
+            inventoryKey_grp.update()
+            cheat_timeout = 20
+            
+        if pressed[pygame.K_2] and cheat_timeout < 0:
+            inventoryBoots_grp.update("sebrat")
+            cheat_timeout = 20
+            
+        if pressed[pygame.K_3] and cheat_timeout < 0:
+            inGame = False
+            win = True
+            cheat_timeout = 20
+            hall.stop()
+            
+        if pressed[pygame.K_p] and cheat_timeout < 0:
+            if show_minigame == False:
+                show_minigame = True
+            else:
+                show_minigame = False
+            cheat_timeout = 20
+        cheat_timeout -= 1
+        
         #pohyb
         posun_x = 0
         posun_y = 0
@@ -562,13 +630,17 @@ while True:
         if pygame.sprite.spritecollide(hrac_hitbox, interactive, False):
             for objekt in interactive:
                 if objekt.textura == "stul_stred_klic" and not invKey.completed:
+                    inventoryBoots_grp.update("odemknout")
                     inventoryKey_grp.update()
+                    invBoots.unlocked = True;
+                    hasKlic = True
                     zdi.remove(objekt)
                     zdi.add(zed((objekt.rect.x,objekt.rect.y),"stul_stred","×"))
                 elif objekt.textura == "skrinka_horizontalni_zamek" and invKey.completed and not invBoots.completed:
-                    inventoryBoots_grp.update()
+                    inventoryBoots_grp.update("sebrat")
                     zdi.remove(objekt)
                     zdi.add(zed((objekt.rect.x,objekt.rect.y),"skrinka_horizontalni_otevrena","×"))
+                    hasBoty = True
 
         #kolize se zdmi
         if clip:
@@ -584,13 +656,17 @@ while True:
         if pygame.sprite.spritecollide(hrac_hitbox, interactive, False):
             for objekt in interactive:
                 if objekt.textura == "stul_stred_klic" and not invKey.completed:
+                    inventoryBoots_grp.update("odemknout")
                     inventoryKey_grp.update()
+                    invBoots.unlocked = True;
+                    hasKlic = True
                     zdi.remove(objekt)
                     zdi.add(zed((objekt.rect.x,objekt.rect.y),"stul_stred","×"))
                 elif objekt.textura == "skrinka_horizontalni_zamek" and invKey.completed and not invBoots.completed:
-                    inventoryBoots_grp.update()
+                    inventoryBoots_grp.update("sebrat")
                     zdi.remove(objekt)
                     zdi.add(zed((objekt.rect.x,objekt.rect.y),"skrinka_horizontalni_otevrena","×"))
+                    hasBoty = True
         if clip:
             for wall in zdi:
                 if wall.rect.collidepoint(player_hitbox_instance.rect.topleft) or wall.rect.collidepoint(player_hitbox_instance.rect.topright):
@@ -702,6 +778,23 @@ while True:
         counter_surface.topleft = (8,6)
         screen.blit(counter_texture, counter_surface)
         
+        
+        screen.blit(ukolKlic, (menu_background.get_rect().width - ukolKlic.get_rect().width - 5, 47))
+        screen.blit(ukolBoty, (menu_background.get_rect().width - ukolBoty.get_rect().width - 5, 47 + ukolBoty.get_rect().height + 5))
+        screen.blit(ukolVen, (menu_background.get_rect().width - ukolVen.get_rect().width - 5, 47 + 17 + ukolVen.get_rect().height + 5))
+        if hasKlic and not hasBoty:
+            ukolKlic = ukolFont.render("ajdi a seber klíč.", True, (255, 255, 255))
+            ukolBoty = ukolFont.render(">Najdi a seber boty.", True, (255, 255, 255))
+            ukolVen = ukolFont.render("Uteč!", True, (200, 200, 200))
+        elif hasBoty and hasKlic:
+            ukolKlic = ukolFont.render("Najdi a seber klíč.", True, (255, 255, 255))
+            ukolBoty = ukolFont.render("Najdi a seber boty.", True, (255, 255, 255))
+            ukolVen = ukolFont.render(">Uteč!", True, (255, 255, 255))
+        else:
+            ukolKlic = ukolFont.render(">Najdi a seber klíč.", True, (255, 255, 255))
+            ukolBoty = ukolFont.render("Najdi a seber boty.", True, (200, 200, 200))
+            ukolVen = ukolFont.render("Uteč!", True, (200, 200, 200))
+        
         #časomíra
         current_time -= 0.016
         if current_time > 21: text(30, (str(int(current_time))), 24, 25, "gray", "rockwellcondensedtučné", "center", True)
@@ -797,7 +890,7 @@ while True:
         if not pygame.mixer.get_busy():
             jasot.play()
         text_size = 30
-        credits_font = pygame.font.Font("../data/fonts/ambitsek.ttf",text_size)
+        credits_font = pygame.font.Font(DATA_ROOT + "/data/fonts/ambitsek.ttf",text_size)
         credits_text= '''Projekt vypracován
 třídou 1.EP skupina 2
 
