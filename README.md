@@ -18,7 +18,8 @@ Top-down bludišťovka s minihrami. Unikněte ze školy, než zazvoní na hodinu
 - [Ardour](https://ardour.org/)
 
 ### Build distribuční verze
-1. Je třeba mít nainstalovaný nástroj [`pyinstaller`](https://pyinstaller.org/en/stable/index.html)
-2. Ve složce repozitáře spusťte příkaz `pyinstaller shawshank.spec`
-3. Vygeneruje se složka `dist` s binární verzí aplikace.
+0. Je třeba mít nainstalovaný nástroj [`pyinstaller`](https://pyinstaller.org/en/stable/index.html)
+1. Ve složce `bin` spusťte dávkový soubor `build.bat`.
+2. Vygeneruje se složka `dist` s binární verzí aplikace.
+3. Hra se spouští souborem `shawshank.exe` ve složce `bin/dist/main/`
 
