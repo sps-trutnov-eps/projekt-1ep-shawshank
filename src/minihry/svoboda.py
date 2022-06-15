@@ -79,7 +79,7 @@ def main():
             if skore == 40:
                 kr = 13
                 hr = 11
-            if skore == 30:
+            if skore == 35:
                 okno.fill("white")
                 okno.blit(text_1,text_1_rect)
                 pygame.display.update()

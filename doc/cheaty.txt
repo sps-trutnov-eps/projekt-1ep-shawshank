@@ -1,3 +1,4 @@
+; - aktivace/deaktivace cheatů
 h - vypíná a zapíná vizualizaci hitboxu
 n - vypíná a zapíná kolize
 m - vypíná a zapíná micromapu
@@ -7,3 +8,5 @@ t - doplní čas
 2 (ne kp_2) - přepíná stav bot
 3 (ne kp_3) - vyhraje hru
 p - vypne minihry
+r - rychlost
+

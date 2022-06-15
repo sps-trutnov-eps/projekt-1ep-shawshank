@@ -1,7 +1,14 @@
-import random
 import sys
+
+if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
+    DATA_ROOT = '.'
+else:
+    DATA_ROOT = '..'
+
+import random
 import os
 import pygame
+pygame.mixer.init()
 
 def vyberOtazekaspol(otazky):
     nahodnaOtazka = random.choice(otazky)
@@ -25,6 +32,7 @@ def vyberOtazekaspol(otazky):
     
 def main():
     global spravne_odpovedi, spatne_odpovedi1, spatne_odpovedi2
+    theme = pygame.mixer.Sound(DATA_ROOT + "/data/music/minigame_theme.mp3")
     
     opakovani=5
     
@@ -45,21 +53,21 @@ def main():
     moznostiSirka = (sirka_okna/3-18, 125)
 
     #nacteni-otazek
-    handle = open("minihry/lanka/otazky.txt", "r", encoding = "utf-8")
+    handle = open("./minihry/lanka/otazky.txt", "r", encoding = "utf-8")
     vsechny_otazky = handle.read()
     handle.close()
 
     #nacteni-odpovedi
-    handle = open("minihry/lanka/odpovedi.txt", "r", encoding = "utf-8")
+    handle = open("./minihry/lanka/odpovedi.txt", "r", encoding = "utf-8")
     vsechny_odpovedi = handle.read()
     handle.close()
 
     #nacteni-spatnych-odpovedi
-    handle = open("minihry/lanka/spatna_odpoved1.txt", "r", encoding = "utf-8")
+    handle = open("./minihry/lanka/spatna_odpoved1.txt", "r", encoding = "utf-8")
     spatna_odpoved1 = handle.read()
     handle.close()
 
-    handle = open("minihry/lanka/spatna_odpoved2.txt", "r", encoding = "utf-8")
+    handle = open("./minihry/lanka/spatna_odpoved2.txt", "r", encoding = "utf-8")
     spatna_odpoved2 = handle.read()
     handle.close()
 
@@ -86,50 +94,53 @@ def main():
     pocetBodu = 0
 
     while(True):
+        if not pygame.mixer.get_busy():
+            theme.play()
         udalosti = pygame.event.get()
+        screen.fill((50, 141, 176))
         
         for u in udalosti:
             if u.type == pygame.QUIT:
+                pygame.mixer.quit()
                 pygame.quit()
                 sys.exit()
-        screen.fill((50, 141, 176))
         
-        if u.type == pygame.MOUSEBUTTONDOWN and u.button == 1:
-            if pygame.mouse.get_pos()[0] > moznostiPozice[0] and pygame.mouse.get_pos()[0] < moznostiPozice[0] + moznostiSirka[0] and pygame.mouse.get_pos()[1] > moznostiPozice[3] and pygame.mouse.get_pos()[1] < moznostiPozice[3] + moznostiSirka[1]:
-                if timeOut < 1:
-                    timeOut = 5000
-                    if spravneTlacitko == 0:
-                        spatnaOdpoved = 2
-                        print("Správně")
-                        pocetBodu += 1
-                    else:
-                        print("Špatně")
-                        spatnaOdpoved = 1
-                    pocetOdpovedi += 1
-                
-            if pygame.mouse.get_pos()[0] > moznostiPozice[1] and pygame.mouse.get_pos()[0] < moznostiPozice[1] + moznostiSirka[0] and pygame.mouse.get_pos()[1] > moznostiPozice[3] and pygame.mouse.get_pos()[1] < moznostiPozice[3] + moznostiSirka[1]:
-                if timeOut < 1:
-                    timeOut = 5000
-                    if spravneTlacitko == 1:
-                        spatnaOdpoved = 2
-                        print("Správně")
-                        pocetBodu += 1
-                    else:
-                        print("Špatně")
-                        spatnaOdpoved = 1
-                    pocetOdpovedi += 1
+            if u.type == pygame.MOUSEBUTTONDOWN and u.button == 1:
+                if pygame.mouse.get_pos()[0] > moznostiPozice[0] and pygame.mouse.get_pos()[0] < moznostiPozice[0] + moznostiSirka[0] and pygame.mouse.get_pos()[1] > moznostiPozice[3] and pygame.mouse.get_pos()[1] < moznostiPozice[3] + moznostiSirka[1]:
+                    if timeOut < 1:
+                        timeOut = 3500
+                        if spravneTlacitko == 0:
+                            spatnaOdpoved = 2
+                            print("Správně")
+                            pocetBodu += 1
+                        else:
+                            print("Špatně")
+                            spatnaOdpoved = 1
+                        pocetOdpovedi += 1
                     
-            if pygame.mouse.get_pos()[0] > moznostiPozice[2] and pygame.mouse.get_pos()[0] < moznostiPozice[2] + moznostiSirka[0] and pygame.mouse.get_pos()[1] > moznostiPozice[3] and pygame.mouse.get_pos()[1] < moznostiPozice[3] + moznostiSirka[1]:
-                if timeOut < 1:
-                    timeOut = 5000
-                    if spravneTlacitko == 2:
-                        spatnaOdpoved = 2
-                        print("Správně")
-                        pocetBodu += 1
-                    else:
-                        print("Špatně")
-                        spatnaOdpoved = 1
-                    pocetOdpovedi += 1
+                if pygame.mouse.get_pos()[0] > moznostiPozice[1] and pygame.mouse.get_pos()[0] < moznostiPozice[1] + moznostiSirka[0] and pygame.mouse.get_pos()[1] > moznostiPozice[3] and pygame.mouse.get_pos()[1] < moznostiPozice[3] + moznostiSirka[1]:
+                    if timeOut < 1:
+                        timeOut = 3500
+                        if spravneTlacitko == 1:
+                            spatnaOdpoved = 2
+                            print("Správně")
+                            pocetBodu += 1
+                        else:
+                            print("Špatně")
+                            spatnaOdpoved = 1
+                        pocetOdpovedi += 1
+                        
+                if pygame.mouse.get_pos()[0] > moznostiPozice[2] and pygame.mouse.get_pos()[0] < moznostiPozice[2] + moznostiSirka[0] and pygame.mouse.get_pos()[1] > moznostiPozice[3] and pygame.mouse.get_pos()[1] < moznostiPozice[3] + moznostiSirka[1]:
+                    if timeOut < 1:
+                        timeOut = 3500
+                        if spravneTlacitko == 2:
+                            spatnaOdpoved = 2
+                            print("Správně")
+                            pocetBodu += 1
+                        else:
+                            print("Špatně")
+                            spatnaOdpoved = 1
+                        pocetOdpovedi += 1
         
         #otázka
         pygame.draw.rect(screen, (20, 121, 160), pygame.Rect(0, 0, sirka_okna, 100))
@@ -172,6 +183,7 @@ def main():
             spatnaOdpoved = 0
         
         if pocetOdpovedi >= 5:
+            theme.stop()
             if pocetBodu > 3:
                 return True
             elif pocetBodu < 2:

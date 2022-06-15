@@ -1,10 +1,18 @@
+import sys
+
+if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
+    DATA_ROOT = '.'
+else:
+    DATA_ROOT = '..'
+
 import random
 import pygame
-import sys
 import os
 
 pygame.init()
+pygame.mixer.init()
 
+theme = pygame.mixer.Sound(DATA_ROOT + "/data/music/minigame_theme.mp3")
 rozliseni = rozliseni_x, rozliseni_y = (800, 600)
 font1 = pygame.font.SysFont ("Arial", 20)
 font2 = pygame.font.SysFont("Calibri", 120)
@@ -23,7 +31,7 @@ timeOut = 0
 vyberPozice = (10, 400)
 vyberVelikost = (rozliseni_x/3-20, 150)
 
-precti = open(os.getcwd() + "/minihry/langer/priklady.txt", "r")
+precti = open("./minihry/langer/priklady.txt", "r")
 p = precti.read()
 precti.close()
 p = p.strip().split("\n")
@@ -93,12 +101,16 @@ def main():
     pygame.display.set_mode(rozliseni)
     
     while True:
+        if not pygame.mixer.get_busy():
+            theme.play()
         stisknuto = pygame.key.get_pressed()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                pygame.mixer.quit()
                 pygame.quit()
                 sys.exit()
             if stisknuto[pygame.K_ESCAPE]:
+                pygame.mixer.quit()
                 pygame.quit()
                 sys.exit()
             
@@ -167,6 +179,7 @@ def main():
             timeOut -= 1
         
         if hotovozInt >= 10:
+            theme.stop()
             if prikladuDobre >= 9:
                 return True
             else:

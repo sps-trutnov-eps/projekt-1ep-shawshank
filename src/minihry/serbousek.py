@@ -1,8 +1,16 @@
+import sys
+
+if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
+    DATA_ROOT = '.'
+else:
+    DATA_ROOT = '..'
+
 import pygame
 import random
-import sys
 pygame.init()
+pygame.mixer.init()
 def main():
+    theme = pygame.mixer.Sound(DATA_ROOT + "/data/music/minigame_theme.mp3")
     window = pygame.display.set_mode((640,480))
     pygame.display.update()
     pygame.display.set_caption("Šibenice")
@@ -47,6 +55,8 @@ def main():
         znaky_nahoda.append({"znak": pismeno, "stav": False, "pripocteni": False})
         
     while not game_over:
+        if not pygame.mixer.get_busy():
+            theme.play()
         if prohra == True:
             game_over = True
         stisk = pygame.key.get_pressed()
@@ -55,6 +65,7 @@ def main():
                 game_over = True
                 quit()
         if stisk[pygame.K_ESCAPE]:
+            pygame.mixer.quit()
             pygame.quit()
             sys.exit()
             
@@ -126,7 +137,7 @@ def main():
                 abeceda[pozice-1]["stav2"] = True
             
             #POUŽÍVÁNÍ PÍSMEN
-        if stisk[pygame.K_SPACE]:
+        if stisk[pygame.K_SPACE] or stisk[pygame.K_RETURN]:
             for p, pismeno in enumerate(abeceda):
                 if pismeno["stav2"] == False or pismeno["stav"] == False:
                     pass
@@ -188,4 +199,5 @@ def main():
         pygame.time.delay(60)
         pygame.display.update()
     pygame.display.update() 
+    theme.stop()
     return vysledek

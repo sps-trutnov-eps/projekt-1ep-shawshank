@@ -9,6 +9,7 @@ import pygame
 import os
 import random
 pygame.mixer.init()
+pygame.init()
 def main():
     def cteni_dat_list(jmeno_souboru):
         soubor = open(f'./minihry/udatny/{jmeno_souboru}', 'r', encoding = 'utf-8')
@@ -112,10 +113,7 @@ def main():
         udalosti = pygame.event.get()
         stisknuto = pygame.key.get_pressed()
         m_x,m_y = pygame.mouse.get_pos()
-        try:
-            bg = pygame.image.load("./minihry/udatny/desk.png")
-        except:
-            bg = pygame.image.load("./minihry/udatny/desk.png")
+        bg = pygame.image.load("./minihry/udatny/desk.png")
         
         if pokus < 5 and je_otazka == "false":
             #tvorba odpovedi a otazky
