@@ -19,7 +19,7 @@ Top-down bludišťovka s minihrami. Unikněte ze školy, než zazvoní na hodinu
 
 ### Build distribuční verze
 0. Je třeba mít nainstalovaný nástroj [`pyinstaller`](https://pyinstaller.org/en/stable/index.html)
-1. Ve složce `bin` spusťte dávkový soubor `build.bat`.
-2. Vygeneruje se složka `dist` s binární verzí aplikace.
+1. Ve složce `bin` spusťte dávkový soubor `build.bat`
+2. Vygeneruje se složka `dist` s binární verzí aplikace
 3. Hra se spouští souborem `shawshank.exe` ve složce `bin/dist/main/`
 
