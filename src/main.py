@@ -140,6 +140,7 @@ def vystup(pos):
             elif symbol == "2": return ((symbol_ind-1)*32+16,line_ind*32+16)
             elif symbol == "3": return (symbol_ind*32+16,(line_ind-1)*32+16)
             elif symbol == "4": return ((symbol_ind+1)*32+16,line_ind*32+16)
+            
 #aktivace miniher
 def play_minigame():
     hall.stop()
@@ -751,8 +752,8 @@ while True:
                     prevPlayerPos = player_hitbox_instance.rect.center
                     player_hitbox_instance.rect.center = (500, 32)
 
-                    podlaha,dvere = specialni_podlahy(screens_with_doors[0], False, 0, 0, "0")
-                    zdi,interactive = specialni_zdi(screens_with_doors[0])
+                    podlaha,dvere = specialni_podlahy(screens_with_doors[1], False, 0, 0, "0")
+                    zdi,interactive = specialni_zdi(screens_with_doors[1])
                     
                     inSpecialRoom = True
                 elif door.door_type == "LOCKER_ROOM":
@@ -763,8 +764,8 @@ while True:
                     prevPlayerPos = player_hitbox_instance.rect.center
                     player_hitbox_instance.rect.center = (32, 200)
                     
-                    podlaha,dvere = specialni_podlahy(screens_with_doors[1], False, 0, 0, "0")
-                    zdi,interactive = specialni_zdi(screens_with_doors[1])
+                    podlaha,dvere = specialni_podlahy(screens_with_doors[0], False, 0, 0, "0")
+                    zdi,interactive = specialni_zdi(screens_with_doors[0])
                     
                     inSpecialRoom = True
                 elif door.door_type == "EXIT":
