@@ -116,6 +116,7 @@ hasBoty = False
 #menu
 backgroundMove = 0
 menu_background = pygame.image.load("../data/menu/background.png")
+backgroundType = False
 
 #credits
 delta_y = screen.get_rect().centery + 60
@@ -419,11 +420,24 @@ while True:
             pygame.mixer.quit()
     
     if inMenu:
-        if backgroundMove <= 0:
+        if backgroundMove <= menu_background.get_rect().width/2 - 1000 and not backgroundType:
             backgroundMove = menu_background.get_rect().width - 23 * 32
+        elif backgroundMove <= menu_background.get_rect().width/7 - player_y and backgroundType:
+            rozmluva.stop()
+            typing.stop()
+            hall.play()
+            zvonek_0.play()
+            inMenu = False
+            inGame = True
+            menu_state = None
+            health = health_max
         else:
             backgroundMove -= 15
-        screen.blit(menu_background,(0, 0), (backgroundMove, 0, menu_background.get_rect().width, menu_background.get_rect().height))
+            
+        if backgroundType:
+            screen.blit(menu_background,(0, 0), (backgroundMove, menu_background.get_rect().height/2, menu_background.get_rect().width, menu_background.get_rect().height))
+        else:
+            screen.blit(menu_background,(0, 0), (backgroundMove, 0, menu_background.get_rect().width, menu_background.get_rect().height))
         if not pygame.mixer.get_busy():
             typing.play()
         #pohyb přetz tab
@@ -475,14 +489,7 @@ while True:
             menu_state = 2
             
         if (text(50, "START", 23*32 - 225, 100, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]) or ((pressed[pygame.K_KP_ENTER] or pressed[pygame.K_RETURN]) and menu_state == 0):
-            inMenu = False
-            inGame = True
-            menu_state = None
-            health = health_max
-            rozmluva.stop()
-            typing.stop()
-            hall.play()
-            zvonek_0.play()
+            backgroundType = True
         
         if (text(50, "CREDITS", 23*32 - 225, 200, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]) or ((pressed[pygame.K_KP_ENTER] or pressed[pygame.K_RETURN]) and menu_state == 1):
             rozmluva.stop()
