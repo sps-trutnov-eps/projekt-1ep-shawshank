@@ -124,6 +124,8 @@ hasBoty = False
 backgroundMove = 0
 menu_background = pygame.image.load(DATA_ROOT + "/data/menu/background.png")
 
+playStartGameAnim = False
+
 #credits
 delta_y = screen.get_rect().centery + 60
 
@@ -494,6 +496,10 @@ while True:
             typing.stop()
             hall.play()
             zvonek_0.play()
+            
+            player_hitbox_instance.rect.centerx = -100
+            playerStartGameAnim = True
+            player_movable = False
         
         if (text(50, "CREDITS", 23*32 - 225, 200, (255, 255, 255), DATA_ROOT + "/data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]) or ((pressed[pygame.K_KP_ENTER] or pressed[pygame.K_RETURN]) and menu_state == 1):
             rozmluva.stop()
@@ -503,7 +509,6 @@ while True:
             jasot.play()
             Credits = True
             menu_state = None
-        
 
         if (text(50, "EXIT", 23*32 - 225, 300, (255, 255, 255), DATA_ROOT + "/data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]) or ((pressed[pygame.K_KP_ENTER] or pressed[pygame.K_RETURN]) and menu_state == 2):
             pygame.quit()
@@ -513,7 +518,19 @@ while True:
         clock.tick(30)
     
     elif inGame:
-
+        #uvodni animace
+        if playerStartGameAnim and player_hitbox_instance.rect.centerx <= 23*32/2:
+            posun_x = 0
+            posun_x += player_speed
+            image = "player_r"
+            
+            player_hitbox_instance.posun_x(posun_x)
+            player_instance.rect.centerx = player_hitbox_instance.rect.centerx
+            
+        elif playerStartGameAnim and player_hitbox_instance.rect.centerx >= 23*32/2:
+            playerStartGameAnim = False
+            player_movable = True
+            
         #cheaty
         if pressed[pygame.K_SEMICOLON] and cheat_timeout < 0:
             if cheaty: cheaty = False
@@ -675,43 +692,44 @@ while True:
                     player_hitbox_instance.rect.bottom = wall.rect.top-1
         
         #pohyb mezi obrazovkami
-        if player_hitbox_instance.rect.left < 0:
-            if inSpecialRoom:
-                player_hitbox_instance.rect.center = prevPlayerPos
-                inSpecialRoom = False
-            else:
-                player_hitbox_instance.rect.right = width
-                current_position[1] -=1
-            
-            podlaha,dvere = urceni_sprite_group(game_map[current_position[0]][current_position[1]])
-            zdi = wall_map[current_position[0]][current_position[1]]
-        elif player_hitbox_instance.rect.right > width:
-            if inSpecialRoom:
-                player_hitbox_instance.rect.center = prevPlayerPos
-                inSpecialRoom = False
-            else:
-                player_hitbox_instance.rect.left = 0
-                current_position[1] +=1
-            podlaha,dvere = urceni_sprite_group(game_map[current_position[0]][current_position[1]])
-            zdi = wall_map[current_position[0]][current_position[1]]
-        elif player_hitbox_instance.rect.top < 0:
-            if inSpecialRoom:
-                player_hitbox_instance.rect.center = prevPlayerPos
-                inSpecialRoom = False
-            else:
-                player_hitbox_instance.rect.bottom = heigth
-                current_position[0] -=1
-            podlaha,dvere = urceni_sprite_group(game_map[current_position[0]][current_position[1]])
-            zdi = wall_map[current_position[0]][current_position[1]]
-        elif player_hitbox_instance.rect.bottom > heigth:
-            if inSpecialRoom:
-                player_hitbox_instance.rect.center = prevPlayerPos
-                inSpecialRoom = False
-            else:
-                player_hitbox_instance.rect.top = 0
-                current_position[0] +=1
-            podlaha,dvere = urceni_sprite_group(game_map[current_position[0]][current_position[1]])
-            zdi = wall_map[current_position[0]][current_position[1]]
+        if not playerStartGameAnim:
+            if player_hitbox_instance.rect.left < 0:
+                if inSpecialRoom:
+                    player_hitbox_instance.rect.center = prevPlayerPos
+                    inSpecialRoom = False
+                else:
+                    player_hitbox_instance.rect.right = width
+                    current_position[1] -=1
+                
+                podlaha,dvere = urceni_sprite_group(game_map[current_position[0]][current_position[1]])
+                zdi = wall_map[current_position[0]][current_position[1]]
+            elif player_hitbox_instance.rect.right > width:
+                if inSpecialRoom:
+                    player_hitbox_instance.rect.center = prevPlayerPos
+                    inSpecialRoom = False
+                else:
+                    player_hitbox_instance.rect.left = 0
+                    current_position[1] +=1
+                podlaha,dvere = urceni_sprite_group(game_map[current_position[0]][current_position[1]])
+                zdi = wall_map[current_position[0]][current_position[1]]
+            elif player_hitbox_instance.rect.top < 0:
+                if inSpecialRoom:
+                    player_hitbox_instance.rect.center = prevPlayerPos
+                    inSpecialRoom = False
+                else:
+                    player_hitbox_instance.rect.bottom = heigth
+                    current_position[0] -=1
+                podlaha,dvere = urceni_sprite_group(game_map[current_position[0]][current_position[1]])
+                zdi = wall_map[current_position[0]][current_position[1]]
+            elif player_hitbox_instance.rect.bottom > heigth:
+                if inSpecialRoom:
+                    player_hitbox_instance.rect.center = prevPlayerPos
+                    inSpecialRoom = False
+                else:
+                    player_hitbox_instance.rect.top = 0
+                    current_position[0] +=1
+                podlaha,dvere = urceni_sprite_group(game_map[current_position[0]][current_position[1]])
+                zdi = wall_map[current_position[0]][current_position[1]]
             
         #zbytek pohybu
         player_instance.rect.centerx = player_hitbox_instance.rect.centerx
