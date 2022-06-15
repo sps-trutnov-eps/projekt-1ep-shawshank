@@ -287,12 +287,11 @@ def specialni_podlahy(mapka, under, symbolpos, radekpos, symbol):
         if symbol == "24":
             podlaha.add(zed((symbolpos*32,radekpos*32),"podlaha_kachlicky",mapka[2][1]))
         if symbol == "34":
-            podlaha.add(zed((symbolpos*32,radekpos*32),"podlaha_dark_blooood",mapka[2][1]))
+            podlaha.add(zed((symbolpos*32,radekpos*32),"podlaha_dark",mapka[2][1]))
     return podlaha,dvere
     
 #načtení zdí specificky
 def random_zdi(mapka,ind,door):
-    #print (mapka)
     global mozne_prechody
     zdi = pygame.sprite.Group()
     for radek_ind,radek in enumerate(mapka):
@@ -403,6 +402,7 @@ gameOver = False
 inMenu = True
 win = False
 Credits = False
+cheaty = False
 
 #main loop
 while True:
@@ -478,11 +478,18 @@ while True:
             inMenu = False
             inGame = True
             menu_state = None
+            health = health_max
+            rozmluva.stop()
             typing.stop()
             hall.play()
             zvonek_0.play()
         
         if (text(50, "CREDITS", 23*32 - 225, 200, (255, 255, 255), "../data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]) or ((pressed[pygame.K_KP_ENTER] or pressed[pygame.K_RETURN]) and menu_state == 1):
+            rozmluva.stop()
+            typing.stop()
+            hall.play()
+            zvonek_0.play()
+            jasot.play()
             Credits = True
             menu_state = None
         
@@ -496,28 +503,70 @@ while True:
     
     elif inGame:
         #cheaty
-        if pressed[pygame.K_h] and cheat_timeout < 0:
-            if hitbox == False:
-                hitbox = True
-                player_hitbox_instance.showHitBox()
-            else:
-                hitbox = False
-                player_hitbox_instance.hideHitBox()
+
+        if pressed[pygame.K_SEMICOLON] and cheat_timeout < 0:
+            if cheaty: cheaty = False
+            else: cheaty = True
             cheat_timeout = 20
+        cheat_timeout -= 1
+
+        if cheaty:
+            if pressed[pygame.K_h] and cheat_timeout < 0:
+                if hitbox == False:
+                    hitbox = True
+                    player_hitbox_instance.showHitBox()
+                else:
+                    hitbox = False
+                    player_hitbox_instance.hideHitBox()
+                cheat_timeout = 20
+                    
+            elif pressed[pygame.K_n] and cheat_timeout < 0:
+                if clip: clip = False
+                else: clip = True
+                cheat_timeout = 20
                 
-        if pressed[pygame.K_n] and cheat_timeout < 0:
-            if clip: clip = False
-            else: clip = True
-            cheat_timeout = 20
+            elif pressed[pygame.K_m] and cheat_timeout < 0:
+                if show_minimap: show_minimap = False
+                else: show_minimap = True
+                cheat_timeout = 20
+                
+            elif pressed[pygame.K_g] and cheat_timeout < 0:
+                health = 0
+                cheat_timeout = 20
             
-        if pressed[pygame.K_m] and cheat_timeout < 0:
-            if show_minimap: show_minimap = False
-            else: show_minimap = True
-            cheat_timeout = 20
-            
-        if pressed[pygame.K_g] and cheat_timeout < 0:
-            health = 0
-            cheat_timeout = 20
+            elif pressed[pygame.K_t] and cheat_timeout < 0:
+                current_time = default_time
+                hall.stop()
+                hall.play()
+                cheat_timeout = 20
+                
+            elif pressed[pygame.K_1] and cheat_timeout < 0:
+                inventoryKey_grp.update()
+                cheat_timeout = 20
+                
+            elif pressed[pygame.K_2] and cheat_timeout < 0:
+                inventoryBoots_grp.update()
+                cheat_timeout = 20
+                
+            elif pressed[pygame.K_3] and cheat_timeout < 0:
+                inGame = False
+                win = True
+                cheat_timeout = 20
+                hall.stop()
+                
+            elif pressed[pygame.K_p] and cheat_timeout < 0:
+                if show_minigame == False:
+                    show_minigame = True
+                else:
+                    show_minigame = False
+                cheat_timeout = 20
+
+            elif pressed[pygame.K_r] and cheat_timeout < 0:
+                if player_speed == 3:
+                    player_speed = 10
+                else:
+                    player_speed = 3
+                cheat_timeout = 20
         
         if pressed[pygame.K_t] and cheat_timeout < 0:
             current_time = default_time
@@ -566,6 +615,7 @@ while True:
             
             player_hitbox_instance.posun_x(posun_x)
             
+        #kolize se stolem a skříňkou
         if pygame.sprite.spritecollide(hrac_hitbox, interactive, False):
             for objekt in interactive:
                 if objekt.textura == "stul_stred" or objekt.textura == "stul_hore" or objekt.textura == "stul_dole":
@@ -590,6 +640,17 @@ while True:
                     player_hitbox_instance.rect.right = wall.rect.left-1
                     
         player_hitbox_instance.posun_y(posun_y)
+
+        #kolize se stolem a skříňkou
+        if pygame.sprite.spritecollide(hrac_hitbox, interactive, False):
+            for objekt in interactive:
+                if objekt.textura == "stul_stred" or objekt.textura == "stul_hore" or objekt.textura == "stul_dole":
+                    if not invKey.completed: inventoryKey_grp.update()
+                elif objekt.textura == "skrinka_horizontalni_zamek":
+                    if not invBoots.completed and invKey.completed:
+                        inventoryBoots_grp.update()
+                        zdi.remove(objekt)
+                        zdi.add(zed((objekt.rect.x,objekt.rect.y),"skrinka_horizontalni_otevrena","×"))
             
         if clip:
             for wall in zdi:
@@ -655,10 +716,10 @@ while True:
                     player_instance.rect.bottom = player_hitbox_instance.rect.bottom-2
 
                     prevPlayerPos = player_hitbox_instance.rect.center
-                    player_hitbox_instance.rect.center = (500, 10)
+                    player_hitbox_instance.rect.center = (500, 32)
 
-                    podlaha,dvere = specialni_podlahy(screens_with_doors[1], False, 0, 0, "0")
-                    zdi = specialni_zdi(screens_with_doors[1])
+                    podlaha,dvere = specialni_podlahy(screens_with_doors[0], False, 0, 0, "0")
+                    zdi = specialni_zdi(screens_with_doors[0])
                     
                     inSpecialRoom = True
                 elif door.door_type == "LOCKER_ROOM":
@@ -667,10 +728,10 @@ while True:
                     player_instance.rect.bottom = player_hitbox_instance.rect.bottom-2
                     
                     prevPlayerPos = player_hitbox_instance.rect.center
-                    player_hitbox_instance.rect.center = (10, 200)
+                    player_hitbox_instance.rect.center = (32, 200)
                     
-                    podlaha,dvere = specialni_podlahy(screens_with_doors[0], False, 0, 0, "0")
-                    zdi = specialni_zdi(screens_with_doors[0])
+                    podlaha,dvere = specialni_podlahy(screens_with_doors[1], False, 0, 0, "0")
+                    zdi = specialni_zdi(screens_with_doors[1])
                     
                     inSpecialRoom = True
                 elif door.door_type == "EXIT":
@@ -811,6 +872,8 @@ while True:
         Credits = True
         
     if Credits:
+        if not pygame.mixer.get_busy():
+            jasot.play()
         text_size = 30
         credits_font = pygame.font.Font("../data/fonts/ambitsek.ttf",text_size)
         credits_text= '''Projekt vypracován
@@ -837,6 +900,7 @@ Vojtěch Nepimach
 ---Zvuky---
 
 Jakub Polák
+Anna Poláková
 
 ---Minihry---
 
@@ -859,6 +923,8 @@ Aseprite
 Ardour
 
 (více naleznete na githubu)
+
+
 '''
         screen.fill("black")
         delta_y -= 1
@@ -866,6 +932,7 @@ Ardour
         if pressed[pygame.K_RETURN]:
             Credits = False
             inMenu = True
+            jasot.stop()
         
         text_list = []
         pos_list = []
@@ -881,6 +948,7 @@ Ardour
         if (centery + delta_y + text_size * (len(credits_text.split('\n'))) < 0):
             Credits = False
             inMenu = True
+            jasot.stop()
          
         for j in range(i):
             screen.blit(text_list[j], pos_list[j])

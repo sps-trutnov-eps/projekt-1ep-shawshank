@@ -4,7 +4,9 @@ import sys
 import os
 
 pygame.init()
+pygame.mixer.init()
 
+theme = pygame.mixer.Sound("../data/music/minigame_theme.mp3")
 rozliseni = rozliseni_x, rozliseni_y = (800, 600)
 font1 = pygame.font.SysFont ("Arial", 20)
 font2 = pygame.font.SysFont("Calibri", 120)
@@ -93,12 +95,16 @@ def main():
     pygame.display.set_mode(rozliseni)
     
     while True:
+        if not pygame.mixer.get_busy():
+            theme.play()
         stisknuto = pygame.key.get_pressed()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                pygame.mixer.quit()
                 pygame.quit()
                 sys.exit()
             if stisknuto[pygame.K_ESCAPE]:
+                pygame.mixer.quit()
                 pygame.quit()
                 sys.exit()
             
@@ -167,6 +173,7 @@ def main():
             timeOut -= 1
         
         if hotovozInt >= 10:
+            theme.stop()
             if prikladuDobre >= 9:
                 return True
             else:
