@@ -1,23 +1,28 @@
+import sys
+
+if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
+    DATA_ROOT = '.'
+else:
+    DATA_ROOT = '..'
+
 import os
 
-#určení základních proměných + cesty k "projekt-1ep-shawshank"
-path = os.path.join(os.getcwd(),"data","tiles")
+#určení základních proměných + cesty k datum
+path = DATA_ROOT + "/data/tiles"
 list_of_screens = os.listdir(path)
-    
+
 screens_with_doors = []
 screens_without_doors = []
 
 #vytvoření seznamu obrazovek
 for screen_ind,screen in enumerate(list_of_screens):
     new = ["map","binary",[None,"sem_příjde_třída"],["prozatím_nepoužitá_kolonka_pro_bullyho"]]
-    
+
     #mapka
-    try:
-        file = open(path+"\\"+screen,"r",encoding = "utf8")
-    except:
-        file = open(path+"/"+screen,"r",encoding = "utf8")
+    file = open(path+"/"+screen,"r",encoding = "utf8")
     mapka = file.read()
     file.close()
+    
     mapka = mapka.split("\n</data>")[0].split("<data encoding=\"csv\">\n")[1].split("\n")
     for line_ind,line in enumerate(mapka):
         splited = line.split(",")
@@ -32,7 +37,7 @@ for screen_ind,screen in enumerate(list_of_screens):
     for line in mapka:
         if "1" in line or "2" in line or "3" in line or "4" in line:
             new[2][0] = True
-    
+
     #průchody
     binary = ""
     if mapka[0][6] == "5": binary += "1"
@@ -52,4 +57,3 @@ for screen_ind,screen in enumerate(list_of_screens):
     
     if new[2][0]: screens_with_doors.append(new)
     else: screens_without_doors.append(new)
-    #os.rename(path+"\\"+screen,f"{path}\\{binary}_{str(new[2][0])}({screen_ind}).tmx")

@@ -1,3 +1,10 @@
+import sys
+
+if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
+    DATA_ROOT = '.'
+else:
+    DATA_ROOT = '..'
+
 import pygame
 pygame.init()
 
@@ -9,7 +16,7 @@ def getImage(x, y, w, h, image):
     imageToReturn.blit(image, (0, 0), (x, y, w, h))
     return imageToReturn
 
-player = pygame.image.load("./data/textury_hrac/Player_sprite.png")
+player = pygame.image.load(DATA_ROOT + "/data/textury_hrac/Player_sprite.png")
 
 walk = 0
 animStart = 0
@@ -82,7 +89,7 @@ def playerAnim(posX, posY, prevPosX, prevPosY,):
 
 
 
-janitor = (pygame.image.load("./data/textures_janitor/Janitor_sprite.png").convert_alpha())
+janitor = (pygame.image.load(DATA_ROOT + "/data/textures_janitor/Janitor_sprite.png").convert_alpha())
 
 jWalk = 0
 jApear = 0

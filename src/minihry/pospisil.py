@@ -1,5 +1,11 @@
-import pygame
 import sys
+
+if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
+    DATA_ROOT = '.'
+else:
+    DATA_ROOT = '..'
+
+import pygame
 import os
 import random
 pygame.init()
@@ -17,9 +23,9 @@ def main():
     panacek = True
     
 
-    theme = pygame.mixer.Sound("./data/music/minigame_theme.mp3")
+    theme = pygame.mixer.Sound(DATA_ROOT + "/data/music/minigame_theme.mp3")
     
-    obrazek = pygame.image.load(os.path.join(os.getcwd(), "minihry", "pospisil", "pixil-frame-0.png"))
+    obrazek = pygame.image.load("./minihry/pospisil/pixil-frame-0.png")
     
     font = pygame.font.SysFont ("Arial" , 50)
     
@@ -27,7 +33,7 @@ def main():
     
     pygame.display.set_caption("Třídnice!")
     
-    pozadi = pygame.image.load(os.path.join(os.getcwd(), "minihry", "pospisil", "121.jpg"))
+    pozadi = pygame.image.load("./minihry/pospisil/121.jpg")
     
     font1 = pygame.font.SysFont("Arial" , 300)
     

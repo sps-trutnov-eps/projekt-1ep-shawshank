@@ -1,8 +1,15 @@
+import sys
+
+if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
+    DATA_ROOT = '.'
+else:
+    DATA_ROOT = '..'
+
 import pygame
 from animations import getImage
 pygame.init()
 
-inventoryImages = pygame.image.load("./data/hud/inventory/inventory.png")
+inventoryImages = pygame.image.load(DATA_ROOT + "/data/hud/inventory/inventory.png")
 
 class inventoryHasKey(pygame.sprite.Sprite):
     def __init__(self, pos_x, pos_y):

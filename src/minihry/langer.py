@@ -23,7 +23,7 @@ timeOut = 0
 vyberPozice = (10, 400)
 vyberVelikost = (rozliseni_x/3-20, 150)
 
-precti = open(os.path.join(os.getcwd(), "minihry", "langer", "priklady.txt"), "r")
+precti = open(os.getcwd() + "/minihry/langer/priklady.txt", "r")
 p = precti.read()
 precti.close()
 p = p.strip().split("\n")

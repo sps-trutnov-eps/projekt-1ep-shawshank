@@ -1,14 +1,17 @@
-import pygame
 import sys
+
+if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
+    DATA_ROOT = '.'
+else:
+    DATA_ROOT = '..'
+
+import pygame
 import os
 import random
 pygame.mixer.init()
 def main():
     def cteni_dat_list(jmeno_souboru):
-        try:
-            soubor = open(os.path.join(os.getcwd()+f'\\minihry\\udatny\\{jmeno_souboru}'), 'r', encoding = 'utf-8')
-        except:
-            soubor = open(os.path.join(os.getcwd()+f'/minihry/udatny/{jmeno_souboru}'), 'r', encoding = 'utf-8')
+        soubor = open(f'./minihry/udatny/{jmeno_souboru}', 'r', encoding = 'utf-8')
         data = []
         klice = soubor.readline()
         klice = klice[:-1].split(",")
@@ -61,7 +64,7 @@ def main():
         return otazka
         
         
-    theme = pygame.mixer.Sound("./data/music/minigame_theme.mp3") 
+    theme = pygame.mixer.Sound(DATA_ROOT + "/data/music/minigame_theme.mp3") 
     odpovedi = cteni_dat_list("odpovedi.csv")
     otazky = cteni_dat_list("otazky.csv")
     rozliseni_okna = rozliseni_x, rozliseni_y = (1200,800)
@@ -110,9 +113,9 @@ def main():
         stisknuto = pygame.key.get_pressed()
         m_x,m_y = pygame.mouse.get_pos()
         try:
-            bg = pygame.image.load(os.path.join("minihry\\udatny", "desk.png"))
+            bg = pygame.image.load("./minihry/udatny/desk.png")
         except:
-            bg = pygame.image.load(os.path.join("minihry/udatny", "desk.png"))
+            bg = pygame.image.load("./minihry/udatny/desk.png")
         
         if pokus < 5 and je_otazka == "false":
             #tvorba odpovedi a otazky
