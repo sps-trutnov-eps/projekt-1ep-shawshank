@@ -48,30 +48,32 @@ images = {"zeď_0" : pygame.image.load(DATA_ROOT + "/data/textury_hry/zeď_0.png
           "podlaha_kachlicky" : pygame.image.load(DATA_ROOT + "/data/textury_hry/kachličky.png").convert(),
           
           "lavicka_horizontalni" : pygame.image.load(DATA_ROOT + "/data/textury_hry/horizontalni_lavicka_base.png").convert(),
-          "lavicka_horizontalni_konec_leva" : pygame.image.load(DATA_ROOT + "/data/textury_hry/horizontální_lavička.png").convert(),
-          "lavicka_horizontalni_konec_prava" : pygame.transform.flip(pygame.image.load(DATA_ROOT + "/data/textury_hry/horizontální_lavička.png").convert(), True, False),
+          "lavicka_horizontalni_konec_leva" : pygame.image.load(DATA_ROOT + "/data/textury_hry/horizontální_lavička.png").convert_alpha(),
+          "lavicka_horizontalni_konec_prava" : pygame.transform.flip(pygame.image.load(DATA_ROOT + "/data/textury_hry/horizontální_lavička.png").convert_alpha(), True, False),
           "lavicka_vertikalni" : pygame.image.load(DATA_ROOT + "/data/textury_hry/lavička_vertikální.png").convert(),
           "lavicka_vertikalni_konec1" : pygame.image.load(DATA_ROOT + "/data/textury_hry/lavička_vertikální_konec.png").convert(),
-          "lavicka_vertikalni_konec2" : pygame.image.load(DATA_ROOT + "/data/textury_hry/lavička_vertikální_konec_1.png").convert(),
+          "lavicka_vertikalni_konec2" : pygame.image.load(DATA_ROOT + "/data/textury_hry/lavička_vertikální_konec_1.png").convert_alpha(),
           
           "skrinka_vertikalni" : pygame.image.load(DATA_ROOT + "/data/textury_hry/horizontální_skříňka.png").convert(),
           "skrinka_vertikalni_spodek" : pygame.image.load(DATA_ROOT + "/data/textury_hry/horizontální_skříňka_spodek.png").convert(),
-          "skrinka_vertikalni_vrsek" : pygame.image.load(DATA_ROOT + "/data/textury_hry/horizontální_skříňka_vršek.png").convert(),
+          "skrinka_vertikalni_vrsek" : pygame.image.load(DATA_ROOT + "/data/textury_hry/horizontální_skříňka_vršek.png").convert_alpha(),
           "skrinka_horizontalni" : pygame.image.load(DATA_ROOT + "/data/textury_hry/skříňka.png").convert(),
           "skrinka_horizontalni_otevrena" : pygame.image.load(DATA_ROOT + "/data/textury_hry/skříňka_otevřena.png").convert(),
           "skrinka_horizontalni_zamek" : pygame.image.load(DATA_ROOT + "/data/textury_hry/skříňka_se_zámkem.png").convert(),
           
-          "kos" : pygame.image.load(DATA_ROOT + "/data/textury_hry/koš_šatní.png").convert(),
+          "kos" : pygame.image.load(DATA_ROOT + "/data/textury_hry/koš_šatní.png").convert_alpha(),
           
-          "odpatkove_pytle" : pygame.image.load(DATA_ROOT + "/data/textury_hry/pytel_biologického_odpdu.png").convert(),
+          "odpatkove_pytle" : pygame.image.load(DATA_ROOT + "/data/textury_hry/pytel_biologického_odpdu.png").convert_alpha(),
           
           "skrin" : pygame.image.load(DATA_ROOT + "/data/textury_hry/skříň.png").convert(),
           "skrin_bok" : pygame.image.load(DATA_ROOT + "/data/textury_hry/skříň_bok.png").convert(),
           
           #Proč se stoly píší slovensky ?
-          "stul_dole" : pygame.image.load(DATA_ROOT + "/data/textury_hry/stool_školnikov_dole.png").convert(),
-          "stul_hore" : pygame.image.load(DATA_ROOT + "/data/textury_hry/stool_školnikov_hore.png").convert(),
-          "stul_stred" : pygame.image.load(DATA_ROOT + "/data/textury_hry/stool_školnikov_stred.png").convert(),}
+          #Líp_se_to_píše
+          "stul_dole" : pygame.image.load(DATA_ROOT + "/data/textury_hry/stool_školnikov_dole.png").convert_alpha(),
+          "stul_hore" : pygame.image.load(DATA_ROOT + "/data/textury_hry/stool_školnikov_hore.png").convert_alpha(),
+          "stul_stred" : pygame.image.load(DATA_ROOT + "/data/textury_hry/stool_školnikov_stred.png").convert_alpha(),
+          "stul_stred_klic" : pygame.image.load(DATA_ROOT + "/data/textury_hry/stool_školnikov_stred_klice.png").convert_alpha()}
 
 dekorace_0 = (pygame.image.load(DATA_ROOT + "/data/decorations/missing_poster_0.png").convert(),
               pygame.image.load(DATA_ROOT + "/data/decorations/nástěnka_0_0.png").convert(),
