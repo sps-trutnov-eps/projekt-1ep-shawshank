@@ -62,9 +62,11 @@ images = {"zeď_0" : pygame.image.load("../data/textury_hry/zeď_0.png").convert
           "skrin_bok" : pygame.image.load("../data/textury_hry/skříň_bok.png").convert(),
           
           #Proč se stoly píší slovensky ?
+          #Líp_se_to_píše
           "stul_dole" : pygame.image.load("../data/textury_hry/stool_školnikov_dole.png").convert_alpha(),
           "stul_hore" : pygame.image.load("../data/textury_hry/stool_školnikov_hore.png").convert_alpha(),
-          "stul_stred" : pygame.image.load("../data/textury_hry/stool_školnikov_stred.png").convert_alpha(),}
+          "stul_stred" : pygame.image.load("../data/textury_hry/stool_školnikov_stred.png").convert_alpha(),
+          "stul_stred_klic" : pygame.image.load("../data/textury_hry/stool_školnikov_stred_klice.png").convert_alpha(),}
 
 dekorace_0 = (pygame.image.load("../data/decorations/missing_poster_0.png").convert(),
               pygame.image.load("../data/decorations/nástěnka_0_0.png").convert(),

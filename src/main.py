@@ -1,3 +1,4 @@
+from email.headerregistry import Group
 import sys
 import os
 import importlib
@@ -107,6 +108,7 @@ inSpecialRoom = False
 
 #výstup ze dveří
 def vystup(pos):
+
     for line_ind,line in enumerate(game_map[pos[0]][pos[1]][0]):
         for symbol_ind,symbol in enumerate(line):
             if symbol == "1": return (symbol_ind*32+16,(line_ind+1)*32+16)
@@ -172,6 +174,7 @@ def text(text_size, text, x, y, text_color, text_font, align, sysfont):
 def specialni_zdi(mapka):
     global podlaha
     zdi = pygame.sprite.Group()
+    interactive = pygame.sprite.Group()
     for radek_ind,radek in enumerate(mapka):
         for symbol_ind,symbol in enumerate(radek):
             if symbol == "6":
@@ -237,16 +240,18 @@ def specialni_zdi(mapka):
             elif symbol == "38":
                 zdi.add(zed((symbol_ind*32,radek_ind*32),"stul_dole",mapka[2][1]))
                 podlaha.add(specialni_podlahy(screens_with_doors[1], True, symbol_ind, radek_ind, "34"))
-                interactive.add(zed((symbol_ind*32,radek_ind*32),"stul_dole",mapka[2][1]))
             elif symbol == "40":
-                zdi.add(zed((symbol_ind*32,radek_ind*32),"stul_stred",mapka[2][1]))
                 podlaha.add(specialni_podlahy(screens_with_doors[1], True, symbol_ind, radek_ind, "34"))
-                interactive.add(zed((symbol_ind*32,radek_ind*32),"stul_stred",mapka[2][1]))
+                if not invKey.completed:
+                    zdi.add(zed((symbol_ind*32,radek_ind*32),"stul_stred_klic",mapka[2][1]))
+                    interactive.add(zed((symbol_ind*32,radek_ind*32),"stul_stred_klic",mapka[2][1]))
+                else:
+                    zdi.add(zed((symbol_ind*32,radek_ind*32),"stul_stred",mapka[2][1]))
+                    interactive.add(zed((symbol_ind*32,radek_ind*32),"stul_stred",mapka[2][1]))
             elif symbol == "39":
                 zdi.add(zed((symbol_ind*32,radek_ind*32),"stul_hore",mapka[2][1]))
                 podlaha.add(specialni_podlahy(screens_with_doors[1], True, symbol_ind, radek_ind, "34"))
-                interactive.add(zed((symbol_ind*32,radek_ind*32),"stul_hore",mapka[2][1]))
-    return zdi
+    return zdi,interactive
 
 #načtení podlahy speciální místnosti
 def specialni_podlahy(mapka, under, symbolpos, radekpos, symbol):
@@ -468,8 +473,8 @@ while True:
             sys.exit()
     
     elif inGame:
-        #cheaty
 
+        #cheaty
         if pressed[pygame.K_SEMICOLON] and cheat_timeout < 0:
             if cheaty: cheaty = False
             else: cheaty = True
@@ -556,13 +561,14 @@ while True:
         #kolize se stolem a skříňkou
         if pygame.sprite.spritecollide(hrac_hitbox, interactive, False):
             for objekt in interactive:
-                if objekt.textura == "stul_stred" or objekt.textura == "stul_hore" or objekt.textura == "stul_dole":
-                    if not invKey.completed: inventoryKey_grp.update()
-                elif objekt.textura == "skrinka_horizontalni_zamek":
-                    if not invBoots.completed and invKey.completed:
-                        inventoryBoots_grp.update()
-                        zdi.remove(objekt)
-                        zdi.add(zed((objekt.rect.x,objekt.rect.y),"skrinka_horizontalni_otevrena","×"))
+                if objekt.textura == "stul_stred_klic" and not invKey.completed:
+                    inventoryKey_grp.update()
+                    zdi.remove(objekt)
+                    zdi.add(zed((objekt.rect.x,objekt.rect.y),"stul_stred","×"))
+                elif objekt.textura == "skrinka_horizontalni_zamek" and invKey.completed and not invBoots.completed:
+                    inventoryBoots_grp.update()
+                    zdi.remove(objekt)
+                    zdi.add(zed((objekt.rect.x,objekt.rect.y),"skrinka_horizontalni_otevrena","×"))
 
         #kolize se zdmi
         if clip:
@@ -577,14 +583,14 @@ while True:
         #kolize se stolem a skříňkou
         if pygame.sprite.spritecollide(hrac_hitbox, interactive, False):
             for objekt in interactive:
-                if objekt.textura == "stul_stred" or objekt.textura == "stul_hore" or objekt.textura == "stul_dole":
-                    if not invKey.completed: inventoryKey_grp.update()
-                elif objekt.textura == "skrinka_horizontalni_zamek":
-                    if not invBoots.completed and invKey.completed:
-                        inventoryBoots_grp.update()
-                        zdi.remove(objekt)
-                        zdi.add(zed((objekt.rect.x,objekt.rect.y),"skrinka_horizontalni_otevrena","×"))
-            
+                if objekt.textura == "stul_stred_klic" and not invKey.completed:
+                    inventoryKey_grp.update()
+                    zdi.remove(objekt)
+                    zdi.add(zed((objekt.rect.x,objekt.rect.y),"stul_stred","×"))
+                elif objekt.textura == "skrinka_horizontalni_zamek" and invKey.completed and not invBoots.completed:
+                    inventoryBoots_grp.update()
+                    zdi.remove(objekt)
+                    zdi.add(zed((objekt.rect.x,objekt.rect.y),"skrinka_horizontalni_otevrena","×"))
         if clip:
             for wall in zdi:
                 if wall.rect.collidepoint(player_hitbox_instance.rect.topleft) or wall.rect.collidepoint(player_hitbox_instance.rect.topright):
@@ -652,7 +658,7 @@ while True:
                     player_hitbox_instance.rect.center = (500, 32)
 
                     podlaha,dvere = specialni_podlahy(screens_with_doors[0], False, 0, 0, "0")
-                    zdi = specialni_zdi(screens_with_doors[0])
+                    zdi,interactive = specialni_zdi(screens_with_doors[0])
                     
                     inSpecialRoom = True
                 elif door.door_type == "LOCKER_ROOM":
@@ -664,7 +670,7 @@ while True:
                     player_hitbox_instance.rect.center = (32, 200)
                     
                     podlaha,dvere = specialni_podlahy(screens_with_doors[1], False, 0, 0, "0")
-                    zdi = specialni_zdi(screens_with_doors[1])
+                    zdi,interactive = specialni_zdi(screens_with_doors[1])
                     
                     inSpecialRoom = True
                 elif door.door_type == "EXIT":
