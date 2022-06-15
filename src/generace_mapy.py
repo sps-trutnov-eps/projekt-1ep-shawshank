@@ -209,7 +209,6 @@ def generate():
     correct_map = []
     correct_map = []
     game_map = []
-    main_ind = 0
     for line in mapa: game_map.append([])
     for row in mapa[0]:
         for line in game_map:
@@ -228,8 +227,15 @@ def generate():
                         if possibility[1] == part[0]:
                             possibilities.append(possibility)
                 new = random.choice(possibilities)
+
                 new[2][1] = part[1]
-                game_map[line_ind][part_ind] = new
+                game_map[line_ind][part_ind] = new      
+    #oprava nefunkčního pythonu
+    for line_ind,line in enumerate(mapa):
+        for part_ind,part in enumerate(line):
+            if len(part) == 2:
+                if part[1] and part[1] != "regular_door":
+                    game_map[line_ind][part_ind][2][1] = part[1]
                     
         for line in game_map:
             for part in line:
