@@ -501,6 +501,15 @@ while True:
             player_hitbox_instance.rect.centerx = -100
             playerStartGameAnim = True
             player_movable = False
+            
+            while pruhlednost <= 20:
+                pruhlednost += 0.1
+                fade_black.set_alpha(pruhlednost)
+                screen.blit(fade_black, (0, 0))
+                pygame.display.update()
+                pygame.time.wait(fade_speed)
+            
+            pruhlednost = 0
         
         if (text(50, "CREDITS", 23*32 - 225, 200, (255, 255, 255), DATA_ROOT + "/data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]) or ((pressed[pygame.K_KP_ENTER] or pressed[pygame.K_RETURN]) and menu_state == 1):
             rozmluva.stop()
@@ -521,6 +530,7 @@ while True:
     elif inGame:
         #uvodni animace
         if playerStartGameAnim and player_hitbox_instance.rect.centerx <= 23*32/2:
+            
             posun_x = 0
             posun_x += player_speed
             image = "player_r"
