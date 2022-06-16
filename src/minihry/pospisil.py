@@ -112,14 +112,14 @@ def main():
             skore_text = font.render("skore: "+str(skore),True,("white"))
         
         
-        if smer is "sever":
+        if smer == "sever":
 
             v2 = v2-6
-        if smer is "jih":
+        if smer == "jih":
             v2 = v2+6
-        if smer is "východ":
+        if smer == "východ":
             v1 = v1+6
-        if smer is "západ":
+        if smer == "západ":
             v1 = v1-6
         
         okno.fill((0,0,0))
@@ -172,7 +172,7 @@ def main():
 
         clock.tick(60)
 
-        if udalost.type is pygame.QUIT:
+        if udalost.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
                 theme.stop()

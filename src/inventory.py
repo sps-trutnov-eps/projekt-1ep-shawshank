@@ -61,4 +61,4 @@ class inventoryHasBoots(pygame.sprite.Sprite):
             else:
                 self.image = getImage(96, 0, 32, 32, inventoryImages)
             
-        print(state, self.completed, self.unlocked)
+        #print(state, self.completed, self.unlocked)
