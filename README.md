@@ -28,5 +28,4 @@ Top-down bludišťovka s minihrami. Unikněte ze školy, než zazvoní na hodinu
 1. Ve složce `bin/` spusťte dávkový soubor `build_onefile.bat`
 2. Vygeneruje se složka `bin/dist/` s binární verzí aplikace
 3. Hra se spouští souborem `shawshank.exe` ve složce `bin/dist/`
-4. (Tato verze je momentálně nefunkční.)
 

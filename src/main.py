@@ -13,15 +13,13 @@ from sprites import *
 import time
 from inventory import inventoryHasKey, inventoryHasBoots
 
+slozka_miniher = os.path.abspath("minihry")
+sys.path.append(slozka_miniher)
 minigames = []
-path = os.path.join(os.getcwd(),"minihry")
-names = os.listdir(path)
 
-
-for name in names:
+for name in os.listdir(slozka_miniher):
     if ".py" in name:
-        minigames.append(importlib.import_module("minihry."+name.split(".")[0]))
-    
+        minigames.append(importlib.import_module(name.split(".")[0]))
 
 pygame.init()
 pygame.mixer.init()
