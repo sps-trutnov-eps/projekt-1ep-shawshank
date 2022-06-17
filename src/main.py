@@ -34,7 +34,7 @@ jasot = pygame.mixer.Sound(DATA_ROOT + "/data/music/jásot.mp3")
 rozmluva = pygame.mixer.Sound(DATA_ROOT + "/data/music/mírumilovná_rozmluva.mp3")
 zvonek_0 = pygame.mixer.Sound(DATA_ROOT + "/data/music/zvonek_0.mp3")
 zvonek_1 = pygame.mixer.Sound(DATA_ROOT + "/data/music/zvonek_1.mp3")
-hall = pygame.mixer.Sound(DATA_ROOT + "/data/music/þE_hALL.mp3")
+hall = pygame.mixer.Sound(DATA_ROOT + "/data/music/the_hall.mp3")
 typing = pygame.mixer.Sound(DATA_ROOT + "/data/music/demonic_typing.mp3")
 credits_file = DATA_ROOT + "/data/credits.txt"
 
