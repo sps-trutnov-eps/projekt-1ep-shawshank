@@ -55,7 +55,7 @@ return_font_rect = return_font_render.get_rect(center=(23*32/2, 14*32/2 + 75))
 g_over_font_render.set_alpha(0)
 return_font_render.set_alpha(0)
 
-#fonty a rendery pro win
+#fonty a rendery pro win text
 win_font = pygame.font.Font(DATA_ROOT + "/data/fonts/ARCADECLASSIC.TTF", 125)
 win_font_render = win_font.render("YOU  WON", True, (0, 0, 0))
 win_font_rect = win_font_render.get_rect(center=(23*32/2, 14*32/2))
@@ -195,7 +195,7 @@ def text(text_size, text, x, y, text_color, text_font, align, sysfont):
     return text_rect
     
     
-#načtení zdí speciální místnosti
+#načtení zdí speciálních místností
 def specialni_zdi(mapka):
     global podlaha
     zdi = pygame.sprite.Group()
@@ -278,7 +278,7 @@ def specialni_zdi(mapka):
                 podlaha.add(specialni_podlahy(screens_with_doors[1], True, symbol_ind, radek_ind, "34"))
     return zdi,interactive
 
-#načtení podlahy speciální místnosti
+#načtení podlahy speciálních místností
 def specialni_podlahy(mapka, under, symbolpos, radekpos, symbol):
     podlaha = pygame.sprite.Group()
     dvere = pygame.sprite.Group()
@@ -418,7 +418,7 @@ Credits = False
 
 #main loop
 while True:
-    #vypnutí
+    #vypnutí okna
     pressed = pygame.key.get_pressed()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -434,7 +434,8 @@ while True:
         screen.blit(menu_background,(0, 0), (backgroundMove, 0, menu_background.get_rect().width, menu_background.get_rect().height))
         if not pygame.mixer.get_busy():
             typing.play()
-        #pohyb přez tab
+            
+        #pohyb mezi tlačíky přes tab
         if pressed[pygame.K_TAB] and cheat_timeout < 0:
             if pressed[pygame.K_RSHIFT] or pressed[pygame.K_LSHIFT]:
                 if menu_state == None: menu_state = 2
@@ -462,7 +463,7 @@ while True:
         exit_highlight = pygame.image.load(DATA_ROOT + "/data/menu/exit_highlight.png").convert_alpha()
         exit_highlight_rect = exit_highlight.get_rect(topright=(23*32 - 15, 15))
         
-        #vykreslování
+        #vykreslování textu
         screen.blit(txt_bg, txt_bg_rect)
         text(50, "START", 23*32 - 225, 100, (255, 255, 255), DATA_ROOT + "/data/fonts/ARCADECLASSIC.TTF", "topleft", False)
         text(50, "CREDITS", 23*32 - 225, 200, (255, 255, 255), DATA_ROOT + "/data/fonts/ARCADECLASSIC.TTF", "topleft", False)
@@ -521,7 +522,7 @@ while True:
         clock.tick(30)
     
     elif inGame:
-        #uvodni animace
+        #úvodní animace
         if playerStartGameAnim and player_hitbox_instance.rect.centerx <= 23*32/2:
             
             posun_x = 0
@@ -538,6 +539,8 @@ while True:
         cheat_timeout -= 1
          
         #cheaty
+        
+        #zapínací zkratka pro cheaty
         if pressed[pygame.K_d]:
             cheat_code = 1
         if pressed[pygame.K_e] and cheat_code == 1:
@@ -548,6 +551,7 @@ while True:
             cheat_timeout = 20
             cheat_code = None
 
+        #cheat keybindy
         if cheaty:
             if pressed[pygame.K_h] and cheat_timeout < 0:
                 if hitbox == False:
@@ -632,9 +636,7 @@ while True:
                 else:
                     show_minigame = False
                 cheat_timeout = 20
-        
-        print(cheat_code)
-        
+
         #pohyb
         posun_x = 0
         posun_y = 0
@@ -806,8 +808,6 @@ while True:
         inventoryBoots_grp.draw(screen)
         counter_surface.topleft = (8,6)
         screen.blit(counter_texture, counter_surface)
-        
-        
         screen.blit(ukolKlic, (menu_background.get_rect().width - ukolKlic.get_rect().width - 5, 47))
         screen.blit(ukolBoty, (menu_background.get_rect().width - ukolBoty.get_rect().width - 5, 47 + ukolBoty.get_rect().height + 5))
         screen.blit(ukolVen, (menu_background.get_rect().width - ukolVen.get_rect().width - 5, 47 + 17 + ukolVen.get_rect().height + 5))
@@ -902,7 +902,6 @@ while True:
             pygame.display.update()
             pygame.time.wait(fade_speed)
         
-        health = -1
         inGame = False
         gameOver = True
         hall.stop()
