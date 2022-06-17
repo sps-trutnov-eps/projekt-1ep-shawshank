@@ -1,5 +1,5 @@
 rmdir /S /Q build
 rmdir /S /Q dist
 
-pyinstaller build.spec
+py -m PyInstaller build.spec
 
