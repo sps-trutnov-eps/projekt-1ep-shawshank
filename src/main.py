@@ -68,7 +68,7 @@ show_minigame = True
 player_x = 23 * 32 / 2
 player_y = 14 * 32 / 2
 player_speed = 3
-health_max = health = 5
+health_max = health = 1
 mozne_prechody = []
 interactive = pygame.sprite.Group()
 player_movable = True
@@ -123,6 +123,8 @@ backgroundMove = 0
 menu_background = pygame.image.load(DATA_ROOT + "/data/menu/background.png")
 
 playStartGameAnim = False
+
+menuButtonDelay = 0
 
 #credits
 delta_y = screen.get_rect().centery + 60
@@ -430,6 +432,9 @@ while True:
             sys.exit()
             pygame.mixer.quit()
     
+    if menuButtonDelay > 0:
+        menuButtonDelay -= 1
+    
     if inMenu:
         if backgroundMove <= 0:
             backgroundMove = menu_background.get_rect().width - 23 * 32
@@ -486,42 +491,43 @@ while True:
             screen.blit(exit_highlight, exit_highlight_rect)
             menu_state = 2
             
-        if (text(50, "START", 23*32 - 225, 100, (255, 255, 255), DATA_ROOT + "/data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]) or ((pressed[pygame.K_KP_ENTER] or pressed[pygame.K_RETURN]) and menu_state == 0):
-            inMenu = False
-            inGame = True
-            menu_state = None
-            health = health_max
-            rozmluva.stop()
-            typing.stop()
-            hall.play()
-            zvonek_0.play()
+        if menuButtonDelay <= 0:
+            if (text(50, "START", 23*32 - 225, 100, (255, 255, 255), DATA_ROOT + "/data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]) or ((pressed[pygame.K_KP_ENTER] or pressed[pygame.K_RETURN]) and menu_state == 0):
+                inMenu = False
+                inGame = True
+                menu_state = None
+                health = health_max
+                rozmluva.stop()
+                typing.stop()
+                hall.play()
+                zvonek_0.play()
+                
+                player_hitbox_instance.rect.centerx = -100
+                playerStartGameAnim = True
+                player_movable = False
+                
+                while pruhlednost <= 20:
+                    pruhlednost += 0.1
+                    fade_black.set_alpha(pruhlednost)
+                    screen.blit(fade_black, (0, 0))
+                    pygame.display.update()
+                    pygame.time.wait(fade_speed)
+                
+                pruhlednost = 0
             
-            player_hitbox_instance.rect.centerx = -100
-            playerStartGameAnim = True
-            player_movable = False
-            
-            while pruhlednost <= 20:
-                pruhlednost += 0.1
-                fade_black.set_alpha(pruhlednost)
-                screen.blit(fade_black, (0, 0))
-                pygame.display.update()
-                pygame.time.wait(fade_speed)
-            
-            pruhlednost = 0
-        
-        if (text(50, "CREDITS", 23*32 - 225, 200, (255, 255, 255), DATA_ROOT + "/data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]) or ((pressed[pygame.K_KP_ENTER] or pressed[pygame.K_RETURN]) and menu_state == 1):
-            rozmluva.stop()
-            typing.stop()
-            hall.play()
-            zvonek_0.play()
-            jasot.play()
-            Credits = True
-            menu_state = None
+            if (text(50, "CREDITS", 23*32 - 225, 200, (255, 255, 255), DATA_ROOT + "/data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]) or ((pressed[pygame.K_KP_ENTER] or pressed[pygame.K_RETURN]) and menu_state == 1):
+                rozmluva.stop()
+                typing.stop()
+                hall.play()
+                zvonek_0.play()
+                jasot.play()
+                Credits = True
+                menu_state = None
 
-        if (text(50, "EXIT", 23*32 - 225, 300, (255, 255, 255), DATA_ROOT + "/data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]) or ((pressed[pygame.K_KP_ENTER] or pressed[pygame.K_RETURN]) and menu_state == 2):
-            pygame.quit()
-            pygame.mixer.quit()
-            sys.exit()
+            if (text(50, "EXIT", 23*32 - 225, 300, (255, 255, 255), DATA_ROOT + "/data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]) or ((pressed[pygame.K_KP_ENTER] or pressed[pygame.K_RETURN]) and menu_state == 2):
+                pygame.quit()
+                pygame.mixer.quit()
+                sys.exit()
         
         clock.tick(30)
     
@@ -805,7 +811,6 @@ while True:
         counter_surface.topleft = (8,6)
         screen.blit(counter_texture, counter_surface)
         
-        
         screen.blit(ukolKlic, (menu_background.get_rect().width - ukolKlic.get_rect().width - 5, 47))
         screen.blit(ukolBoty, (menu_background.get_rect().width - ukolBoty.get_rect().width - 5, 47 + ukolBoty.get_rect().height + 5))
         screen.blit(ukolVen, (menu_background.get_rect().width - ukolVen.get_rect().width - 5, 47 + 17 + ukolVen.get_rect().height + 5))
@@ -870,6 +875,7 @@ while True:
             g_over_font_render.set_alpha(pruhlednost)
             return_font_render.set_alpha(pruhlednost)
             
+            
         #školník
         if current_time == 0:
             x_hrace = player_instance.prevPosX
@@ -881,6 +887,7 @@ while True:
             rozmluva.play()
         pruhlednost = 0
         if pressed[pygame.K_RETURN]:
+            menuButtonDelay = 50
             gameOver = False
             inMenu = True
             rozmluva.stop()
