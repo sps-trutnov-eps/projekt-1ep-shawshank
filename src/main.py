@@ -30,6 +30,7 @@ game_map,master,minimap = generate()
 
 clock = pygame.time.Clock()
 
+#zvuky
 jasot = pygame.mixer.Sound(DATA_ROOT + "/data/music/jásot.mp3")
 rozmluva = pygame.mixer.Sound(DATA_ROOT + "/data/music/mírumilovná_rozmluva.mp3")
 zvonek_0 = pygame.mixer.Sound(DATA_ROOT + "/data/music/zvonek_0.mp3")
@@ -38,13 +39,11 @@ hall = pygame.mixer.Sound(DATA_ROOT + "/data/music/the_hall.mp3")
 typing = pygame.mixer.Sound(DATA_ROOT + "/data/music/demonic_typing.mp3")
 credits_file = DATA_ROOT + "/data/credits.txt"
 
-cheat_timeout = 20
-show_minimap = False
+#hud
 mimimap_pos = (width - len(game_map[0])*20,heigth - len(game_map)*12)
 ukazatel = pygame.image.load(DATA_ROOT + "/data/hud/ukazatel_na_mapce.png").convert_alpha()
 counter_texture = pygame.image.load(DATA_ROOT + "/data/hud/counter.png").convert_alpha()
 counter_surface = counter_texture.get_rect()
-
 
 #fonty a rendery pro game over text
 g_over_font = pygame.font.Font(DATA_ROOT + "/data/fonts/ARCADECLASSIC.TTF", 125)
@@ -56,15 +55,22 @@ return_font_rect = return_font_render.get_rect(center=(23*32/2, 14*32/2 + 75))
 g_over_font_render.set_alpha(0)
 return_font_render.set_alpha(0)
 
-#fonty a rendery pro win
+#fonty a rendery pro win text
 win_font = pygame.font.Font(DATA_ROOT + "/data/fonts/ARCADECLASSIC.TTF", 125)
 win_font_render = win_font.render("YOU  WON", True, (0, 0, 0))
 win_font_rect = win_font_render.get_rect(center=(23*32/2, 14*32/2))
 win_font_render.set_alpha(0)
 
+#proměné pro cheaty
 clip = True
 hitbox = False
 show_minigame = True
+cheat_code = None
+cheat_timeout = 20
+show_minimap = False
+cheaty = False
+
+#základní proměné pro hru
 player_x = 23 * 32 / 2
 player_y = 14 * 32 / 2
 player_speed = 3
@@ -72,15 +78,12 @@ health_max = health = 1
 mozne_prechody = []
 interactive = pygame.sprite.Group()
 player_movable = True
-cheat_code = None
+inSpecialRoom = False
 
 default_time = 60
 current_time = 60
-time_background = pygame.Surface((60,54))
-time_background.fill((0,28,32))
-time_outground = pygame.Surface((65,59))
-time_outground.fill("gray")
 
+#sprity
 hrac_display_grp = pygame.sprite.Group()
 hrac_hitbox_grp = pygame.sprite.Group()
 postavy_display_grp = pygame.sprite.Group()
@@ -119,7 +122,7 @@ ukolVen = ukolFont.render("Uteč!", True, (255, 255, 255))
 hasKlic = False
 hasBoty = False
 
-#menu
+#definice pro menu
 backgroundMove = 0
 menu_background = pygame.image.load(DATA_ROOT + "/data/menu/background.png")
 
@@ -130,11 +133,8 @@ menuButtonDelay = 0
 #credits
 delta_y = screen.get_rect().centery + 60
 
-inSpecialRoom = False
-
 #výstup ze dveří
 def vystup(pos):
-
     for line_ind,line in enumerate(game_map[pos[0]][pos[1]][0]):
         for symbol_ind,symbol in enumerate(line):
             if symbol == "1": return (symbol_ind*32+16,(line_ind+1)*32+16)
@@ -197,7 +197,7 @@ def text(text_size, text, x, y, text_color, text_font, align, sysfont):
     return text_rect
     
     
-#načtení zdí speciální místnosti
+#načtení zdí speciálních místností
 def specialni_zdi(mapka):
     global podlaha
     zdi = pygame.sprite.Group()
@@ -280,7 +280,7 @@ def specialni_zdi(mapka):
                 podlaha.add(specialni_podlahy(screens_with_doors[1], True, symbol_ind, radek_ind, "34"))
     return zdi,interactive
 
-#načtení podlahy speciální místnosti
+#načtení podlahy speciálních místností
 def specialni_podlahy(mapka, under, symbolpos, radekpos, symbol):
     podlaha = pygame.sprite.Group()
     dvere = pygame.sprite.Group()
@@ -417,18 +417,13 @@ gameOver = False
 inMenu = True
 win = False
 Credits = False
-cheaty = False
 
 #main loop
 while True:
-    #vypnutí
+    #vypnutí okna
     pressed = pygame.key.get_pressed()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            pygame.quit()
-            sys.exit()
-            pygame.mixer.quit()
-        if pressed[pygame.K_ESCAPE]:
             pygame.quit()
             sys.exit()
             pygame.mixer.quit()
@@ -444,7 +439,8 @@ while True:
         screen.blit(menu_background,(0, 0), (backgroundMove, 0, menu_background.get_rect().width, menu_background.get_rect().height))
         if not pygame.mixer.get_busy():
             typing.play()
-        #pohyb přetz tab
+            
+        #pohyb mezi tlačíky přes tab
         if pressed[pygame.K_TAB] and cheat_timeout < 0:
             if pressed[pygame.K_RSHIFT] or pressed[pygame.K_LSHIFT]:
                 if menu_state == None: menu_state = 2
@@ -472,7 +468,7 @@ while True:
         exit_highlight = pygame.image.load(DATA_ROOT + "/data/menu/exit_highlight.png").convert_alpha()
         exit_highlight_rect = exit_highlight.get_rect(topright=(23*32 - 15, 15))
         
-        #vykreslování
+        #vykreslování textu
         screen.blit(txt_bg, txt_bg_rect)
         text(50, "START", 23*32 - 225, 100, (255, 255, 255), DATA_ROOT + "/data/fonts/ARCADECLASSIC.TTF", "topleft", False)
         text(50, "CREDITS", 23*32 - 225, 200, (255, 255, 255), DATA_ROOT + "/data/fonts/ARCADECLASSIC.TTF", "topleft", False)
@@ -532,7 +528,7 @@ while True:
         clock.tick(30)
     
     elif inGame:
-        #uvodni animace
+        #úvodní animace
         if playerStartGameAnim and player_hitbox_instance.rect.centerx <= 23*32/2:
             
             posun_x = 0
@@ -549,6 +545,8 @@ while True:
         cheat_timeout -= 1
          
         #cheaty
+        
+        #zapínací zkratka pro cheaty
         if pressed[pygame.K_d]:
             cheat_code = 1
         if pressed[pygame.K_e] and cheat_code == 1:
@@ -559,6 +557,7 @@ while True:
             cheat_timeout = 20
             cheat_code = None
 
+        #cheat keybindy
         if cheaty:
             if pressed[pygame.K_h] and cheat_timeout < 0:
                 if hitbox == False:
@@ -643,9 +642,7 @@ while True:
                 else:
                     show_minigame = False
                 cheat_timeout = 20
-        
-        print(cheat_code)
-        
+
         #pohyb
         posun_x = 0
         posun_y = 0
@@ -914,7 +911,6 @@ while True:
             pygame.display.update()
             pygame.time.wait(fade_speed)
         
-        health = -1
         inGame = False
         gameOver = True
         hall.stop()
