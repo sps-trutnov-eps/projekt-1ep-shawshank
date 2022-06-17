@@ -34,7 +34,7 @@ jasot = pygame.mixer.Sound(DATA_ROOT + "/data/music/jásot.mp3")
 rozmluva = pygame.mixer.Sound(DATA_ROOT + "/data/music/mírumilovná_rozmluva.mp3")
 zvonek_0 = pygame.mixer.Sound(DATA_ROOT + "/data/music/zvonek_0.mp3")
 zvonek_1 = pygame.mixer.Sound(DATA_ROOT + "/data/music/zvonek_1.mp3")
-hall = pygame.mixer.Sound(DATA_ROOT + "/data/music/þE_hALL.mp3")
+hall = pygame.mixer.Sound(DATA_ROOT + "/data/music/the_hall.mp3")
 typing = pygame.mixer.Sound(DATA_ROOT + "/data/music/demonic_typing.mp3")
 credits_file = DATA_ROOT + "/data/credits.txt"
 
@@ -72,6 +72,7 @@ health_max = health = 1
 mozne_prechody = []
 interactive = pygame.sprite.Group()
 player_movable = True
+cheat_code = None
 
 default_time = 60
 current_time = 60
@@ -454,7 +455,6 @@ while True:
                 elif menu_state != 2: menu_state += 1
                 else: menu_state = 0
             cheat_timeout = 10
-        cheat_timeout -=1
         
         janitor_menu_grp.update()
         janitor_menu_grp.draw(screen)
@@ -545,13 +545,19 @@ while True:
         elif playerStartGameAnim and player_hitbox_instance.rect.centerx >= 23*32/2:
             playerStartGameAnim = False
             player_movable = True
-            
+         
+        cheat_timeout -= 1
+         
         #cheaty
-        if pressed[pygame.K_SEMICOLON] and cheat_timeout < 0:
+        if pressed[pygame.K_d]:
+            cheat_code = 1
+        if pressed[pygame.K_e] and cheat_code == 1:
+            cheat_code = 2
+        if pressed[pygame.K_v] and cheat_code == 2:
             if cheaty: cheaty = False
             else: cheaty = True
             cheat_timeout = 20
-        cheat_timeout -= 1
+            cheat_code = None
 
         if cheaty:
             if pressed[pygame.K_h] and cheat_timeout < 0:
@@ -611,33 +617,34 @@ while True:
                     player_speed = 3
                 cheat_timeout = 20
         
-        if pressed[pygame.K_t] and cheat_timeout < 0:
-            current_time = default_time
-            hall.stop()
-            hall.play()
-            cheat_timeout = 20
-            
-        if pressed[pygame.K_1] and cheat_timeout < 0:
-            inventoryKey_grp.update()
-            cheat_timeout = 20
-            
-        if pressed[pygame.K_2] and cheat_timeout < 0:
-            inventoryBoots_grp.update("sebrat")
-            cheat_timeout = 20
-            
-        if pressed[pygame.K_3] and cheat_timeout < 0:
-            inGame = False
-            win = True
-            cheat_timeout = 20
-            hall.stop()
-            
-        if pressed[pygame.K_p] and cheat_timeout < 0:
-            if show_minigame == False:
-                show_minigame = True
-            else:
-                show_minigame = False
-            cheat_timeout = 20
-        cheat_timeout -= 1
+            elif pressed[pygame.K_t] and cheat_timeout < 0:
+                current_time = default_time
+                hall.stop()
+                hall.play()
+                cheat_timeout = 20
+                
+            elif pressed[pygame.K_1] and cheat_timeout < 0:
+                inventoryKey_grp.update()
+                cheat_timeout = 20
+                
+            elif pressed[pygame.K_2] and cheat_timeout < 0:
+                inventoryBoots_grp.update("sebrat")
+                cheat_timeout = 20
+                
+            elif pressed[pygame.K_3] and cheat_timeout < 0:
+                inGame = False
+                win = True
+                cheat_timeout = 20
+                hall.stop()
+                
+            elif pressed[pygame.K_p] and cheat_timeout < 0:
+                if show_minigame == False:
+                    show_minigame = True
+                else:
+                    show_minigame = False
+                cheat_timeout = 20
+        
+        print(cheat_code)
         
         #pohyb
         posun_x = 0
@@ -976,7 +983,7 @@ Ardour
 
 '''
         screen.fill("black")
-        delta_y -= 1
+        delta_y -= 2
         centerx, centery = screen.get_rect().centerx, screen.get_rect().centery
         if pressed[pygame.K_RETURN]:
             Credits = False

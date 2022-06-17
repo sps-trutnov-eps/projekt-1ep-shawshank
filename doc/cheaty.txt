@@ -1,12 +1,15 @@
-; - aktivace/deaktivace cheatů
-h - vypíná a zapíná vizualizaci hitboxu
-n - vypíná a zapíná kolize
-m - vypíná a zapíná micromapu
+aktivace/deaktivace cheatů
+- na chodbě je třeba napsat "dev"
+
 g - prohraje hru
-t - doplní čas
-1 (ne kp_1) - přepíná stav klíče
-2 (ne kp_2) - přepíná stav bot
-3 (ne kp_3) - vyhraje hru
+h - vypíná a zapíná vizualizaci hitboxu
+m - vypíná a zapíná minimapu
+n - vypíná a zapíná kolize
 p - vypne minihry
 r - rychlost
+t - doplní čas
+
+1 (alfanumerická) - přepíná stav klíče
+2 (alfanumerická) - přepíná stav bot
+3 (alfanumerická) - vyhraje hru
 
