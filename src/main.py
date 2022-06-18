@@ -130,6 +130,9 @@ playStartGameAnim = False
 
 menuButtonDelay = 0
 
+timeForSecondChance = 0
+secondChance = False
+
 #credits
 delta_y = screen.get_rect().centery + 60
 
@@ -195,7 +198,6 @@ def text(text_size, text, x, y, text_color, text_font, align, sysfont):
         
     screen.blit(text, text_rect)
     return text_rect
-    
     
 #načtení zdí speciálních místností
 def specialni_zdi(mapka):
@@ -432,6 +434,16 @@ while True:
         menuButtonDelay -= 1
     
     if inMenu:
+        secondChance = False
+        
+        #vypnout hru
+        if pressed[pygame.K_ESCAPE]:
+            if menuButtonDelay <= 0:
+                pygame.quit()
+                sys.exit()
+                pygame.mixer.quit()
+        
+        #poyb pozadí
         if backgroundMove <= 0:
             backgroundMove = menu_background.get_rect().width - 23 * 32
         else:
@@ -528,6 +540,27 @@ while True:
         clock.tick(30)
     
     elif inGame:
+        
+        #do menu
+        if pressed[pygame.K_ESCAPE]:
+            if not secondChance:
+                menuButtonDelay = 10
+                timeForSecondChance = 300
+                secondChance = True
+                
+            if secondChance:
+                if menuButtonDelay <= 0 and timeForSecondChance > 0:
+                    inGame = False
+                    inMenu = True
+                    menuButtonDelay = 20
+                    
+        if timeForSecondChance > 0:
+            timeForSecondChance -= 1
+        if timeForSecondChance <= 0:
+            secondChance = False
+        
+        #text do menu je úplně dole
+        
         #úvodní animace
         if playerStartGameAnim and player_hitbox_instance.rect.centerx <= 23*32/2:
             
@@ -1005,5 +1038,8 @@ Ardour
         for j in range(i):
             screen.blit(text_list[j], pos_list[j])
             
+    if secondChance and timeForSecondChance > 0:
+        text(15, "To go to the main menu, press escape again.", 23*32/2, 50, (255, 255, 255), "Consolas", "center", True)
+        
     pygame.display.update()
     clock.tick(60)

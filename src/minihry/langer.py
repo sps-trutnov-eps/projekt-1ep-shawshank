@@ -109,10 +109,6 @@ def main():
                 pygame.mixer.quit()
                 pygame.quit()
                 sys.exit()
-            if stisknuto[pygame.K_ESCAPE]:
-                pygame.mixer.quit()
-                pygame.quit()
-                sys.exit()
             
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 if pygame.mouse.get_pos()[0] > vyberPozice[0] and pygame.mouse.get_pos()[0] < vyberPozice[0] + vyberVelikost[0] and pygame.mouse.get_pos()[1] > vyberPozice[1] and pygame.mouse.get_pos()[1] < vyberPozice[1] + vyberVelikost[1]:

@@ -389,9 +389,6 @@ def main():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            if pressed[pygame.K_ESCAPE]:
-                pygame.quit()
-                sys.exit()
         if not pygame.mixer.get_busy():
             theme.play()
         

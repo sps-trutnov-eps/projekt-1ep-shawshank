@@ -158,10 +158,6 @@ def main():
                         pokus += 1
                         je_otazka = "false"                  
         
-        if stisknuto[pygame.K_ESCAPE]:
-            pygame.quit()
-            sys.exit()
-            pygame.mixer.quit()
         if not pygame.mixer.get_busy():
             theme.play()
           
