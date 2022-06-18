@@ -537,6 +537,8 @@ while True:
                 jasot.play()
                 Credits = True
                 menu_state = None
+                
+                delta_y = screen.get_rect().centery + 60
 
             if (text(50, "EXIT", 23*32 - 225, 300, (255, 255, 255), DATA_ROOT + "/data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]) or ((pressed[pygame.K_KP_ENTER] or pressed[pygame.K_RETURN]) and menu_state == 2):
                 pygame.quit()
@@ -1040,12 +1042,14 @@ Ardour
             Credits = False
             inMenu = True
             jasot.stop()
+            delta_y = screen.get_rect().centery + 60
          
         for j in range(i):
             screen.blit(text_list[j], pos_list[j])
             
     if secondChance and timeForSecondChance > 0:
         text(15, "To go to the menu, press escape again.", 23*32/2, 50, (255, 255, 255), "Consolas", "center", True)
+        text(15, "You will lose progress.", 23*32/2, 65, (255, 255, 255), "Consolas", "center", True)
         
     pygame.display.update()
     clock.tick(60)
