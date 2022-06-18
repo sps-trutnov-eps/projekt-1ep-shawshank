@@ -439,10 +439,16 @@ while True:
         #vypnout hru
         if pressed[pygame.K_ESCAPE]:
             if menuButtonDelay <= 0:
-                pygame.quit()
-                sys.exit()
-                pygame.mixer.quit()
-        
+                if Credits:
+                    Credits = False
+                    jasot.stop()
+                    inMenu = True
+                    menuButtonDelay = 20
+                else:
+                    pygame.quit()
+                    sys.exit()
+                    pygame.mixer.quit()
+            
         #poyb pozadí
         if backgroundMove <= 0:
             backgroundMove = menu_background.get_rect().width - 23 * 32
@@ -931,6 +937,8 @@ while True:
             restart()
             current_time = default_time
             health = health_max
+            
+        timeForSecondChance = 20
     
     #win
     if win:     
@@ -955,6 +963,8 @@ while True:
         time.sleep(2)
         win = False
         Credits = True
+        
+        timeForSecondChance = 20
         
     if Credits:
         if not pygame.mixer.get_busy():
@@ -1014,10 +1024,6 @@ Ardour
         screen.fill("black")
         delta_y -= 2
         centerx, centery = screen.get_rect().centerx, screen.get_rect().centery
-        if pressed[pygame.K_RETURN]:
-            Credits = False
-            inMenu = True
-            jasot.stop()
         
         text_list = []
         pos_list = []
@@ -1039,7 +1045,7 @@ Ardour
             screen.blit(text_list[j], pos_list[j])
             
     if secondChance and timeForSecondChance > 0:
-        text(15, "To go to the main menu, press escape again.", 23*32/2, 50, (255, 255, 255), "Consolas", "center", True)
+        text(15, "To go to the menu, press escape again.", 23*32/2, 50, (255, 255, 255), "Consolas", "center", True)
         
     pygame.display.update()
     clock.tick(60)
