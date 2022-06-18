@@ -859,11 +859,8 @@ while True:
         counter_surface.topleft = (8,6)
         screen.blit(counter_texture, counter_surface)
         
-        screen.blit(ukolKlic, (menu_background.get_rect().width - ukolKlic.get_rect().width - 5, 47))
-        screen.blit(ukolBoty, (menu_background.get_rect().width - ukolBoty.get_rect().width - 5, 47 + ukolBoty.get_rect().height + 5))
-        screen.blit(ukolVen, (menu_background.get_rect().width - ukolVen.get_rect().width - 5, 47 + 17 + ukolVen.get_rect().height + 5))
         if hasKlic and not hasBoty:
-            ukolKlic = ukolFont.render("ajdi a seber klíč.", True, (255, 255, 255))
+            ukolKlic = ukolFont.render("Najdi a seber klíč.", True, (255, 255, 255))
             ukolBoty = ukolFont.render(">Najdi a seber boty.", True, (255, 255, 255))
             ukolVen = ukolFont.render("Uteč!", True, (200, 200, 200))
         elif hasBoty and hasKlic:
@@ -874,6 +871,10 @@ while True:
             ukolKlic = ukolFont.render(">Najdi a seber klíč.", True, (255, 255, 255))
             ukolBoty = ukolFont.render("Najdi a seber boty.", True, (200, 200, 200))
             ukolVen = ukolFont.render("Uteč!", True, (200, 200, 200))
+
+        screen.blit(ukolKlic, (23*32 - ukolKlic.get_rect().width - 5, 47))
+        screen.blit(ukolBoty, (23*32 - ukolBoty.get_rect().width - 5, 47 + ukolBoty.get_rect().height + 5))
+        screen.blit(ukolVen, (23*32 - ukolVen.get_rect().width - 5, 47 + 17 + ukolVen.get_rect().height + 5))
         
         #časomíra
         current_time -= 0.016
@@ -929,6 +930,8 @@ while True:
             x_hrace = player_instance.prevPosX
             y_hrace = player_instance.prevPosY
             janitor(x_hrace, y_hrace)
+            
+        
             
     if gameOver:
         if not pygame.mixer.get_busy():
@@ -1053,6 +1056,6 @@ Ardour
     if secondChance and timeForSecondChance > 0:
         text(15, "To go to the menu, press escape again.", 23*32/2, 50, (255, 255, 255), "Consolas", "center", True)
         text(15, "You will lose progress.", 23*32/2, 65, (255, 255, 255), "Consolas", "center", True)
-        
+
     pygame.display.update()
     clock.tick(60)
