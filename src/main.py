@@ -507,43 +507,46 @@ while True:
             
         if menuButtonDelay <= 0:
             if (text(50, "START", 23*32 - 225, 100, (255, 255, 255), DATA_ROOT + "/data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]) or ((pressed[pygame.K_KP_ENTER] or pressed[pygame.K_RETURN]) and menu_state == 0):
-                inMenu = False
-                inGame = True
-                menu_state = None
-                health = health_max
-                rozmluva.stop()
-                typing.stop()
-                hall.play()
-                zvonek_0.play()
-                
-                player_hitbox_instance.rect.centerx = -100
-                playerStartGameAnim = True
-                player_movable = False
-                
-                while pruhlednost <= 20:
-                    pruhlednost += 0.1
-                    fade_black.set_alpha(pruhlednost)
-                    screen.blit(fade_black, (0, 0))
-                    pygame.display.update()
-                    pygame.time.wait(fade_speed)
-                
-                pruhlednost = 0
+                if not Credits:
+                    inMenu = False
+                    inGame = True
+                    menu_state = None
+                    health = health_max
+                    rozmluva.stop()
+                    typing.stop()
+                    hall.play()
+                    zvonek_0.play()
+                    
+                    player_hitbox_instance.rect.centerx = -100
+                    playerStartGameAnim = True
+                    player_movable = False
+                    
+                    while pruhlednost <= 20:
+                        pruhlednost += 0.1
+                        fade_black.set_alpha(pruhlednost)
+                        screen.blit(fade_black, (0, 0))
+                        pygame.display.update()
+                        pygame.time.wait(fade_speed)
+                    
+                    pruhlednost = 0
             
             if (text(50, "CREDITS", 23*32 - 225, 200, (255, 255, 255), DATA_ROOT + "/data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]) or ((pressed[pygame.K_KP_ENTER] or pressed[pygame.K_RETURN]) and menu_state == 1):
-                rozmluva.stop()
-                typing.stop()
-                hall.play()
-                zvonek_0.play()
-                jasot.play()
-                Credits = True
-                menu_state = None
+                if not Credits:
+                    rozmluva.stop()
+                    typing.stop()
+                    hall.play()
+                    zvonek_0.play()
+                    #jasot.play()
+                    Credits = True
+                    menu_state = None
                 
                 delta_y = screen.get_rect().centery + 60
 
             if (text(50, "EXIT", 23*32 - 225, 300, (255, 255, 255), DATA_ROOT + "/data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]) or ((pressed[pygame.K_KP_ENTER] or pressed[pygame.K_RETURN]) and menu_state == 2):
-                pygame.quit()
-                pygame.mixer.quit()
-                sys.exit()
+                if not Credits:
+                    pygame.quit()
+                    pygame.mixer.quit()
+                    sys.exit()
         
         clock.tick(30)
     
