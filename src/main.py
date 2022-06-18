@@ -540,7 +540,7 @@ while True:
                     Credits = True
                     menu_state = None
                 
-                delta_y = screen.get_rect().centery + 60
+                    delta_y = screen.get_rect().centery + 60
 
             if (text(50, "EXIT", 23*32 - 225, 300, (255, 255, 255), DATA_ROOT + "/data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]) or ((pressed[pygame.K_KP_ENTER] or pressed[pygame.K_RETURN]) and menu_state == 2):
                 if not Credits:
