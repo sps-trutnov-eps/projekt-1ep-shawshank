@@ -121,6 +121,7 @@ ukolVen = ukolFont.render("Uteč!", True, (255, 255, 255))
 
 hasKlic = False
 hasBoty = False
+enterDelay = 0
 
 #definice pro menu
 backgroundMove = 0
@@ -144,6 +145,9 @@ def vystup(pos):
             elif symbol == "2": return ((symbol_ind-1)*32+16,line_ind*32+16)
             elif symbol == "3": return (symbol_ind*32+16,(line_ind-1)*32+16)
             elif symbol == "4": return ((symbol_ind+1)*32+16,line_ind*32+16)
+            
+inKeyRoom = False
+inBootsRoom = False
             
 #aktivace miniher
 def play_minigame():
@@ -432,6 +436,8 @@ while True:
     
     if menuButtonDelay > 0:
         menuButtonDelay -= 1
+    if  enterDelay > 0:
+        enterDelay -= 1
     
     if inMenu:
         secondChance = False
@@ -635,10 +641,18 @@ while True:
             elif pressed[pygame.K_1] and cheat_timeout < 0:
                 inventoryKey_grp.update()
                 inventoryBoots_grp.update("odemknout")
+                if hasKlic:
+                    hasKlic = False
+                else:
+                    hasKlic = True
                 cheat_timeout = 20
                 
             elif pressed[pygame.K_2] and cheat_timeout < 0:
                 inventoryBoots_grp.update("sebrat")
+                if hasBoty:
+                    hasBoty = False
+                else:
+                    hasBoty = True
                 cheat_timeout = 20
                 
             elif pressed[pygame.K_3] and cheat_timeout < 0:
@@ -767,6 +781,10 @@ while True:
                 
                 podlaha,dvere = urceni_sprite_group(game_map[current_position[0]][current_position[1]])
                 zdi = wall_map[current_position[0]][current_position[1]]
+                
+                inKeyRoom = False
+                inBootsRoom = False
+                enterDelay = 50
             elif player_hitbox_instance.rect.right > width:
                 if inSpecialRoom:
                     player_hitbox_instance.rect.center = prevPlayerPos
@@ -776,6 +794,10 @@ while True:
                     current_position[1] +=1
                 podlaha,dvere = urceni_sprite_group(game_map[current_position[0]][current_position[1]])
                 zdi = wall_map[current_position[0]][current_position[1]]
+                
+                inKeyRoom = False
+                inBootsRoom = False
+                enterDelay = 50
             elif player_hitbox_instance.rect.top < 0:
                 if inSpecialRoom:
                     player_hitbox_instance.rect.center = prevPlayerPos
@@ -785,6 +807,10 @@ while True:
                     current_position[0] -=1
                 podlaha,dvere = urceni_sprite_group(game_map[current_position[0]][current_position[1]])
                 zdi = wall_map[current_position[0]][current_position[1]]
+                
+                inKeyRoom = False
+                inBootsRoom = False
+                enterDelay = 50
             elif player_hitbox_instance.rect.bottom > heigth:
                 if inSpecialRoom:
                     player_hitbox_instance.rect.center = prevPlayerPos
@@ -794,6 +820,10 @@ while True:
                     current_position[0] +=1
                 podlaha,dvere = urceni_sprite_group(game_map[current_position[0]][current_position[1]])
                 zdi = wall_map[current_position[0]][current_position[1]]
+                
+                inKeyRoom = False
+                inBootsRoom = False
+                enterDelay = 50
             
         #zbytek pohybu
         player_instance.rect.centerx = player_hitbox_instance.rect.centerx
@@ -808,29 +838,43 @@ while True:
                     health = play_minigame()
                     current_time = default_time
                 elif door.door_type == "KEY_ROOM":
-                    player_hitbox_instance.rect.center = vystup(current_position)
-                    player_instance.rect.centerx = player_hitbox_instance.rect.centerx+4
-                    player_instance.rect.bottom = player_hitbox_instance.rect.bottom-2
+                    if enterDelay <= 0:
+                        player_hitbox_instance.rect.center = vystup(current_position)
+                        player_instance.rect.centerx = player_hitbox_instance.rect.centerx+4
+                        player_instance.rect.bottom = player_hitbox_instance.rect.bottom-2
 
-                    prevPlayerPos = player_hitbox_instance.rect.center
-                    player_hitbox_instance.rect.center = (500, 32)
+                        prevPlayerPos = player_hitbox_instance.rect.center
+                        player_hitbox_instance.rect.center = (500, 32)
 
-                    podlaha,dvere = specialni_podlahy(screens_with_doors[1], False, 0, 0, "0")
-                    zdi,interactive = specialni_zdi(screens_with_doors[1])
-                    
-                    inSpecialRoom = True
+                        podlaha,dvere = specialni_podlahy(screens_with_doors[1], False, 0, 0, "0")
+                        zdi,interactive = specialni_zdi(screens_with_doors[1])
+                        
+                        inSpecialRoom = True
+                        inKeyRoom = True
+                    else:
+                        if door.rect.collidepoint(player_hitbox_instance.rect.topleft) or door.rect.collidepoint(player_hitbox_instance.rect.bottomleft):
+                            player_hitbox_instance.rect.left = door.rect.right+1
+                        if door.rect.collidepoint(player_hitbox_instance.rect.topright) or door.rect.collidepoint(player_hitbox_instance.rect.bottomright):
+                            player_hitbox_instance.rect.right = door.rect.left-1
                 elif door.door_type == "LOCKER_ROOM":
-                    player_hitbox_instance.rect.center = vystup(current_position)
-                    player_instance.rect.centerx = player_hitbox_instance.rect.centerx+4
-                    player_instance.rect.bottom = player_hitbox_instance.rect.bottom-2
-                    
-                    prevPlayerPos = player_hitbox_instance.rect.center
-                    player_hitbox_instance.rect.center = (32, 200)
-                    
-                    podlaha,dvere = specialni_podlahy(screens_with_doors[0], False, 0, 0, "0")
-                    zdi,interactive = specialni_zdi(screens_with_doors[0])
-                    
-                    inSpecialRoom = True
+                    if enterDelay <= 0:
+                        player_hitbox_instance.rect.center = vystup(current_position)
+                        player_instance.rect.centerx = player_hitbox_instance.rect.centerx+4
+                        player_instance.rect.bottom = player_hitbox_instance.rect.bottom-2
+                        
+                        prevPlayerPos = player_hitbox_instance.rect.center
+                        player_hitbox_instance.rect.center = (32, 200)
+                        
+                        podlaha,dvere = specialni_podlahy(screens_with_doors[0], False, 0, 0, "0")
+                        zdi,interactive = specialni_zdi(screens_with_doors[0])
+                        
+                        inSpecialRoom = True
+                        inBootsRoom = True
+                    else:
+                        if door.rect.collidepoint(player_hitbox_instance.rect.topleft) or door.rect.collidepoint(player_hitbox_instance.rect.bottomleft):
+                            player_hitbox_instance.rect.left = door.rect.right+1
+                        if door.rect.collidepoint(player_hitbox_instance.rect.topright) or door.rect.collidepoint(player_hitbox_instance.rect.bottomright):
+                            player_hitbox_instance.rect.right = door.rect.left-1
                 elif door.door_type == "EXIT":
                     player_hitbox_instance.rect.center = vystup(current_position)
                     player_instance.rect.centerx = player_hitbox_instance.rect.centerx+4
