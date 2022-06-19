@@ -74,7 +74,7 @@ cheaty = False
 player_x = 23 * 32 / 2
 player_y = 14 * 32 / 2
 player_speed = 3
-health_max = health = 1
+health_max = health = 5
 mozne_prechody = []
 interactive = pygame.sprite.Group()
 player_movable = True
