@@ -74,7 +74,7 @@ cheaty = False
 player_x = 23 * 32 / 2
 player_y = 14 * 32 / 2
 player_speed = 3
-health_max = health = 1
+health_max = health = 5
 mozne_prechody = []
 interactive = pygame.sprite.Group()
 player_movable = True
@@ -634,10 +634,11 @@ while True:
                 
             elif pressed[pygame.K_1] and cheat_timeout < 0:
                 inventoryKey_grp.update()
+                inventoryBoots_grp.update("odemknout")
                 cheat_timeout = 20
                 
             elif pressed[pygame.K_2] and cheat_timeout < 0:
-                inventoryBoots_grp.update()
+                inventoryBoots_grp.update("sebrat")
                 cheat_timeout = 20
                 
             elif pressed[pygame.K_3] and cheat_timeout < 0:
