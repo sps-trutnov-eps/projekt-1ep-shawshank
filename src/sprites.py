@@ -46,7 +46,9 @@ images = {"zeď_0" : pygame.image.load(DATA_ROOT + "/data/textury_hry/zeď_0.png
           "podlaha_dark_blood" : pygame.image.load(DATA_ROOT + "/data/textury_hry/dark_podlaha_blood.png").convert(),
           "podlaha_dark_blooood" : pygame.image.load(DATA_ROOT + "/data/textury_hry/dark_podlaha_blooood.png").convert(),
           "podlaha_kachlicky" : pygame.image.load(DATA_ROOT + "/data/textury_hry/kachličky.png").convert(),
-          
+          "podlaha_dark_flek" : pygame.image.load(DATA_ROOT + "/data/textury_hry/dark_podlaha_flek.png").convert(),
+          "podlaha_dark_prkno" : pygame.image.load(DATA_ROOT + "/data/textury_hry/dark_podlaha_prkno.png").convert(),
+        
           "lavicka_horizontalni" : pygame.image.load(DATA_ROOT + "/data/textury_hry/horizontalni_lavicka_base.png").convert(),
           "lavicka_horizontalni_konec_leva" : pygame.image.load(DATA_ROOT + "/data/textury_hry/horizontální_lavička.png").convert_alpha(),
           "lavicka_horizontalni_konec_prava" : pygame.transform.flip(pygame.image.load(DATA_ROOT + "/data/textury_hry/horizontální_lavička.png").convert_alpha(), True, False),
@@ -63,7 +65,8 @@ images = {"zeď_0" : pygame.image.load(DATA_ROOT + "/data/textury_hry/zeď_0.png
           
           "kos" : pygame.image.load(DATA_ROOT + "/data/textury_hry/koš_šatní.png").convert_alpha(),
           
-          "odpatkove_pytle" : pygame.image.load(DATA_ROOT + "/data/textury_hry/pytel_biologického_odpdu.png").convert_alpha(),
+          "odpatkove_pytle_biologické" : pygame.image.load(DATA_ROOT + "/data/textury_hry/pytel_biologického_odpdu.png").convert_alpha(),
+          "odpatkove_pytle" : pygame.image.load(DATA_ROOT + "/data/textury_hry/pytel_normální.png").convert_alpha(),
           
           "skrin" : pygame.image.load(DATA_ROOT + "/data/textury_hry/skříň.png").convert(),
           "skrin_bok" : pygame.image.load(DATA_ROOT + "/data/textury_hry/skříň_bok.png").convert(),
@@ -71,7 +74,9 @@ images = {"zeď_0" : pygame.image.load(DATA_ROOT + "/data/textury_hry/zeď_0.png
           #Proč se stoly píší slovensky ?
           #Líp_se_to_píše
           "stul_dole" : pygame.image.load(DATA_ROOT + "/data/textury_hry/stool_školnikov_dole.png").convert_alpha(),
+          "stul_dole_normalni" : pygame.image.load(DATA_ROOT + "/data/textury_hry/stůl_školník_dolníčást_normální.png").convert_alpha(),
           "stul_hore" : pygame.image.load(DATA_ROOT + "/data/textury_hry/stool_školnikov_hore.png").convert_alpha(),
+          "stul_hore_normalni" : pygame.image.load(DATA_ROOT + "/data/textury_hry/stůl_školník_horníčást_normální.png").convert_alpha(),
           "stul_stred" : pygame.image.load(DATA_ROOT + "/data/textury_hry/stool_školnikov_stred.png").convert_alpha(),
           "stul_stred_klic" : pygame.image.load(DATA_ROOT + "/data/textury_hry/stool_školnikov_stred_klice.png").convert_alpha()}
 

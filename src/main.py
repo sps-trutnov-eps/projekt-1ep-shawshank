@@ -85,7 +85,7 @@ default_time = 60
 current_time = 60
 
 halloween_Date = "09-31"
-date = date.today()
+todayDate = date.today()
 
 #sprity
 hrac_display_grp = pygame.sprite.Group()
@@ -266,10 +266,10 @@ def specialni_zdi(mapka):
                     zdi.add(zed((symbol_ind*32,radek_ind*32),"skrinka_horizontalni_otevrena",mapka[2][1]))
                     interactive.add(zed((symbol_ind*32,radek_ind*32),"skrinka_horizontalni_otevrena",mapka[2][1]))
             elif symbol == "35":
-                if halloween_Date in str(date):
-                    zdi.add(zed((symbol_ind*32,radek_ind*32),"odpatkove_pytle",mapka[2][1]))
+                if halloween_Date in str(todayDate):
+                    zdi.add(zed((symbol_ind*32,radek_ind*32),"odpatkove_pytle_biologické",mapka[2][1]))
                 else:
-                    True
+                    zdi.add(zed((symbol_ind*32,radek_ind*32),"odpatkove_pytle",mapka[2][1]))
                 podlaha.add(specialni_podlahy(screens_with_doors[1], True, symbol_ind, radek_ind, "34"))
             elif symbol == "36":
                 zdi.add(zed((symbol_ind*32,radek_ind*32),"skrin",mapka[2][1]))
@@ -278,7 +278,10 @@ def specialni_zdi(mapka):
                 zdi.add(zed((symbol_ind*32,radek_ind*32),"skrin_bok",mapka[2][1]))
                 podlaha.add(specialni_podlahy(screens_with_doors[1], True, symbol_ind, radek_ind, "34"))
             elif symbol == "38":
-                zdi.add(zed((symbol_ind*32,radek_ind*32),"stul_dole",mapka[2][1]))
+                if halloween_Date in str(todayDate):
+                    zdi.add(zed((symbol_ind*32,radek_ind*32),"stul_dole",mapka[2][1]))
+                else:
+                    zdi.add(zed((symbol_ind*32,radek_ind*32),"stul_dole_normalni",mapka[2][1]))
                 podlaha.add(specialni_podlahy(screens_with_doors[1], True, symbol_ind, radek_ind, "34"))
             elif symbol == "40":
                 podlaha.add(specialni_podlahy(screens_with_doors[1], True, symbol_ind, radek_ind, "34"))
@@ -289,7 +292,10 @@ def specialni_zdi(mapka):
                     zdi.add(zed((symbol_ind*32,radek_ind*32),"stul_stred",mapka[2][1]))
                     interactive.add(zed((symbol_ind*32,radek_ind*32),"stul_stred",mapka[2][1]))
             elif symbol == "39":
-                zdi.add(zed((symbol_ind*32,radek_ind*32),"stul_hore",mapka[2][1]))
+                if halloween_Date in str(todayDate):
+                    zdi.add(zed((symbol_ind*32,radek_ind*32),"stul_hore",mapka[2][1]))
+                else:
+                    zdi.add(zed((symbol_ind*32,radek_ind*32),"stul_hore_normalni",mapka[2][1]))
                 podlaha.add(specialni_podlahy(screens_with_doors[1], True, symbol_ind, radek_ind, "34"))
     return zdi,interactive
 
@@ -308,15 +314,15 @@ def specialni_podlahy(mapka, under, symbolpos, radekpos, symbol):
                 elif symbol == "32":
                     podlaha.add(zed((symbol_ind*32,radek_ind*32),"podlaha_dark",mapka[2][1]))
                 elif symbol == "33":
-                    if halloween_Date in str(date):
+                    if halloween_Date in str(todayDate):
                         podlaha.add(zed((symbol_ind*32,radek_ind*32),"podlaha_dark_blood",mapka[2][1]))
                     else:
-                        podlaha.add(zed((symbol_ind*32,radek_ind*32),"podlaha_dark",mapka[2][1]))
+                        podlaha.add(zed((symbol_ind*32,radek_ind*32),"podlaha_dark_flek",mapka[2][1]))
                 elif symbol == "34":
-                    if halloween_Date in str(date):
+                    if halloween_Date in str(todayDate):
                         podlaha.add(zed((symbol_ind*32,radek_ind*32),"podlaha_dark_blooood",mapka[2][1]))
                     else:
-                        podlaha.add(zed((symbol_ind*32,radek_ind*32),"podlaha_dark",mapka[2][1]))
+                        podlaha.add(zed((symbol_ind*32,radek_ind*32),"podlaha_dark_prkno",mapka[2][1]))
     else:
         if symbol == "24":
             podlaha.add(zed((symbolpos*32,radekpos*32),"podlaha_kachlicky",mapka[2][1]))
@@ -675,10 +681,10 @@ while True:
                 hall.stop()
                 
             elif pressed[pygame.K_4] and cheat_timeout < 0:
-                if date == halloween_Date:
-                    date = date.today()
+                if todayDate == halloween_Date:
+                    todayDate = date.today()
                 else:
-                    date = halloween_Date
+                    todayDate = halloween_Date
                 cheat_timeout = 20
                 
             elif pressed[pygame.K_p] and cheat_timeout < 0:
@@ -851,7 +857,7 @@ while True:
         player_instance.rect.bottom = player_hitbox_instance.rect.bottom+1
         
         
-        
+        print(enterDelay)
         #kolize s dvermi
         if pygame.sprite.spritecollide(hrac_hitbox, dvere, False):
             for door in dvere:
@@ -877,6 +883,10 @@ while True:
                             player_hitbox_instance.rect.left = door.rect.right+1
                         if door.rect.collidepoint(player_hitbox_instance.rect.topright) or door.rect.collidepoint(player_hitbox_instance.rect.bottomright):
                             player_hitbox_instance.rect.right = door.rect.left-1
+                        if door.rect.collidepoint(player_hitbox_instance.rect.topleft) or door.rect.collidepoint(player_hitbox_instance.rect.bottomleft):
+                            player_hitbox_instance.rect.left = door.rect.right+1
+                        if door.rect.collidepoint(player_hitbox_instance.rect.topright) or door.rect.collidepoint(player_hitbox_instance.rect.bottomright):
+                            player_hitbox_instance.rect.right = door.rect.left-1
                 elif door.door_type == "LOCKER_ROOM":
                     if enterDelay <= 0:
                         player_hitbox_instance.rect.center = vystup(current_position)
@@ -892,6 +902,10 @@ while True:
                         inSpecialRoom = True
                         inBootsRoom = True
                     else:
+                        if door.rect.collidepoint(player_hitbox_instance.rect.topleft) or door.rect.collidepoint(player_hitbox_instance.rect.bottomleft):
+                            player_hitbox_instance.rect.left = door.rect.right+1
+                        if door.rect.collidepoint(player_hitbox_instance.rect.topright) or door.rect.collidepoint(player_hitbox_instance.rect.bottomright):
+                            player_hitbox_instance.rect.right = door.rect.left-1
                         if door.rect.collidepoint(player_hitbox_instance.rect.topleft) or door.rect.collidepoint(player_hitbox_instance.rect.bottomleft):
                             player_hitbox_instance.rect.left = door.rect.right+1
                         if door.rect.collidepoint(player_hitbox_instance.rect.topright) or door.rect.collidepoint(player_hitbox_instance.rect.bottomright):
