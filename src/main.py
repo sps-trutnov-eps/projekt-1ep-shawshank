@@ -13,6 +13,7 @@ from list_special_obrazovek import screens_with_doors
 from sprites import *
 import time
 from inventory import inventoryHasKey, inventoryHasBoots
+from datetime import date
 
 slozka_miniher = os.path.abspath("minihry")
 sys.path.append(slozka_miniher)
@@ -82,6 +83,9 @@ inSpecialRoom = False
 
 default_time = 60
 current_time = 60
+
+halloween_Date = "09-31"
+date = date.today()
 
 #sprity
 hrac_display_grp = pygame.sprite.Group()
@@ -262,7 +266,10 @@ def specialni_zdi(mapka):
                     zdi.add(zed((symbol_ind*32,radek_ind*32),"skrinka_horizontalni_otevrena",mapka[2][1]))
                     interactive.add(zed((symbol_ind*32,radek_ind*32),"skrinka_horizontalni_otevrena",mapka[2][1]))
             elif symbol == "35":
-                zdi.add(zed((symbol_ind*32,radek_ind*32),"odpatkove_pytle",mapka[2][1]))
+                if halloween_Date in str(date):
+                    zdi.add(zed((symbol_ind*32,radek_ind*32),"odpatkove_pytle",mapka[2][1]))
+                else:
+                    True
                 podlaha.add(specialni_podlahy(screens_with_doors[1], True, symbol_ind, radek_ind, "34"))
             elif symbol == "36":
                 zdi.add(zed((symbol_ind*32,radek_ind*32),"skrin",mapka[2][1]))
@@ -301,9 +308,15 @@ def specialni_podlahy(mapka, under, symbolpos, radekpos, symbol):
                 elif symbol == "32":
                     podlaha.add(zed((symbol_ind*32,radek_ind*32),"podlaha_dark",mapka[2][1]))
                 elif symbol == "33":
-                    podlaha.add(zed((symbol_ind*32,radek_ind*32),"podlaha_dark_blood",mapka[2][1]))
+                    if halloween_Date in str(date):
+                        podlaha.add(zed((symbol_ind*32,radek_ind*32),"podlaha_dark_blood",mapka[2][1]))
+                    else:
+                        podlaha.add(zed((symbol_ind*32,radek_ind*32),"podlaha_dark",mapka[2][1]))
                 elif symbol == "34":
-                    podlaha.add(zed((symbol_ind*32,radek_ind*32),"podlaha_dark_blooood",mapka[2][1]))
+                    if halloween_Date in str(date):
+                        podlaha.add(zed((symbol_ind*32,radek_ind*32),"podlaha_dark_blooood",mapka[2][1]))
+                    else:
+                        podlaha.add(zed((symbol_ind*32,radek_ind*32),"podlaha_dark",mapka[2][1]))
     else:
         if symbol == "24":
             podlaha.add(zed((symbolpos*32,radekpos*32),"podlaha_kachlicky",mapka[2][1]))
