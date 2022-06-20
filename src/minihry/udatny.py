@@ -162,10 +162,7 @@ def main():
             theme.play()
           
         if a == 1:        
-            if vybrana_odpoved == odpoved['datum']:
-                print('spravne')
-            else:
-                print('spatne')
+            if vybrana_odpoved != odpoved['datum']:
                 spatne += 1
             a = 0
         if pokus >=5:
