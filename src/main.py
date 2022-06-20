@@ -1020,16 +1020,15 @@ while True:
         if not pygame.mixer.get_busy():
             rozmluva.play()
         pruhlednost = 0
-        if pressed[pygame.K_RETURN]:
+        if pressed[pygame.K_RETURN] or pressed[pygame.K_ESCAPE]:
             menuButtonDelay = 50
             gameOver = False
             inMenu = True
+            Credits = False
             rozmluva.stop()
             restart()
             current_time = default_time
             health = health_max
-            
-        timeForSecondChance = 20
     
     #win
     if win:     
