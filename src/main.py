@@ -13,6 +13,9 @@ from list_special_obrazovek import screens_with_doors
 from sprites import *
 import time
 from inventory import inventoryHasKey, inventoryHasBoots
+import languages
+
+text = languages.lang()
 
 slozka_miniher = os.path.abspath("minihry")
 sys.path.append(slozka_miniher)
@@ -48,7 +51,7 @@ counter_surface = counter_texture.get_rect()
 #fonty a rendery pro game over text
 g_over_font = pygame.font.Font(DATA_ROOT + "/data/fonts/ARCADECLASSIC.TTF", 125)
 return_font = pygame.font.Font(DATA_ROOT + "/data/fonts/ARCADECLASSIC.TTF", 50)
-g_over_font_render = g_over_font.render("GAME  OVER", True, (255, 0, 0))
+g_over_font_render = g_over_font.render(text["CZ"], True, (255, 0, 0))
 return_font_render = return_font.render("PRESS   ENTER", True, (100, 0, 0))
 g_over_font_rect = g_over_font_render.get_rect(center=(23*32/2, 14*32/2))
 return_font_rect = return_font_render.get_rect(center=(23*32/2, 14*32/2 + 75))
@@ -1059,7 +1062,7 @@ Martin Michálek
 Tomáš Svoboda
 Jakub Polák
 Stanislav Lang
-Votjtěch Laňka
+Vojtěch Laňka
 Jan Serbousek
 
 ---Použitý Software---
