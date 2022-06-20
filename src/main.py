@@ -674,6 +674,13 @@ while True:
                 cheat_timeout = 20
                 hall.stop()
                 
+            elif pressed[pygame.K_4] and cheat_timeout < 0:
+                if date == halloween_Date:
+                    date = date.today()
+                else:
+                    date = halloween_Date
+                cheat_timeout = 20
+                
             elif pressed[pygame.K_p] and cheat_timeout < 0:
                 if show_minigame == False:
                     show_minigame = True
@@ -735,6 +742,7 @@ while True:
             player_hitbox_instance.posun_x(posun_x)
             
         #kolize se stolem a skříňkou
+        print(inSpecialRoom)
         if pygame.sprite.spritecollide(hrac_hitbox, interactive, False) and inSpecialRoom:
             for objekt in interactive:
                 if objekt.textura == "stul_stred_klic" and not invKey.completed:
@@ -761,7 +769,7 @@ while True:
         player_hitbox_instance.posun_y(posun_y)
 
         #kolize se stolem a skříňkou
-        if pygame.sprite.spritecollide(hrac_hitbox, interactive, False):
+        if pygame.sprite.spritecollide(hrac_hitbox, interactive, False) and inSpecialRoom: 
             for objekt in interactive:
                 if objekt.textura == "stul_stred_klic" and not invKey.completed:
                     inventoryBoots_grp.update("odemknout")
