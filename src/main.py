@@ -564,7 +564,7 @@ while True:
                     #jasot.play()
                     Credits = True
                     menu_state = None
-                
+                    
                     delta_y = screen.get_rect().centery + 60
 
             if (text(50, "EXIT", 23*32 - 225, 300, (255, 255, 255), DATA_ROOT + "/data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]) or ((pressed[pygame.K_KP_ENTER] or pressed[pygame.K_RETURN]) and menu_state == 2):
@@ -1029,18 +1029,21 @@ while True:
             restart()
             current_time = default_time
             health = health_max
+        clock.tick(30)
     
     #win
-    if win:     
-        while pruhlednost <= 20:
-            pruhlednost += 0.1
-            pruhlednost_textu += 1.5
+    if win:
+        i = 0
+        while pruhlednost <= 255: #předělal jsem to tu na 255 místo 20 (více v: https://github.com/sps-trutnov/projekt-1ep-shawshank/issues/72)
+            pruhlednost += 0.1*i
+            pruhlednost_textu += 0.1*i
+            i += 1
             fade_white.set_alpha(pruhlednost)
             win_font_render.set_alpha(pruhlednost_textu)
             screen.blit(fade_white, (0, 0))
             screen.blit(win_font_render, win_font_rect)
             pygame.display.update()
-            pygame.time.wait(fade_speed)
+            pygame.time.wait(fade_speed*2)
         
         inGame = False
         gameOver = True
@@ -1053,8 +1056,7 @@ while True:
         time.sleep(2)
         win = False
         Credits = True
-        
-        timeForSecondChance = 20
+        delta_y = screen.get_rect().centery + 60
         
     if Credits:
         if not pygame.mixer.get_busy():
