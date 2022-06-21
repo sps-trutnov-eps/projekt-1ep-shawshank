@@ -6,7 +6,7 @@ Top-down bludišťovka s minihrami. Unikněte ze školy, než zazvoní na hodinu
 
 ### Struktura repozitáře
 - `bin` binární verze hry
-- `data` assety hry
+- `data` assety hry (textury, zvuky)
 - `doc` dokumentace, návody
 - `src` zdrojové soubory v Pythonu
 
