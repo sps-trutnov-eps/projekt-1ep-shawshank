@@ -418,9 +418,9 @@ def restart():
     invKey.completed = True
     invBoots.completed = True
     invBoots.unlocked = False
-    inventoryKey_grp.update()
-    inventoryBoots_grp.update("sebrat")
-    inventoryBoots_grp.update("odemknout")
+    inventoryKey_grp.update(False)
+    inventoryBoots_grp.update("sebrat", False)
+    inventoryBoots_grp.update("odemknout", False)
     
     hasKlic = False
     hasBoty = False
@@ -658,7 +658,7 @@ while True:
                 cheat_timeout = 20
                 
             elif pressed[pygame.K_1] and cheat_timeout < 0:
-                inventoryKey_grp.update()
+                inventoryKey_grp.update(False)
                 inventoryBoots_grp.update("odemknout")
                 if hasKlic:
                     hasKlic = False
@@ -708,9 +708,7 @@ while True:
                 cheat_timeout = 20
                 
             elif pressed[pygame.K_1] and cheat_timeout < 0:
-                inventoryKey_grp.update()
-                cheat_timeout = 20
-                
+                inventoryKey_grp.update(False)
             elif pressed[pygame.K_2] and cheat_timeout < 0:
                 inventoryBoots_grp.update("sebrat")
                 cheat_timeout = 20
@@ -753,7 +751,7 @@ while True:
             for objekt in interactive:
                 if objekt.textura == "stul_stred_klic" and not invKey.completed:
                     inventoryBoots_grp.update("odemknout")
-                    inventoryKey_grp.update()
+                    inventoryKey_grp.update(False)
                     invBoots.unlocked = True;
                     hasKlic = True
                     zdi.remove(objekt)
@@ -779,7 +777,7 @@ while True:
             for objekt in interactive:
                 if objekt.textura == "stul_stred_klic" and not invKey.completed:
                     inventoryBoots_grp.update("odemknout")
-                    inventoryKey_grp.update()
+                    inventoryKey_grp.update(False)
                     invBoots.unlocked = True;
                     hasKlic = True
                     zdi.remove(objekt)
@@ -971,7 +969,7 @@ while True:
             else:
                 hasKlic = False
                 inventoryBoots_grp.update("odemknout")
-                inventoryKey_grp.update()
+                inventoryKey_grp.update(True)
                 current_position = random.choice(mozne_prechody)
                 podlaha,dvere = urceni_sprite_group(game_map[current_position[0]][current_position[1]])
                 zdi = wall_map[current_position[0]][current_position[1]]
@@ -1143,3 +1141,4 @@ Ardour
 
     pygame.display.update()
     clock.tick(60)
+

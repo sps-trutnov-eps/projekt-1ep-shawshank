@@ -19,14 +19,20 @@ class inventoryHasKey(pygame.sprite.Sprite):
         self.rect.center = (pos_x, pos_y)
         self.completed = False
 
-    def update(self):
+    def update(self, Janitor):
         if self.completed: self.completed = False
         else: self.completed = True
-
+        
         if self.completed:
-            self.image = getImage(0, 0, 32, 32, inventoryImages)
+            if Janitor:
+                self.image = getImage(32, 0, 32, 32, inventoryImages)
+            else:
+                self.image = getImage(0, 0, 32, 32, inventoryImages)
         else:
-            self.image = getImage(32, 0, 32, 32, inventoryImages)
+            if Janitor:
+                self.image = getImage(32, 0, 32, 32, inventoryImages)
+            else:
+                self.image = getImage(32, 0, 32, 32, inventoryImages)
 
 class inventoryHasBoots(pygame.sprite.Sprite):
     def __init__(self, pos_x, pos_y):
@@ -66,3 +72,4 @@ class inventoryHasBoots(pygame.sprite.Sprite):
                 self.image = getImage(96, 0, 32, 32, inventoryImages)
             
         #print(state, self.completed, self.unlocked)
+
