@@ -419,8 +419,8 @@ def restart():
     invBoots.completed = True
     invBoots.unlocked = False
     inventoryKey_grp.update(False)
-    inventoryBoots_grp.update("sebrat", False)
-    inventoryBoots_grp.update("odemknout", False)
+    inventoryBoots_grp.update("sebrat")
+    inventoryBoots_grp.update("odemknout")
     
     hasKlic = False
     hasBoty = False
@@ -589,6 +589,11 @@ while True:
                     inGame = False
                     inMenu = True
                     menuButtonDelay = 20
+                    
+                    hall.stop()
+                    zvonek_0.stop()
+                    zvonek_1.stop()
+                    restart()
                     
         if timeForSecondChance > 0:
             timeForSecondChance -= 1
@@ -854,8 +859,6 @@ while True:
         player_instance.rect.centerx = player_hitbox_instance.rect.centerx
         player_instance.rect.bottom = player_hitbox_instance.rect.bottom+1
         
-        
-        print(enterDelay)
         #kolize s dvermi
         if pygame.sprite.spritecollide(hrac_hitbox, dvere, False):
             for door in dvere:
@@ -879,12 +882,12 @@ while True:
                     else:
                         if door.rect.collidepoint(player_hitbox_instance.rect.topleft) or door.rect.collidepoint(player_hitbox_instance.rect.bottomleft):
                             player_hitbox_instance.rect.left = door.rect.right+1
-                        if door.rect.collidepoint(player_hitbox_instance.rect.topright) or door.rect.collidepoint(player_hitbox_instance.rect.bottomright):
+                        elif door.rect.collidepoint(player_hitbox_instance.rect.topright) or door.rect.collidepoint(player_hitbox_instance.rect.bottomright):
                             player_hitbox_instance.rect.right = door.rect.left-1
-                        if door.rect.collidepoint(player_hitbox_instance.rect.topleft) or door.rect.collidepoint(player_hitbox_instance.rect.bottomleft):
-                            player_hitbox_instance.rect.left = door.rect.right+1
-                        if door.rect.collidepoint(player_hitbox_instance.rect.topright) or door.rect.collidepoint(player_hitbox_instance.rect.bottomright):
-                            player_hitbox_instance.rect.right = door.rect.left-1
+                        elif door.rect.collidepoint(player_hitbox_instance.rect.topleft) or door.rect.collidepoint(player_hitbox_instance.rect.topright):
+                            player_hitbox_instance.rect.top = door.rect.bottom+1
+                        elif door.rect.collidepoint(player_hitbox_instance.rect.bottomleft) or door.rect.collidepoint(player_hitbox_instance.rect.bottomright):
+                            player_hitbox_instance.rect.bottom = door.rect.top-1
                 elif door.door_type == "LOCKER_ROOM":
                     if enterDelay <= 0:
                         player_hitbox_instance.rect.center = vystup(current_position)
@@ -902,12 +905,12 @@ while True:
                     else:
                         if door.rect.collidepoint(player_hitbox_instance.rect.topleft) or door.rect.collidepoint(player_hitbox_instance.rect.bottomleft):
                             player_hitbox_instance.rect.left = door.rect.right+1
-                        if door.rect.collidepoint(player_hitbox_instance.rect.topright) or door.rect.collidepoint(player_hitbox_instance.rect.bottomright):
+                        elif door.rect.collidepoint(player_hitbox_instance.rect.topright) or door.rect.collidepoint(player_hitbox_instance.rect.bottomright):
                             player_hitbox_instance.rect.right = door.rect.left-1
-                        if door.rect.collidepoint(player_hitbox_instance.rect.topleft) or door.rect.collidepoint(player_hitbox_instance.rect.bottomleft):
-                            player_hitbox_instance.rect.left = door.rect.right+1
-                        if door.rect.collidepoint(player_hitbox_instance.rect.topright) or door.rect.collidepoint(player_hitbox_instance.rect.bottomright):
-                            player_hitbox_instance.rect.right = door.rect.left-1
+                        elif door.rect.collidepoint(player_hitbox_instance.rect.topleft) or door.rect.collidepoint(player_hitbox_instance.rect.topright):
+                            player_hitbox_instance.rect.top = door.rect.bottom+1
+                        elif door.rect.collidepoint(player_hitbox_instance.rect.bottomleft) or door.rect.collidepoint(player_hitbox_instance.rect.bottomright):
+                            player_hitbox_instance.rect.bottom = door.rect.top-1
                 elif door.door_type == "EXIT":
                     player_hitbox_instance.rect.center = vystup(current_position)
                     player_instance.rect.centerx = player_hitbox_instance.rect.centerx+4
