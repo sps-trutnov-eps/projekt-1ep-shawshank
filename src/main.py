@@ -593,7 +593,10 @@ while True:
                     hall.stop()
                     zvonek_0.stop()
                     zvonek_1.stop()
+                    rozmluva.stop()
                     restart()
+                    current_time = default_time
+                    health = health_max
                     
         if timeForSecondChance > 0:
             timeForSecondChance -= 1
