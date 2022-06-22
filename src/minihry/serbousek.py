@@ -63,7 +63,7 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 game_over = True
-                quit()
+                pygame.quit()
             
         color = (0,44,0)
         white = (255, 255, 255)

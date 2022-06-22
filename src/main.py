@@ -13,6 +13,7 @@ from list_special_obrazovek import screens_with_doors
 from sprites import *
 import time
 from inventory import inventoryHasKey, inventoryHasBoots
+from datetime import date
 import languages
 
 slozka_miniher = os.path.abspath("minihry")
@@ -83,6 +84,9 @@ inSpecialRoom = False
 
 default_time = 60
 current_time = 60
+
+halloween_Date = "09-31"
+todayDate = date.today()
 
 #sprity
 hrac_display_grp = pygame.sprite.Group()
@@ -256,7 +260,10 @@ def specialni_zdi(mapka):
                     zdi.add(zed((symbol_ind*32,radek_ind*32),"skrinka_horizontalni_otevrena",mapka[2][1]))
                     interactive.add(zed((symbol_ind*32,radek_ind*32),"skrinka_horizontalni_otevrena",mapka[2][1]))
             elif symbol == "35":
-                zdi.add(zed((symbol_ind*32,radek_ind*32),"odpatkove_pytle",mapka[2][1]))
+                if halloween_Date in str(todayDate):
+                    zdi.add(zed((symbol_ind*32,radek_ind*32),"odpatkove_pytle_biologické",mapka[2][1]))
+                else:
+                    zdi.add(zed((symbol_ind*32,radek_ind*32),"odpatkove_pytle",mapka[2][1]))
                 podlaha.add(specialni_podlahy(screens_with_doors[1], True, symbol_ind, radek_ind, "34"))
             elif symbol == "36":
                 zdi.add(zed((symbol_ind*32,radek_ind*32),"skrin",mapka[2][1]))
@@ -265,7 +272,10 @@ def specialni_zdi(mapka):
                 zdi.add(zed((symbol_ind*32,radek_ind*32),"skrin_bok",mapka[2][1]))
                 podlaha.add(specialni_podlahy(screens_with_doors[1], True, symbol_ind, radek_ind, "34"))
             elif symbol == "38":
-                zdi.add(zed((symbol_ind*32,radek_ind*32),"stul_dole",mapka[2][1]))
+                if halloween_Date in str(todayDate):
+                    zdi.add(zed((symbol_ind*32,radek_ind*32),"stul_dole",mapka[2][1]))
+                else:
+                    zdi.add(zed((symbol_ind*32,radek_ind*32),"stul_dole_normalni",mapka[2][1]))
                 podlaha.add(specialni_podlahy(screens_with_doors[1], True, symbol_ind, radek_ind, "34"))
             elif symbol == "40":
                 podlaha.add(specialni_podlahy(screens_with_doors[1], True, symbol_ind, radek_ind, "34"))
@@ -276,7 +286,10 @@ def specialni_zdi(mapka):
                     zdi.add(zed((symbol_ind*32,radek_ind*32),"stul_stred",mapka[2][1]))
                     interactive.add(zed((symbol_ind*32,radek_ind*32),"stul_stred",mapka[2][1]))
             elif symbol == "39":
-                zdi.add(zed((symbol_ind*32,radek_ind*32),"stul_hore",mapka[2][1]))
+                if halloween_Date in str(todayDate):
+                    zdi.add(zed((symbol_ind*32,radek_ind*32),"stul_hore",mapka[2][1]))
+                else:
+                    zdi.add(zed((symbol_ind*32,radek_ind*32),"stul_hore_normalni",mapka[2][1]))
                 podlaha.add(specialni_podlahy(screens_with_doors[1], True, symbol_ind, radek_ind, "34"))
     return zdi,interactive
 
@@ -295,9 +308,15 @@ def specialni_podlahy(mapka, under, symbolpos, radekpos, symbol):
                 elif symbol == "32":
                     podlaha.add(zed((symbol_ind*32,radek_ind*32),"podlaha_dark",mapka[2][1]))
                 elif symbol == "33":
-                    podlaha.add(zed((symbol_ind*32,radek_ind*32),"podlaha_dark_blood",mapka[2][1]))
+                    if halloween_Date in str(todayDate):
+                        podlaha.add(zed((symbol_ind*32,radek_ind*32),"podlaha_dark_blood",mapka[2][1]))
+                    else:
+                        podlaha.add(zed((symbol_ind*32,radek_ind*32),"podlaha_dark_flek",mapka[2][1]))
                 elif symbol == "34":
-                    podlaha.add(zed((symbol_ind*32,radek_ind*32),"podlaha_dark_blooood",mapka[2][1]))
+                    if halloween_Date in str(todayDate):
+                        podlaha.add(zed((symbol_ind*32,radek_ind*32),"podlaha_dark_blooood",mapka[2][1]))
+                    else:
+                        podlaha.add(zed((symbol_ind*32,radek_ind*32),"podlaha_dark_prkno",mapka[2][1]))
     else:
         if symbol == "24":
             podlaha.add(zed((symbolpos*32,radekpos*32),"podlaha_kachlicky",mapka[2][1]))
@@ -393,7 +412,7 @@ def restart():
     invKey.completed = True
     invBoots.completed = True
     invBoots.unlocked = False
-    inventoryKey_grp.update()
+    inventoryKey_grp.update(False)
     inventoryBoots_grp.update("sebrat")
     inventoryBoots_grp.update("odemknout")
     
@@ -566,7 +585,7 @@ while True:
                     zvonek_0.play()
                     Credits = True
                     menu_state = None
-                
+                    
                     delta_y = screen.get_rect().centery + 60
 
             if (text(35,lang_text[12], x_tlacitek, 300, (255, 255, 255), DATA_ROOT + "/data/fonts/ambitsek.ttf", "midtop", False).collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]) or ((pressed[pygame.K_KP_ENTER] or pressed[pygame.K_RETURN]) and menu_state == 2):
@@ -591,6 +610,14 @@ while True:
                     inGame = False
                     inMenu = True
                     menuButtonDelay = 20
+                    
+                    hall.stop()
+                    zvonek_0.stop()
+                    zvonek_1.stop()
+                    rozmluva.stop()
+                    restart()
+                    current_time = default_time
+                    health = health_max
                     
         if timeForSecondChance > 0:
             timeForSecondChance -= 1
@@ -657,7 +684,7 @@ while True:
                 cheat_timeout = 20
                 
             elif pressed[pygame.K_1] and cheat_timeout < 0:
-                inventoryKey_grp.update()
+                inventoryKey_grp.update(False)
                 inventoryBoots_grp.update("odemknout")
                 if hasKlic:
                     hasKlic = False
@@ -678,6 +705,13 @@ while True:
                 win = True
                 cheat_timeout = 20
                 hall.stop()
+                
+            elif pressed[pygame.K_4] and cheat_timeout < 0:
+                if todayDate == halloween_Date:
+                    todayDate = date.today()
+                else:
+                    todayDate = halloween_Date
+                cheat_timeout = 20
                 
             elif pressed[pygame.K_p] and cheat_timeout < 0:
                 if show_minigame == False:
@@ -700,9 +734,7 @@ while True:
                 cheat_timeout = 20
                 
             elif pressed[pygame.K_1] and cheat_timeout < 0:
-                inventoryKey_grp.update()
-                cheat_timeout = 20
-                
+                inventoryKey_grp.update(False)
             elif pressed[pygame.K_2] and cheat_timeout < 0:
                 inventoryBoots_grp.update("sebrat")
                 cheat_timeout = 20
@@ -740,11 +772,11 @@ while True:
             player_hitbox_instance.posun_x(posun_x)
             
         #kolize se stolem a skříňkou
-        if pygame.sprite.spritecollide(hrac_hitbox, interactive, False):
+        if pygame.sprite.spritecollide(hrac_hitbox, interactive, False) and inSpecialRoom:
             for objekt in interactive:
                 if objekt.textura == "stul_stred_klic" and not invKey.completed:
                     inventoryBoots_grp.update("odemknout")
-                    inventoryKey_grp.update()
+                    inventoryKey_grp.update(False)
                     invBoots.unlocked = True;
                     hasKlic = True
                     zdi.remove(objekt)
@@ -766,11 +798,11 @@ while True:
         player_hitbox_instance.posun_y(posun_y)
 
         #kolize se stolem a skříňkou
-        if pygame.sprite.spritecollide(hrac_hitbox, interactive, False):
+        if pygame.sprite.spritecollide(hrac_hitbox, interactive, False) and inSpecialRoom: 
             for objekt in interactive:
                 if objekt.textura == "stul_stred_klic" and not invKey.completed:
                     inventoryBoots_grp.update("odemknout")
-                    inventoryKey_grp.update()
+                    inventoryKey_grp.update(False)
                     invBoots.unlocked = True;
                     hasKlic = True
                     zdi.remove(objekt)
@@ -870,8 +902,12 @@ while True:
                     else:
                         if door.rect.collidepoint(player_hitbox_instance.rect.topleft) or door.rect.collidepoint(player_hitbox_instance.rect.bottomleft):
                             player_hitbox_instance.rect.left = door.rect.right+1
-                        if door.rect.collidepoint(player_hitbox_instance.rect.topright) or door.rect.collidepoint(player_hitbox_instance.rect.bottomright):
+                        elif door.rect.collidepoint(player_hitbox_instance.rect.topright) or door.rect.collidepoint(player_hitbox_instance.rect.bottomright):
                             player_hitbox_instance.rect.right = door.rect.left-1
+                        elif door.rect.collidepoint(player_hitbox_instance.rect.topleft) or door.rect.collidepoint(player_hitbox_instance.rect.topright):
+                            player_hitbox_instance.rect.top = door.rect.bottom+1
+                        elif door.rect.collidepoint(player_hitbox_instance.rect.bottomleft) or door.rect.collidepoint(player_hitbox_instance.rect.bottomright):
+                            player_hitbox_instance.rect.bottom = door.rect.top-1
                 elif door.door_type == "LOCKER_ROOM":
                     if enterDelay <= 0:
                         player_hitbox_instance.rect.center = vystup(current_position)
@@ -889,8 +925,12 @@ while True:
                     else:
                         if door.rect.collidepoint(player_hitbox_instance.rect.topleft) or door.rect.collidepoint(player_hitbox_instance.rect.bottomleft):
                             player_hitbox_instance.rect.left = door.rect.right+1
-                        if door.rect.collidepoint(player_hitbox_instance.rect.topright) or door.rect.collidepoint(player_hitbox_instance.rect.bottomright):
+                        elif door.rect.collidepoint(player_hitbox_instance.rect.topright) or door.rect.collidepoint(player_hitbox_instance.rect.bottomright):
                             player_hitbox_instance.rect.right = door.rect.left-1
+                        elif door.rect.collidepoint(player_hitbox_instance.rect.topleft) or door.rect.collidepoint(player_hitbox_instance.rect.topright):
+                            player_hitbox_instance.rect.top = door.rect.bottom+1
+                        elif door.rect.collidepoint(player_hitbox_instance.rect.bottomleft) or door.rect.collidepoint(player_hitbox_instance.rect.bottomright):
+                            player_hitbox_instance.rect.bottom = door.rect.top-1
                 elif door.door_type == "EXIT":
                     player_hitbox_instance.rect.center = vystup(current_position)
                     player_instance.rect.centerx = player_hitbox_instance.rect.centerx+4
@@ -950,6 +990,9 @@ while True:
                 postavy_display_grp.draw(screen)
                 player_movable = False
             else:
+                hasKlic = False
+                inventoryBoots_grp.update("odemknout")
+                inventoryKey_grp.update(True)
                 current_position = random.choice(mozne_prechody)
                 podlaha,dvere = urceni_sprite_group(game_map[current_position[0]][current_position[1]])
                 zdi = wall_map[current_position[0]][current_position[1]]
@@ -998,16 +1041,16 @@ while True:
         if not pygame.mixer.get_busy():
             rozmluva.play()
         pruhlednost = 0
-        if pressed[pygame.K_RETURN]:
+        if pressed[pygame.K_RETURN] or pressed[pygame.K_ESCAPE]:
             menuButtonDelay = 50
             gameOver = False
             inMenu = True
+            Credits = False
             rozmluva.stop()
             restart()
             current_time = default_time
             health = health_max
-            
-        timeForSecondChance = 20
+        clock.tick(30)
     
     #win
     if win:
@@ -1015,9 +1058,11 @@ while True:
         win_return_font_render = return_font.render(lang_text[1], True, (120, 120, 120))
         win_font_rect = win_font_render.get_rect(center=(23*32/2, 14*32/2))
         win_return_font_rect = win_return_font_render.get_rect(center=(23*32/2, 14*32/2 + 75))
-        while pruhlednost <= 20:
-            pruhlednost += 0.1
-            pruhlednost_textu += 1.5
+        i = 0
+        while pruhlednost <= 255: #předělal jsem to tu na 255 místo 20 (více v: https://github.com/sps-trutnov/projekt-1ep-shawshank/issues/72)
+            pruhlednost += 0.1*i
+            pruhlednost_textu += 0.1*i
+            i += 1
             fade_white.set_alpha(pruhlednost)
             win_font_render.set_alpha(pruhlednost_textu)
             win_return_font_render.set_alpha(pruhlednost_textu)
@@ -1025,13 +1070,14 @@ while True:
             screen.blit(win_font_render, win_font_rect)
             screen.blit(win_return_font_render, win_return_font_rect)
             pygame.display.update()
-            pygame.time.wait(fade_speed)
+            pygame.time.wait(fade_speed*2)
         
         inGame = False
         win = True
         pruhlednost = 255
         fade_white.set_alpha(pruhlednost)
         win_font_render.set_alpha(pruhlednost)
+        delta_y = screen.get_rect().centery + 60
         
         if pressed[pygame.K_RETURN]:
             menuButtonDelay = 50

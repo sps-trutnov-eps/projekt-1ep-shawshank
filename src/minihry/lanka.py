@@ -26,7 +26,6 @@ def vyberOtazekaspol(otazky):
     spravnaOdpovedMainText = font.render(f"Správně", True, (0, 255, 0))
 
     spravneTlacitko = random.choice(range(0,3))
-    print(spravneTlacitko)
     
     return otazkaText, (spravnaOdpovedText,spatnaOdpovedText1, spatnaOdpovedText2), (spatnaOdpovedMainText, spravnaOdpovedMainText), spravneTlacitko
     
@@ -111,10 +110,8 @@ def main():
                         timeOut = 3500
                         if spravneTlacitko == 0:
                             spatnaOdpoved = 2
-                            print("Správně")
                             pocetBodu += 1
                         else:
-                            print("Špatně")
                             spatnaOdpoved = 1
                         pocetOdpovedi += 1
                     
@@ -123,10 +120,8 @@ def main():
                         timeOut = 3500
                         if spravneTlacitko == 1:
                             spatnaOdpoved = 2
-                            print("Správně")
                             pocetBodu += 1
                         else:
-                            print("Špatně")
                             spatnaOdpoved = 1
                         pocetOdpovedi += 1
                         
@@ -135,10 +130,8 @@ def main():
                         timeOut = 3500
                         if spravneTlacitko == 2:
                             spatnaOdpoved = 2
-                            print("Správně")
                             pocetBodu += 1
                         else:
-                            print("Špatně")
                             spatnaOdpoved = 1
                         pocetOdpovedi += 1
         
