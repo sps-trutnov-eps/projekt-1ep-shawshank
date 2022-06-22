@@ -47,20 +47,24 @@ counter_texture = pygame.image.load(DATA_ROOT + "/data/hud/counter.png").convert
 counter_surface = counter_texture.get_rect()
 
 #fonty a rendery pro game over text
-g_over_font = pygame.font.Font(DATA_ROOT + "/data/fonts/ARCADECLASSIC.TTF", 125)
-return_font = pygame.font.Font(DATA_ROOT + "/data/fonts/ARCADECLASSIC.TTF", 50)
-g_over_font_render = g_over_font.render("GAME  OVER", True, (255, 0, 0))
-return_font_render = return_font.render("PRESS   ENTER", True, (100, 0, 0))
-g_over_font_rect = g_over_font_render.get_rect(center=(23*32/2, 14*32/2))
-return_font_rect = return_font_render.get_rect(center=(23*32/2, 14*32/2 + 75))
-g_over_font_render.set_alpha(0)
-return_font_render.set_alpha(0)
+lost_font = pygame.font.Font(DATA_ROOT + "/data/fonts/ARCADECLASSIC.TTF", 125)
+lost_press_enter_font = pygame.font.Font(DATA_ROOT + "/data/fonts/ARCADECLASSIC.TTF", 50)
+lost_font_render = lost_font.render("GAME  OVER", True, (255, 0, 0))
+lost_press_enter_font_render = lost_press_enter_font.render("PRESS   ENTER", True, (100, 0, 0))
+lost_font_rect = lost_font_render.get_rect(center=(23*32/2, 14*32/2))
+lost_press_enter_font_rect = lost_press_enter_font_render.get_rect(center=(23*32/2, 14*32/2 + 75))
+lost_font_render.set_alpha(0)
+lost_press_enter_font_render.set_alpha(0)
 
-#fonty a rendery pro win text
-win_font = pygame.font.Font(DATA_ROOT + "/data/fonts/ARCADECLASSIC.TTF", 125)
-win_font_render = win_font.render("YOU  WON", True, (0, 0, 0))
-win_font_rect = win_font_render.get_rect(center=(23*32/2, 14*32/2))
-win_font_render.set_alpha(0)
+#fonty a rendery pro schoolEscaped text
+won_font = pygame.font.Font(DATA_ROOT + "/data/fonts/ARCADECLASSIC.TTF", 125)
+won_press_enter_font = pygame.font.Font(DATA_ROOT + "/data/fonts/ARCADECLASSIC.TTF", 50)
+won_font_render = won_font.render("YOU  WON", True, (0, 0, 0))
+won_press_enter_font_render = won_press_enter_font.render("PRESS   ENTER", True, (100, 100, 100))
+won_font_rect = won_font_render.get_rect(center=(23*32/2, 14*32/2))
+won_press_enter_font_rect = won_press_enter_font_render.get_rect(center=(23*32/2, 14*32/2 + 75))
+won_font_render.set_alpha(0)
+won_press_enter_font_render.set_alpha(0)
 
 #proměné pro cheaty
 clip = True
@@ -438,10 +442,11 @@ fade_speed = 10
 
 #gamestates
 inGame = False
-gameOver = False
+gameLost = False
+gameWon = False
 inMenu = True
-win = False
-Credits = False
+schoolEscaped = False
+creditsRoll = False
 
 #main loop
 while True:
@@ -464,8 +469,8 @@ while True:
         #vypnout hru
         if pressed[pygame.K_ESCAPE]:
             if menuButtonDelay <= 0:
-                if Credits:
-                    Credits = False
+                if creditsRoll:
+                    creditsRoll = False
                     jasot.stop()
                     inMenu = True
                     menuButtonDelay = 20
@@ -532,7 +537,7 @@ while True:
             
         if menuButtonDelay <= 0:
             if (text(50, "START", 23*32 - 225, 100, (255, 255, 255), DATA_ROOT + "/data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]) or ((pressed[pygame.K_KP_ENTER] or pressed[pygame.K_RETURN]) and menu_state == 0):
-                if not Credits:
+                if not creditsRoll:
                     inMenu = False
                     inGame = True
                     menu_state = None
@@ -556,19 +561,19 @@ while True:
                     pruhlednost = 0
             
             if (text(50, "CREDITS", 23*32 - 225, 200, (255, 255, 255), DATA_ROOT + "/data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]) or ((pressed[pygame.K_KP_ENTER] or pressed[pygame.K_RETURN]) and menu_state == 1):
-                if not Credits:
+                if not creditsRoll:
                     rozmluva.stop()
                     typing.stop()
                     hall.play()
                     zvonek_0.play()
                     #jasot.play()
-                    Credits = True
+                    creditsRoll = True
                     menu_state = None
                     
                     delta_y = screen.get_rect().centery + 60
 
             if (text(50, "EXIT", 23*32 - 225, 300, (255, 255, 255), DATA_ROOT + "/data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]) or ((pressed[pygame.K_KP_ENTER] or pressed[pygame.K_RETURN]) and menu_state == 2):
-                if not Credits:
+                if not creditsRoll:
                     pygame.quit()
                     pygame.mixer.quit()
                     sys.exit()
@@ -684,7 +689,7 @@ while True:
                 
             elif pressed[pygame.K_3] and cheat_timeout < 0:
                 inGame = False
-                win = True
+                schoolEscaped = True
                 cheat_timeout = 20
                 hall.stop()
                 
@@ -723,15 +728,12 @@ while True:
                 
             elif pressed[pygame.K_3] and cheat_timeout < 0:
                 inGame = False
-                win = True
+                schoolEscaped = True
                 cheat_timeout = 20
                 hall.stop()
                 
             elif pressed[pygame.K_p] and cheat_timeout < 0:
-                if show_minigame == False:
-                    show_minigame = True
-                else:
-                    show_minigame = False
+                show_minigame = not show_minigame
                 cheat_timeout = 20
 
         #pohyb
@@ -920,7 +922,7 @@ while True:
                     
                     if invBoots.completed:
                         inGame = False
-                        win = True
+                        schoolEscaped = True
                         hall.stop()
         
         #vykreslování
@@ -991,82 +993,92 @@ while True:
                 pruhlednost += 0.1
                 pruhlednost_textu += 1.5
                 fade_black.set_alpha(pruhlednost)
-                g_over_font_render.set_alpha(pruhlednost_textu)
-                return_font_render.set_alpha(pruhlednost_textu)
+                lost_font_render.set_alpha(pruhlednost_textu)
+                lost_press_enter_font_render.set_alpha(pruhlednost_textu)
                 screen.blit(fade_black, (0, 0))
-                screen.blit(g_over_font_render, g_over_font_rect)
-                screen.blit(return_font_render, return_font_rect)
+                screen.blit(lost_font_render, lost_font_rect)
+                screen.blit(lost_press_enter_font_render, lost_press_enter_font_rect)
                 pygame.display.update()
                 pygame.time.wait(fade_speed)
             
             health = -1
             inGame = False
-            gameOver = True
+            gameLost = True
             hall.stop()
             zvonek_0.stop()
             zvonek_1.stop()
             pruhlednost = 255
             fade_black.set_alpha(pruhlednost)
-            g_over_font_render.set_alpha(pruhlednost)
-            return_font_render.set_alpha(pruhlednost)
+            lost_font_render.set_alpha(pruhlednost)
+            lost_press_enter_font_render.set_alpha(pruhlednost)
             
+        #vyhra
+        if schoolEscaped:
+            i = 0
+            while pruhlednost <= 255: #předělal jsem to tu na 255 místo 20 (více v: https://github.com/sps-trutnov/projekt-1ep-shawshank/issues/72)
+                pruhlednost += 0.1*i
+                pruhlednost_textu += 0.1*i
+                i += 1
+                fade_white.set_alpha(pruhlednost)
+                won_font_render.set_alpha(pruhlednost_textu)
+                won_press_enter_font_render.set_alpha(pruhlednost_textu)
+                screen.blit(fade_white, (0, 0))
+                screen.blit(won_font_render, won_font_rect)
+                screen.blit(won_press_enter_font_render, won_press_enter_font_rect)
+                pygame.display.update()
+                pygame.time.wait(fade_speed*2)
             
+            schoolEscaped = False
+            inGame = False
+            gameWon = True
+            hall.stop()
+            zvonek_0.stop()
+            zvonek_1.stop()
+            pruhlednost = 255
+            fade_white.set_alpha(pruhlednost)
+            won_font_render.set_alpha(pruhlednost)
+            won_press_enter_font_render.set_alpha(pruhlednost)
+        
         #školník
         if current_time == 0:
             x_hrace = player_instance.prevPosX
             y_hrace = player_instance.prevPosY
             janitor(x_hrace, y_hrace)
-            
-        
-            
-    if gameOver:
+    
+    if gameLost:
         if not pygame.mixer.get_busy():
             rozmluva.play()
         pruhlednost = 0
         if pressed[pygame.K_RETURN] or pressed[pygame.K_ESCAPE]:
             menuButtonDelay = 50
-            gameOver = False
+            gameLost = False
             inMenu = True
-            Credits = False
+            creditsRoll = False
             rozmluva.stop()
             restart()
             current_time = default_time
             health = health_max
-        clock.tick(60)
     
-    #win
-    if win:
-        i = 0
-        while pruhlednost <= 255: #předělal jsem to tu na 255 místo 20 (více v: https://github.com/sps-trutnov/projekt-1ep-shawshank/issues/72)
-            pruhlednost += 0.1*i
-            pruhlednost_textu += 0.1*i
-            i += 1
-            fade_white.set_alpha(pruhlednost)
-            win_font_render.set_alpha(pruhlednost_textu)
-            screen.blit(fade_white, (0, 0))
-            screen.blit(win_font_render, win_font_rect)
-            pygame.display.update()
-            pygame.time.wait(fade_speed*2)
-        
-        inGame = False
-        gameOver = True
-        hall.stop()
-        zvonek_0.stop()
-        zvonek_1.stop()
-        pruhlednost = 255
-        fade_white.set_alpha(pruhlednost)
-        win_font_render.set_alpha(pruhlednost)
-        time.sleep(2)
-        win = False
-        Credits = True
-        delta_y = screen.get_rect().centery + 60
-        
-    if Credits:
+    if gameWon:
+        if pressed[pygame.K_RETURN] or pressed[pygame.K_ESCAPE]:
+            menuButtonDelay = 50
+            gameWon = False
+            inMenu = True
+            menu_state = 1
+            creditsRoll = True
+            delta_y = screen.get_rect().centery + 60
+            restart()
+            current_time = default_time
+            health = health_max
+            
+    if creditsRoll:
         if not pygame.mixer.get_busy():
             jasot.play()
         text_size = 30
         credits_font = pygame.font.Font(DATA_ROOT + "/data/fonts/ambitsek.ttf",text_size)
-        credits_text= '''Projekt vypracován
+        credits_text = \
+'''
+Projekt vypracován
 třídou 1.EP skupina 2
 
 ---Generace mapy---
@@ -1113,8 +1125,6 @@ Aseprite
 Ardour
 
 (více naleznete na githubu)
-
-
 '''
         screen.fill("black")
         delta_y -= 2
@@ -1132,7 +1142,7 @@ Ardour
             i = i + 1
          
         if (centery + delta_y + text_size * (len(credits_text.split('\n'))) < 0):
-            Credits = False
+            creditsRoll = False
             inMenu = True
             jasot.stop()
             delta_y = screen.get_rect().centery + 60
