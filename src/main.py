@@ -8,8 +8,8 @@ else:
 
 import os
 import importlib
-from generace_mapy import generate
-from list_special_obrazovek import screens_with_doors
+from map_generator import generate
+from special_screens import screens_with_doors
 from sprites import *
 import time
 from inventory import inventoryHasKey, inventoryHasBoots

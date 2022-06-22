@@ -6,7 +6,7 @@ else:
     DATA_ROOT = '..'
 
 import random,pygame
-from list_obrazovek import screens_with_doors,screens_without_doors
+from screens import screens_with_doors,screens_without_doors
 
 pygame.init()
 
