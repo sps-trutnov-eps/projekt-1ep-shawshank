@@ -70,6 +70,3 @@ class inventoryHasBoots(pygame.sprite.Sprite):
                 self.image = getImage(64, 0, 32, 32, inventoryImages)
             else:
                 self.image = getImage(96, 0, 32, 32, inventoryImages)
-            
-        #print(state, self.completed, self.unlocked)
-

@@ -754,7 +754,6 @@ while True:
             player_hitbox_instance.posun_x(posun_x)
             
         #kolize se stolem a skříňkou
-        print(inSpecialRoom)
         if pygame.sprite.spritecollide(hrac_hitbox, interactive, False) and inSpecialRoom:
             for objekt in interactive:
                 if objekt.textura == "stul_stred_klic" and not invKey.completed:
@@ -1147,4 +1146,3 @@ Ardour
 
     pygame.display.update()
     clock.tick(60)
-
