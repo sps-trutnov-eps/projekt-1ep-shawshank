@@ -199,4 +199,5 @@ def main():
         pygame.display.update()
     pygame.display.update() 
     theme.stop()
+    pygame.time.wait(1000)
     return vysledek
