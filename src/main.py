@@ -878,8 +878,8 @@ while True:
                         prevPlayerPos = player_hitbox_instance.rect.center
                         player_hitbox_instance.rect.center = (500, 32)
 
-                        podlaha,dvere = specialni_podlahy(screens_with_doors[1], False, 0, 0, "0")
-                        zdi,interactive = specialni_zdi(screens_with_doors[1])
+                        podlaha,dvere = specialni_podlahy(screens_with_doors[0], False, 0, 0, "0")
+                        zdi,interactive = specialni_zdi(screens_with_doors[0])
                         
                         inSpecialRoom = True
                         inKeyRoom = True
@@ -901,8 +901,8 @@ while True:
                         prevPlayerPos = player_hitbox_instance.rect.center
                         player_hitbox_instance.rect.center = (32, 200)
                         
-                        podlaha,dvere = specialni_podlahy(screens_with_doors[0], False, 0, 0, "0")
-                        zdi,interactive = specialni_zdi(screens_with_doors[0])
+                        podlaha,dvere = specialni_podlahy(screens_with_doors[1], False, 0, 0, "0")
+                        zdi,interactive = specialni_zdi(screens_with_doors[1])
                         
                         inSpecialRoom = True
                         inBootsRoom = True
