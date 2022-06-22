@@ -19,107 +19,107 @@ text = []
 
 def lang(language):
     if language == "ENG":
-        text = ["GAME OVER","PRESS ENTER","YOU WON","Find the locker key.",">Find the locker key.","Get your shoes.",">Get your shoes.","Escape!",">Escape!","¤ Escape from Shawshank high school ¤","START","CREDITS","EXIT",'''Project made vy
-    class 1.EP group 2
+        text = ["GAME OVER","PRESS ENTER","YOU WON","Find the locker key.",">Find the locker key.","Get your shoes.",">Get your shoes.","Escape!",">Escape!","¤ Escape from Shawshank high school ¤","START","CREDITS","EXIT",'''Project made by
+class 1.EP group 2
 
-    ---Map Generation---
+---Map Generation---
 
-    Jakub Polák
-    Karel Kříž
-    Jan Štěpánek
+Jakub Polák
+Karel Kříž
+Jan Štěpánek
 
-    ---Player Mechanics---
+---Player Mechanics---
 
-    Vojtěch Nepimach
-    Karel Kříž
-    Jakub Polák
+Vojtěch Nepimach
+Karel Kříž
+Jakub Polák
 
-    ---Textures---
+---Textures---
 
-    Jakub Polák
-    Karel Kříž
-    Vojtěch Nepimach
+Jakub Polák
+Karel Kříž
+Vojtěch Nepimach
 
-    ---Sounds---
+---Sounds---
 
-    Jakub Polák
-    Anna Poláková
+Jakub Polák
+Anna Poláková
 
-    ---Minigames---
+---Minigames---
 
-    Marek Langer
-    Jan Pospíšil
-    Tadeáš Udatný
-    Martin Michálek
-    Tomáš Svoboda
-    Jakub Polák
-    Stanislav Lang
-    Vojtěch Laňka
-    Jan Serbousek
+Marek Langer
+Jan Pospíšil
+Tadeáš Udatný
+Martin Michálek
+Tomáš Svoboda
+Jakub Polák
+Stanislav Lang
+Vojtěch Laňka
+Jan Serbousek
 
-    ---Used Software---
+---Used Software---
 
-    Thonny
-    Tiled
-    Pixel Studio
-    Aseprite
-    Ardour
+Thonny
+Tiled
+Pixel Studio
+Aseprite
+Ardour
 
-    (more info on github)
+(more info on github)
 
 
-    ''', "To go to the menu, press escape again.", "You will lose all progress."]
+''', "To go to the menu, press escape again.", "You will lose all progress."]
         
     if language == "CZE":
         text = ["PROHRÁLS","ZMÁČKNI ENTER","VYHRÁLS","Najdi klíč od skříňky.",">Najdi klíč od skříňky.","Vezmi si boty.",">Vezmi si boty.","Uteč!",">Uteč","¤ Útěk ze Střední školy Shawshank ¤","ZAČÍT","TITULKY","VYPNOUT",'''Projekt vypracován
-    třídou 1.EP skupina 2
+třídou 1.EP skupina 2
 
-    ---Generace mapy---
+---Generace mapy---
 
-    Jakub Polák
-    Karel Kříž
-    Jan Štěpánek
+Jakub Polák
+Karel Kříž
+Jan Štěpánek
 
-    ---Mechanika hráče---
+---Mechanika hráče---
 
-    Vojtěch Nepimach
-    Karel Kříž
-    Jakub Polák
+Vojtěch Nepimach
+Karel Kříž
+Jakub Polák
 
-    ---Textury---
+---Textury---
 
-    Jakub Polák
-    Karel Kříž
-    Vojtěch Nepimach
+Jakub Polák
+Karel Kříž
+Vojtěch Nepimach
 
-    ---Zvuky---
+---Zvuky---
 
-    Jakub Polák
-    Anna Poláková
+Jakub Polák
+Anna Poláková
 
-    ---Minihry---
+---Minihry---
 
-    Marek Langer
-    Jan Pospíšil
-    Tadeáš Udatný
-    Martin Michálek
-    Tomáš Svoboda
-    Jakub Polák
-    Stanislav Lang
-    Vojtěch Laňka
-    Jan Serbousek
+Marek Langer
+Jan Pospíšil
+Tadeáš Udatný
+Martin Michálek
+Tomáš Svoboda
+Jakub Polák
+Stanislav Lang
+Vojtěch Laňka
+Jan Serbousek
 
-    ---Použitý Software---
+---Použitý Software---
 
-    Thonny
-    Tiled
-    Pixel Studio
-    Aseprite
-    Ardour
+Thonny
+Tiled
+Pixel Studio
+Aseprite
+Ardour
 
-    (více naleznete na githubu)
+(více naleznete na githubu)
 
 
-    ''', "Pro přechod do menu znovu zmáčkněte escape.", "Ztratíte všechen postup."]
+''', "Pro přechod do menu znovu zmáčkněte escape.", "Ztratíte všechen postup."]
         
     return text

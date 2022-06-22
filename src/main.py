@@ -28,9 +28,7 @@ pygame.mixer.init()
 
 #základní proměnné
 game_map,master,minimap = generate()
-
 clock = pygame.time.Clock()
-
 lang_text = languages.lang("ENG")
 language = "CZE"
 
@@ -41,7 +39,6 @@ zvonek_0 = pygame.mixer.Sound(DATA_ROOT + "/data/music/zvonek_0.mp3")
 zvonek_1 = pygame.mixer.Sound(DATA_ROOT + "/data/music/zvonek_1.mp3")
 hall = pygame.mixer.Sound(DATA_ROOT + "/data/music/the_hall.mp3")
 typing = pygame.mixer.Sound(DATA_ROOT + "/data/music/demonic_typing.mp3")
-credits_file = DATA_ROOT + "/data/credits.txt"
 
 #hud
 mimimap_pos = (width - len(game_map[0])*20,heigth - len(game_map)*12)
@@ -54,16 +51,16 @@ g_over_font = pygame.font.Font(DATA_ROOT + "/data/fonts/ambitsek.ttf", 75)
 return_font = pygame.font.Font(DATA_ROOT + "/data/fonts/ambitsek.ttf", 35)
 g_over_font_render = g_over_font.render(lang_text[0], True, (255, 0, 0))
 return_font_render = return_font.render(lang_text[1], True, (100, 0, 0))
-g_over_font_rect = g_over_font_render.get_rect(center=(23*32/2, 14*32/2))
-return_font_rect = return_font_render.get_rect(center=(23*32/2, 14*32/2 + 75))
 g_over_font_render.set_alpha(0)
 return_font_render.set_alpha(0)
 
 #fonty a rendery pro win text
 win_font = pygame.font.Font(DATA_ROOT + "/data/fonts/ambitsek.ttf", 75)
 win_font_render = win_font.render(lang_text[2], True, (0, 0, 0))
-win_font_rect = win_font_render.get_rect(center=(23*32/2, 14*32/2))
+win_return_font_render = return_font.render(lang_text[1], True, (120, 120, 0))
+win_return_font_render.set_alpha(0)
 win_font_render.set_alpha(0)
+
 
 #proměné pro cheaty
 clip = True
@@ -97,10 +94,8 @@ player_hitbox_instance = player_hitbox(player_x, player_y)
 hrac_hitbox_grp.add(player_hitbox_instance)
 hrac_hitbox = hrac_hitbox_grp.sprites()[0]
 health_bar = Health_bar((23*32/2, 24), screen)
-
 hrac_menu_grp = pygame.sprite.Group()
 hrac_menu_grp.add(menuPlayer(320, player_y - 100))
-
 janitor_menu_grp = pygame.sprite.Group()
 janitor_menu_grp.add(menuJanitor(250, player_y + 100))
 
@@ -111,18 +106,14 @@ inventoryKey_grp.add(invKey)
 inventoryBoots_grp = pygame.sprite.Group()
 invBoots = inventoryHasBoots(23*32-16-8, 16+8)
 inventoryBoots_grp.add(invBoots)
-
 current_position = master
-
 skolnik = janitor(player_instance)
 postavy_display_grp.add(skolnik)
 menu_state = None
-
 ukolFont = pygame.font.SysFont("Consolas", 12)
 ukolKlic = ukolFont.render(lang_text[3], True, (255, 255, 255))
 ukolBoty = ukolFont.render(lang_text[5], True, (255, 255, 255))
 ukolVen = ukolFont.render(lang_text[7], True, (255, 255, 255))
-
 hasKlic = False
 hasBoty = False
 enterDelay = 0
@@ -130,16 +121,12 @@ enterDelay = 0
 #definice pro menu
 backgroundMove = 0
 menu_background = pygame.image.load(DATA_ROOT + "/data/menu/background.png")
-
 playStartGameAnim = False
-
 menuButtonDelay = 0
-
 timeForSecondChance = 0
 secondChance = False
-
 pocet_menu_tlacitek = 3
-x_tlacitek = 23*32 - 245
+x_tlacitek = 23*32 - 125
 
 #credits
 delta_y = screen.get_rect().centery + 60
@@ -492,12 +479,11 @@ while True:
         #povrchy
         txt_bg = pygame.image.load(DATA_ROOT + "/data/menu/text_bg.png").convert_alpha()
         txt_bg_rect = txt_bg.get_rect(topright=(23*32, 0))
-        start_highlight = pygame.image.load(DATA_ROOT + "/data/menu/start_highlight.png").convert_alpha()
-        start_highlight_rect = start_highlight.get_rect(topright=(23*32 - 8, 8))
-        credits_highlight = pygame.image.load(DATA_ROOT + "/data/menu/credits_highlight.png").convert_alpha()
-        credits_highlight_rect = credits_highlight.get_rect(topright=(23*32 - 10, 13))
-        exit_highlight = pygame.image.load(DATA_ROOT + "/data/menu/exit_highlight.png").convert_alpha()
-        exit_highlight_rect = exit_highlight.get_rect(topright=(23*32 - 15, 15))
+        text_button_highlighted = pygame.image.load(DATA_ROOT + "/data/menu/text_button_highlighted.png").convert()
+        text_button = pygame.image.load(DATA_ROOT + "/data/menu/text_button.png").convert()
+        start_button_rect = text_button.get_rect(midtop=(x_tlacitek, screen.get_rect()[1] / pocet_menu_tlacitek + 90))
+        credits_button_rect = text_button.get_rect(midtop=(x_tlacitek, screen.get_rect()[1] / pocet_menu_tlacitek + 190))
+        exit_button_rect = text_button.get_rect(midtop=(x_tlacitek, screen.get_rect()[1] / pocet_menu_tlacitek + 290))
         cze_flag = pygame.image.load(DATA_ROOT + "/data/menu/language_flags/cze_flag.png").convert()
         cze_flag_rect = cze_flag.get_rect(center=(26, screen.get_height() - 26))
         eng_flag = pygame.image.load(DATA_ROOT + "/data/menu/language_flags/eng_flag.png").convert()
@@ -508,11 +494,14 @@ while True:
         
         #vykreslování textu
         screen.blit(txt_bg, txt_bg_rect)
-        text(35,lang_text[10], x_tlacitek, screen.get_rect()[1] / pocet_menu_tlacitek + 100, (255, 255, 255), DATA_ROOT + "/data/fonts/ambitsek.ttf", "topleft", False)
-        text(35,lang_text[11], x_tlacitek, screen.get_rect()[1] / pocet_menu_tlacitek + 200, (255, 255, 255), DATA_ROOT + "/data/fonts/ambitsek.ttf", "topleft", False)
-        text(35,lang_text[12], x_tlacitek, screen.get_rect()[1] / pocet_menu_tlacitek + 300, (255, 255, 255), DATA_ROOT + "/data/fonts/ambitsek.ttf", "topleft", False)
+        text(35,lang_text[10], x_tlacitek, screen.get_rect()[1] / pocet_menu_tlacitek + 100, (255, 255, 255), DATA_ROOT + "/data/fonts/ambitsek.ttf", "midtop", False)
+        text(35,lang_text[11], x_tlacitek, screen.get_rect()[1] / pocet_menu_tlacitek + 200, (255, 255, 255), DATA_ROOT + "/data/fonts/ambitsek.ttf", "midtop", False)
+        text(35,lang_text[12], x_tlacitek, screen.get_rect()[1] / pocet_menu_tlacitek + 300, (255, 255, 255), DATA_ROOT + "/data/fonts/ambitsek.ttf", "midtop", False)
         screen.blit(cze_flag, cze_flag_rect)
         screen.blit(eng_flag, eng_flag_rect)
+        screen.blit(text_button, start_button_rect)
+        screen.blit(text_button, credits_button_rect)
+        screen.blit(text_button, exit_button_rect)
         
         if language == "CZE":
             lang_text = languages.lang("CZE")
@@ -524,27 +513,28 @@ while True:
             screen.blit(lang_highlight, eng_highlight_rect)
             screen.blit(eng_flag, eng_flag_rect)
         
-        #mačkání tlačítek
         if cze_flag_rect.collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:
             language = "CZE"
             
         if eng_flag_rect.collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]:
             language = "ENG"
-            
-        if text(35,lang_text[10], x_tlacitek, screen.get_rect()[1] / pocet_menu_tlacitek + 100, (255, 255, 255), DATA_ROOT + "/data/fonts/ambitsek.ttf", "topleft", False).collidepoint(pygame.mouse.get_pos()) or menu_state == 0:
-            screen.blit(start_highlight, start_highlight_rect)
+        
+        #zvýraznění tlačítek
+        if text(35,lang_text[10], x_tlacitek, screen.get_rect()[1] / pocet_menu_tlacitek + 100, (255, 255, 255), DATA_ROOT + "/data/fonts/ambitsek.ttf", "midtop", False).collidepoint(pygame.mouse.get_pos()) or menu_state == 0:
             menu_state = 0
+            screen.blit(text_button_highlighted, start_button_rect)
             
-        if text(35,lang_text[11], x_tlacitek, screen.get_rect()[1] / pocet_menu_tlacitek + 200, (255, 255, 255), DATA_ROOT + "/data/fonts/ambitsek.ttf", "topleft", False).collidepoint(pygame.mouse.get_pos()) or menu_state == 1:
-            screen.blit(credits_highlight, credits_highlight_rect)
+        if text(35,lang_text[11], x_tlacitek, screen.get_rect()[1] / pocet_menu_tlacitek + 200, (255, 255, 255), DATA_ROOT + "/data/fonts/ambitsek.ttf", "midtop", False).collidepoint(pygame.mouse.get_pos()) or menu_state == 1:
             menu_state = 1
+            screen.blit(text_button_highlighted, credits_button_rect)
             
-        if text(35,lang_text[12], x_tlacitek, screen.get_rect()[1] / pocet_menu_tlacitek + 300, (255, 255, 255), DATA_ROOT + "/data/fonts/ambitsek.ttf", "topleft", False).collidepoint(pygame.mouse.get_pos()) or menu_state == 2:
-            screen.blit(exit_highlight, exit_highlight_rect)
+        if text(35,lang_text[12], x_tlacitek, screen.get_rect()[1] / pocet_menu_tlacitek + 300, (255, 255, 255), DATA_ROOT + "/data/fonts/ambitsek.ttf", "midtop", False).collidepoint(pygame.mouse.get_pos()) or menu_state == 2:
             menu_state = 2
-            
+            screen.blit(text_button_highlighted, exit_button_rect)
+        
+        #mačkání tlačítek
         if menuButtonDelay <= 0:
-            if (text(35,lang_text[10], x_tlacitek, screen.get_rect()[1] / pocet_menu_tlacitek + 100, (255, 255, 255), DATA_ROOT + "/data/fonts/ambitsek.ttf", "topleft", False).collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]) or ((pressed[pygame.K_KP_ENTER] or pressed[pygame.K_RETURN]) and menu_state == 0):
+            if (text(35,lang_text[10], x_tlacitek, screen.get_rect()[1] / pocet_menu_tlacitek + 100, (255, 255, 255), DATA_ROOT + "/data/fonts/ambitsek.ttf", "midtop", False).collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]) or ((pressed[pygame.K_KP_ENTER] or pressed[pygame.K_RETURN]) and menu_state == 0):
                 if not Credits:
                     inMenu = False
                     inGame = True
@@ -568,19 +558,18 @@ while True:
                     
                     pruhlednost = 0
             
-            if (text(35,lang_text[11], x_tlacitek, 200, (255, 255, 255), DATA_ROOT + "/data/fonts/ambitsek.ttf", "topleft", False).collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]) or ((pressed[pygame.K_KP_ENTER] or pressed[pygame.K_RETURN]) and menu_state == 1):
+            if (text(35,lang_text[11], x_tlacitek, 200, (255, 255, 255), DATA_ROOT + "/data/fonts/ambitsek.ttf", "midtop", False).collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]) or ((pressed[pygame.K_KP_ENTER] or pressed[pygame.K_RETURN]) and menu_state == 1):
                 if not Credits:
                     rozmluva.stop()
                     typing.stop()
                     hall.play()
                     zvonek_0.play()
-                    #jasot.play()
                     Credits = True
                     menu_state = None
                 
                     delta_y = screen.get_rect().centery + 60
 
-            if (text(35,lang_text[12], x_tlacitek, 300, (255, 255, 255), DATA_ROOT + "/data/fonts/ambitsek.ttf", "topleft", False).collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]) or ((pressed[pygame.K_KP_ENTER] or pressed[pygame.K_RETURN]) and menu_state == 2):
+            if (text(35,lang_text[12], x_tlacitek, 300, (255, 255, 255), DATA_ROOT + "/data/fonts/ambitsek.ttf", "midtop", False).collidepoint(pygame.mouse.get_pos()) and pygame.mouse.get_pressed()[0]) or ((pressed[pygame.K_KP_ENTER] or pressed[pygame.K_RETURN]) and menu_state == 2):
                 if not Credits:
                     pygame.quit()
                     pygame.mixer.quit()
@@ -608,8 +597,6 @@ while True:
         if timeForSecondChance <= 0:
             secondChance = False
         
-        #text do menu je úplně dole
-        
         #úvodní animace
         if playerStartGameAnim and player_hitbox_instance.rect.centerx <= 23*32/2:
             
@@ -627,7 +614,6 @@ while True:
         cheat_timeout -= 1
          
         #cheaty
-        
         #zapínací zkratka pro cheaty
         if pressed[pygame.K_d]:
             cheat_code = 1
@@ -861,8 +847,6 @@ while True:
         player_instance.rect.centerx = player_hitbox_instance.rect.centerx
         player_instance.rect.bottom = player_hitbox_instance.rect.bottom+1
         
-        
-        
         #kolize s dvermi
         if pygame.sprite.spritecollide(hrac_hitbox, dvere, False):
             for door in dvere:
@@ -977,10 +961,10 @@ while True:
         
         #prohra
         if health == 0:
-            
             g_over_font_render = g_over_font.render(lang_text[0], True, (255, 0, 0))
             return_font_render = return_font.render(lang_text[1], True, (100, 0, 0))
-            
+            g_over_font_rect = g_over_font_render.get_rect(center=(23*32/2, 14*32/2))
+            return_font_rect = return_font_render.get_rect(center=(23*32/2, 14*32/2 + 75))
             while pruhlednost <= 12:
                 pruhlednost += 0.1
                 pruhlednost_textu += 1.5
@@ -1003,15 +987,12 @@ while True:
             fade_black.set_alpha(pruhlednost)
             g_over_font_render.set_alpha(pruhlednost)
             return_font_render.set_alpha(pruhlednost)
-            
-            
+                
         #školník
         if current_time == 0:
             x_hrace = player_instance.prevPosX
             y_hrace = player_instance.prevPosY
-            janitor(x_hrace, y_hrace)
-            
-        
+            janitor(x_hrace, y_hrace)  
             
     if gameOver:
         if not pygame.mixer.get_busy():
@@ -1031,27 +1012,37 @@ while True:
     #win
     if win:
         win_font_render = win_font.render(lang_text[2], True, (0, 0, 0))
+        win_return_font_render = return_font.render(lang_text[1], True, (120, 120, 120))
+        win_font_rect = win_font_render.get_rect(center=(23*32/2, 14*32/2))
+        win_return_font_rect = win_return_font_render.get_rect(center=(23*32/2, 14*32/2 + 75))
         while pruhlednost <= 20:
             pruhlednost += 0.1
             pruhlednost_textu += 1.5
             fade_white.set_alpha(pruhlednost)
             win_font_render.set_alpha(pruhlednost_textu)
+            win_return_font_render.set_alpha(pruhlednost_textu)
             screen.blit(fade_white, (0, 0))
             screen.blit(win_font_render, win_font_rect)
+            screen.blit(win_return_font_render, win_return_font_rect)
             pygame.display.update()
             pygame.time.wait(fade_speed)
         
         inGame = False
-        gameOver = True
-        hall.stop()
-        zvonek_0.stop()
-        zvonek_1.stop()
+        win = True
         pruhlednost = 255
         fade_white.set_alpha(pruhlednost)
         win_font_render.set_alpha(pruhlednost)
-        time.sleep(2)
-        win = False
-        Credits = True
+        
+        if pressed[pygame.K_RETURN]:
+            menuButtonDelay = 50
+            win = False
+            Credits = True
+            hall.stop()
+            zvonek_0.stop()
+            zvonek_1.stop()
+            restart()
+            current_time = default_time
+            health = health_max
         
         timeForSecondChance = 20
         
@@ -1062,7 +1053,7 @@ while True:
         credits_font = pygame.font.Font(DATA_ROOT + "/data/fonts/ambitsek.ttf",text_size)
         credits_text = lang_text[13]
         screen.fill("black")
-        delta_y -= 2
+        delta_y -= 1
         centerx, centery = screen.get_rect().centerx, screen.get_rect().centery
         
         text_list = []
