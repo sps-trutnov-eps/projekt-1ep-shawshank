@@ -573,7 +573,7 @@ while True:
                     pygame.mixer.quit()
                     sys.exit()
         
-        clock.tick(30)
+        clock.tick(60)
     
     elif inGame:
         
@@ -1032,7 +1032,7 @@ while True:
             restart()
             current_time = default_time
             health = health_max
-        clock.tick(30)
+        clock.tick(60)
     
     #win
     if win:
