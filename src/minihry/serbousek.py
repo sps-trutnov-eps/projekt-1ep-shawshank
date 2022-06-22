@@ -82,7 +82,10 @@ def main():
                     text = font.render(pismeno["znak"],True,red)
                 rozmery_pismene = font.size(pismeno["znak"])
             elif pismeno["stav"] == False:
-                text = font.render("_",True,white)
+                if pismeno["stav2"] == False:
+                    text = font.render("_",True,white)
+                elif pismeno["stav2"] == True:
+                    text = font.render("_",True,red)
                 rozmery_pismene = font.size("_")
             textRect = text.get_rect()
             textRect.center = (rozmery_pismene[0]//2 + odsazeni, Y // 1.05)
