@@ -30,8 +30,15 @@ pygame.mixer.init()
 #základní proměnné
 game_map,master,minimap = generate()
 clock = pygame.time.Clock()
+
+#lokalizace
 lang_text = languages.lang("ENG")
 language = "CZE"
+#lokalizace miniher
+lang_mini = []
+michalek_mini = []
+polak_mini = []
+lanka_mini = []
 
 #zvuky
 jasot = pygame.mixer.Sound(DATA_ROOT + "/data/music/jásot.mp3")
@@ -114,7 +121,7 @@ current_position = master
 skolnik = janitor(player_instance)
 postavy_display_grp.add(skolnik)
 menu_state = None
-ukolFont = pygame.font.SysFont("Consolas", 12)
+ukolFont = pygame.font.Font(DATA_ROOT + "/data/fonts/ambitsek.ttf", 12)
 ukolKlic = ukolFont.render(lang_text[3], True, (255, 255, 255))
 ukolBoty = ukolFont.render(lang_text[5], True, (255, 255, 255))
 ukolVen = ukolFont.render(lang_text[7], True, (255, 255, 255))
@@ -975,7 +982,7 @@ while True:
 
         screen.blit(ukolKlic, (23*32 - ukolKlic.get_rect().width - 5, 47))
         screen.blit(ukolBoty, (23*32 - ukolBoty.get_rect().width - 5, 47 + ukolBoty.get_rect().height + 5))
-        screen.blit(ukolVen, (23*32 - ukolVen.get_rect().width - 5, 47 + 17 + ukolVen.get_rect().height + 5))
+        screen.blit(ukolVen, (23*32 - ukolVen.get_rect().width - 5, 47 + 22 + ukolVen.get_rect().height + 5))
         
         #časomíra
         current_time -= 0.016

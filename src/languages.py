@@ -123,3 +123,10 @@ Ardour
 ''', "Pro přechod do menu znovu zmáčkněte escape.", "Ztratíte všechen postup."]
         
     return text
+
+def minigame_lang():
+    lang_mini = []
+    michalek_mini = []
+    polak_mini = []
+    lanka_mini = []
+    return None
