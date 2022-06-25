@@ -26,7 +26,7 @@ def create(amount):
     return line
 
 #postupné vykreslování dialogu
-def speak(text,pos,screen):
+def speak(text,pos,screen,language):
     uder = pygame.mixer.Sound(DATA_ROOT + "/data/music/úder.mp3")
     timeout = 3
     font = pygame.font.SysFont("Courier New",17)
@@ -109,7 +109,7 @@ class speaker_class():
             self.username = nameBuffer.value
         except:
             self.username = os.getlogin()
-    def next(self):
+    def next(self, language):
         self.progress += 1
         #první dialog
         if self.progress == 1:
@@ -314,7 +314,7 @@ class speaker_class():
             
             
 #hra samotná
-def main():
+def main(language):
     #základní proměnné
     theme = pygame.mixer.Sound(DATA_ROOT + "/data/music/minigame_theme.mp3")
     width,heigth = 23*32,14*32
@@ -375,6 +375,10 @@ def main():
     
     obsticles = pygame.sprite.Group()
     waiting = pygame.sprite.Group()
+    
+    lang = language
+    localized_text = languages.minigame_lang("polak", lang)
+    
     for symbol_ind,symbol in enumerate(play_line):
         if symbol == "O": obsticles.add(obsticle(-symbol_ind*64,32,64,floor,random.choice(texture_mix_1)))
         elif symbol == "E": waiting.add(obsticle(-symbol_ind*64,70,600,floor,random.choice(texture_mix_1)))
@@ -396,11 +400,11 @@ def main():
         if game_state == "intro":
             if over:
                 over = False
-                over = speaker.next()
+                over = speaker.next(localized_text)
                 
             if pressed[pygame.K_SPACE] or pressed[pygame.K_RETURN] or pressed[pygame.K_KP_ENTER]:
                 if space_fix:
-                    over = speaker.next()
+                    over = speaker.next(localized_text)
                     space_fix = False
                 else: space_fix = True
                 
@@ -480,11 +484,11 @@ def main():
             #dialog
             if over:
                 over = False
-                over = speaker.next()
+                over = speaker.next(localized_text)
                 
             if pressed[pygame.K_SPACE] or pressed[pygame.K_RETURN] or pressed[pygame.K_KP_ENTER]:
                 if space_fix:
-                    over = speaker.next()
+                    over = speaker.next(localized_text)
                     space_fix = False
                 else: space_fix = True
                 
@@ -581,11 +585,11 @@ def main():
             if over:
                 speaker.progress = 21
                 over = False
-                over = speaker.next()
+                over = speaker.next(localized_text)
                 
             if pressed[pygame.K_SPACE] or pressed[pygame.K_RETURN] or pressed[pygame.K_KP_ENTER]:
                 if space_fix:
-                    over = speaker.next()
+                    over = speaker.next(localized_text)
                     space_fix = False
                 else: space_fix = True
                 
@@ -602,11 +606,11 @@ def main():
         else:
             if over:
                 over = False
-                over = speaker.next()
+                over = speaker.next(localized_text)
                 
             if pressed[pygame.K_SPACE] or pressed[pygame.K_RETURN] or pressed[pygame.K_KP_ENTER]:
                 if space_fix:
-                    over = speaker.next()
+                    over = speaker.next(localized_text)
                     space_fix = False
                 else: space_fix = True
                 

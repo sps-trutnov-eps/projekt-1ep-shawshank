@@ -6,7 +6,7 @@ else:
     DATA_ROOT = '..'
 
 import random,pygame
-from list_obrazovek import screens_with_doors,screens_without_doors
+from screens import screens_with_doors,screens_without_doors
 
 pygame.init()
 
@@ -128,8 +128,6 @@ def main_generation():
     master = [5,5]
     display_surface = pygame.display.set_mode((23*32,14*32))
     screen = pygame.Surface((len(mapa[0])*20,len(mapa)*12))
-    loading = pygame.font.SysFont("Courier New",30).render("Loading...",False,"white")
-    display_surface.blit(loading,(20,10))
     pygame.display.update()
 
     #generace hlavních obrazovek

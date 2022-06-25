@@ -17,6 +17,14 @@ text = []
 #14 ESC 1
 #15 ESC 2
 
+#INDEXY TEXTU MINIHER
+
+#LANG
+#
+#
+#
+#
+
 def lang(language):
     if language == "ENG":
         text = ["GAME OVER","PRESS ENTER","YOU WON","Find the locker key.",">Find the locker key.","Get your shoes.",">Get your shoes.","Escape!",">Escape!","¤ Escape from Shawshank high school ¤","START","CREDITS","EXIT",'''Project made by
@@ -124,9 +132,14 @@ Ardour
         
     return text
 
-def minigame_lang():
-    lang_mini = []
-    michalek_mini = []
-    polak_mini = []
-    lanka_mini = []
-    return None
+def minigame_lang(minigame, language):
+    if minigame == "lang":
+        minigame_text = []
+    elif minigame == "michalek":
+        minigame_text = []
+    elif minigame == "polak":
+        minigame_text = ["|s   |","|+   |",]
+    elif minigame == "lanka":
+        minigame_text = []
+
+    return minigame_text

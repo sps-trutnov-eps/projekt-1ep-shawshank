@@ -12,7 +12,7 @@ import time
 pg.init()
 pg.mixer.init()
 
-def main():
+def main(language):
     theme = pg.mixer.Sound(DATA_ROOT + "/data/music/minigame_theme.mp3") 
     opakovat = 0
     znamka = 1

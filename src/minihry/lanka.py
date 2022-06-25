@@ -29,7 +29,7 @@ def vyberOtazekaspol(otazky):
     
     return otazkaText, (spravnaOdpovedText,spatnaOdpovedText1, spatnaOdpovedText2), (spatnaOdpovedMainText, spravnaOdpovedMainText), spravneTlacitko
     
-def main():
+def main(language):
     global spravne_odpovedi, spatne_odpovedi1, spatne_odpovedi2
     theme = pygame.mixer.Sound(DATA_ROOT + "/data/music/minigame_theme.mp3")
     
