@@ -33,12 +33,7 @@ clock = pygame.time.Clock()
 
 #lokalizace
 lang_text = languages.lang("ENG")
-language = "CZE"
-#lokalizace miniher
-lang_mini = []
-michalek_mini = []
-polak_mini = []
-lanka_mini = []
+language = "ENG"
 
 #zvuky
 jasot = pygame.mixer.Sound(DATA_ROOT + "/data/music/jásot.mp3")
@@ -55,37 +50,20 @@ counter_texture = pygame.image.load(DATA_ROOT + "/data/hud/counter.png").convert
 counter_surface = counter_texture.get_rect()
 
 #fonty a rendery pro game over text
-g_over_font = pygame.font.Font(DATA_ROOT + "/data/fonts/ambitsek.ttf", 75)
-return_font = pygame.font.Font(DATA_ROOT + "/data/fonts/ambitsek.ttf", 35)
-g_over_font_render = g_over_font.render(lang_text[0], True, (255, 0, 0))
-return_font_render = return_font.render(lang_text[1], True, (100, 0, 0))
-g_over_font_render.set_alpha(0)
-return_font_render.set_alpha(0)
-lost_font = pygame.font.Font(DATA_ROOT + "/data/fonts/ARCADECLASSIC.TTF", 125)
-lost_press_enter_font = pygame.font.Font(DATA_ROOT + "/data/fonts/ARCADECLASSIC.TTF", 50)
-lost_font_render = lost_font.render("GAME  OVER", True, (255, 0, 0))
-lost_press_enter_font_render = lost_press_enter_font.render("PRESS   ENTER", True, (100, 0, 0))
-lost_font_rect = lost_font_render.get_rect(center=(23*32/2, 14*32/2))
-lost_press_enter_font_rect = lost_press_enter_font_render.get_rect(center=(23*32/2, 14*32/2 + 75))
+lost_font = pygame.font.Font(DATA_ROOT + "/data/fonts/ambitsek.ttf", 75)
+lost_press_enter_font = pygame.font.Font(DATA_ROOT + "/data/fonts/ambitsek.ttf", 35)
+lost_font_render = lost_font.render(lang_text[0], True, (255, 0, 0))
+lost_press_enter_font_render = lost_press_enter_font.render(lang_text[1], True, (100, 0, 0))
 lost_font_render.set_alpha(0)
 lost_press_enter_font_render.set_alpha(0)
 
-#fonty a rendery pro win text
-win_font = pygame.font.Font(DATA_ROOT + "/data/fonts/ambitsek.ttf", 75)
-win_font_render = win_font.render(lang_text[2], True, (0, 0, 0))
-win_return_font_render = return_font.render(lang_text[1], True, (120, 120, 0))
-win_return_font_render.set_alpha(0)
-win_font_render.set_alpha(0)
 #fonty a rendery pro schoolEscaped text
-won_font = pygame.font.Font(DATA_ROOT + "/data/fonts/ARCADECLASSIC.TTF", 125)
-won_press_enter_font = pygame.font.Font(DATA_ROOT + "/data/fonts/ARCADECLASSIC.TTF", 50)
-won_font_render = won_font.render("YOU  WON", True, (0, 0, 0))
-won_press_enter_font_render = won_press_enter_font.render("PRESS   ENTER", True, (100, 100, 100))
-won_font_rect = won_font_render.get_rect(center=(23*32/2, 14*32/2))
-won_press_enter_font_rect = won_press_enter_font_render.get_rect(center=(23*32/2, 14*32/2 + 75))
+won_font = pygame.font.Font(DATA_ROOT + "/data/fonts/ambitsek.ttf", 75)
+won_press_enter_font = pygame.font.Font(DATA_ROOT + "/data/fonts/ambitsek.ttf", 35)
+won_font_render = won_font.render(lang_text[2], True, (0, 0, 0))
+won_press_enter_font_render = won_press_enter_font.render(lang_text[1], True, (120, 120, 120))
 won_font_render.set_alpha(0)
 won_press_enter_font_render.set_alpha(0)
-
 
 #proměné pro cheaty
 clip = True
@@ -177,7 +155,7 @@ def play_minigame():
     zvonek_1.stop()
     zvonek_0.stop()
     if show_minigame:
-        outcome = random.choice(minigames).main()
+        outcome = random.choice(minigames).main(language)
         screen = pygame.display.set_mode((width,heigth))
         pygame.display.set_caption(lang_text[9])
         player_hitbox_instance.rect.center = vystup(current_position)
@@ -1026,10 +1004,10 @@ while True:
         
         #prohra
         if health == 0:
-            g_over_font_render = g_over_font.render(lang_text[0], True, (255, 0, 0))
-            return_font_render = return_font.render(lang_text[1], True, (100, 0, 0))
-            g_over_font_rect = g_over_font_render.get_rect(center=(23*32/2, 14*32/2))
-            return_font_rect = return_font_render.get_rect(center=(23*32/2, 14*32/2 + 75))
+            lost_font_render = lost_font.render(lang_text[0], True, (255, 0, 0))
+            lost_press_enter_font_render = lost_press_enter_font.render(lang_text[1], True, (100, 0, 0))
+            lost_font_rect = lost_font_render.get_rect(center=(23*32/2, 14*32/2))
+            lost_press_enter_font_rect = lost_press_enter_font_render.get_rect(center=(23*32/2, 14*32/2 + 75))
             while pruhlednost <= 12:
                 pruhlednost += 0.1
                 pruhlednost_textu += 1.5
@@ -1055,8 +1033,12 @@ while True:
             
         #vyhra
         if schoolEscaped:
+            won_font_render = won_font.render(lang_text[2], True, (0, 0, 0))
+            won_press_enter_font_render = won_press_enter_font.render(lang_text[1], True, (120, 120, 120))
+            won_font_rect = won_font_render.get_rect(center=(23*32/2, 14*32/2))
+            won_press_enter_font_rect = won_press_enter_font_render.get_rect(center=(23*32/2, 14*32/2 + 75))
             i = 0
-            while pruhlednost <= 255: #předělal jsem to tu na 255 místo 20 (více v: https://github.com/sps-trutnov/projekt-1ep-shawshank/issues/72)
+            while pruhlednost <= 255:
                 pruhlednost += 0.1*i
                 pruhlednost_textu += 0.1*i
                 i += 1
@@ -1117,56 +1099,7 @@ while True:
             jasot.play()
         text_size = 30
         credits_font = pygame.font.Font(DATA_ROOT + "/data/fonts/ambitsek.ttf",text_size)
-        credits_text = \
-'''
-Projekt vypracován
-třídou 1.EP skupina 2
-
----Generace mapy---
-
-Jakub Polák
-Karel Kříž
-Jan Štěpánek
-
----Mechanika hráče---
-
-Vojtěch Nepimach
-Karel Kříž
-Jakub Polák
-
----Textury---
-
-Jakub Polák
-Karel Kříž
-Vojtěch Nepimach
-
----Zvuky---
-
-Jakub Polák
-Anna Poláková
-
----Minihry---
-
-Marek Langer
-Jan Pospíšil
-Tadeáš Udatný
-Martin Michálek
-Tomáš Svoboda
-Jakub Polák
-Stanislav Lang
-Votjtěch Laňka
-Jan Serbousek
-
----Použitý Software---
-
-Thonny
-Tiled
-Pixel Studio
-Aseprite
-Ardour
-
-(více naleznete na githubu)
-'''
+        credits_text = lang_text[13]
         screen.fill("black")
         delta_y -= 1
         centerx, centery = screen.get_rect().centerx, screen.get_rect().centery

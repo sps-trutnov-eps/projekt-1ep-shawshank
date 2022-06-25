@@ -8,9 +8,12 @@ else:
 import random
 import os
 import pygame
+sys.path.insert(1,DATA_ROOT + '/')
+import languages
+
 pygame.mixer.init()
 
-def vyberOtazekaspol(otazky):
+def vyberOtazekaspol(otazky,localized_text):
     nahodnaOtazka = random.choice(otazky)
     spravnaOdpoved = spravne_odpovedi[otazky.index(nahodnaOtazka)]
     spatnaOdpoved1 = spatne_odpovedi1[otazky.index(nahodnaOtazka)]
@@ -22,8 +25,8 @@ def vyberOtazekaspol(otazky):
     spatnaOdpovedText1 = font.render(spatnaOdpoved1, True, (255, 255, 255))
     spatnaOdpovedText2 = font.render(spatnaOdpoved2, True, (255, 255, 255))
 
-    spatnaOdpovedMainText = font.render(f"Špatná odpověd, správně je: {spravnaOdpoved}", True, (255, 0, 0))
-    spravnaOdpovedMainText = font.render(f"Správně", True, (0, 255, 0))
+    spatnaOdpovedMainText = font.render(localized_text[0] + f"{spravnaOdpoved}", True, (255, 0, 0))
+    spravnaOdpovedMainText = font.render(localized_text[1], True, (0, 255, 0))
 
     spravneTlacitko = random.choice(range(0,3))
     
@@ -32,7 +35,8 @@ def vyberOtazekaspol(otazky):
 def main(language):
     global spravne_odpovedi, spatne_odpovedi1, spatne_odpovedi2
     theme = pygame.mixer.Sound(DATA_ROOT + "/data/music/minigame_theme.mp3")
-    
+
+    localized_text = languages.minigame_lang("lanka",language)
     opakovani=5
     
     sirka_okna = 736
@@ -51,25 +55,45 @@ def main(language):
     moznostiPozice = (12, sirka_okna/3+9, sirka_okna/3*2+6, 300) #poziceX možnosti 1, poziceX možnosti 2, poziceX možnosti 3, poziceY všechny možnosti
     moznostiSirka = (sirka_okna/3-18, 125)
 
-    #nacteni-otazek
-    handle = open("./minihry/lanka/otazky.txt", "r", encoding = "utf-8")
-    vsechny_otazky = handle.read()
-    handle.close()
+    if language == "ENG":
+        #nacteni-otazek
+        handle = open("./minihry/lanka/eng/otazky.txt", "r", encoding = "utf-8")
+        vsechny_otazky = handle.read()
+        handle.close()
 
-    #nacteni-odpovedi
-    handle = open("./minihry/lanka/odpovedi.txt", "r", encoding = "utf-8")
-    vsechny_odpovedi = handle.read()
-    handle.close()
+        #nacteni-odpovedi
+        handle = open("./minihry/lanka/eng/odpovedi.txt", "r", encoding = "utf-8")
+        vsechny_odpovedi = handle.read()
+        handle.close()
 
-    #nacteni-spatnych-odpovedi
-    handle = open("./minihry/lanka/spatna_odpoved1.txt", "r", encoding = "utf-8")
-    spatna_odpoved1 = handle.read()
-    handle.close()
+        #nacteni-spatnych-odpovedi
+        handle = open("./minihry/lanka/eng/spatna_odpoved1.txt", "r", encoding = "utf-8")
+        spatna_odpoved1 = handle.read()
+        handle.close()
 
-    handle = open("./minihry/lanka/spatna_odpoved2.txt", "r", encoding = "utf-8")
-    spatna_odpoved2 = handle.read()
-    handle.close()
+        handle = open("./minihry/lanka/eng/spatna_odpoved2.txt", "r", encoding = "utf-8")
+        spatna_odpoved2 = handle.read()
+        handle.close()
+        
+    else:
+        #nacteni-otazek
+        handle = open("./minihry/lanka/cze/otazky.txt", "r", encoding = "utf-8")
+        vsechny_otazky = handle.read()
+        handle.close()
 
+        #nacteni-odpovedi
+        handle = open("./minihry/lanka/cze/odpovedi.txt", "r", encoding = "utf-8")
+        vsechny_odpovedi = handle.read()
+        handle.close()
+
+        #nacteni-spatnych-odpovedi
+        handle = open("./minihry/lanka/cze/spatna_odpoved1.txt", "r", encoding = "utf-8")
+        spatna_odpoved1 = handle.read()
+        handle.close()
+
+        handle = open("./minihry/lanka/cze/spatna_odpoved2.txt", "r", encoding = "utf-8")
+        spatna_odpoved2 = handle.read()
+        handle.close()
 
     timeOut = 0
     timeOut2 = 0
@@ -86,7 +110,7 @@ def main(language):
     spravneTlacitko = 0
     spatnaOdpoved = 0
 
-    otazkaText, (spravnaOdpovedText,spatnaOdpovedText1, spatnaOdpovedText2), (spatnaOdpovedMainText, spravnaOdpovedMainText), spravneTlacitko = vyberOtazekaspol(otazky)
+    otazkaText, (spravnaOdpovedText,spatnaOdpovedText1, spatnaOdpovedText2), (spatnaOdpovedMainText, spravnaOdpovedMainText), spravneTlacitko = vyberOtazekaspol(otazky,localized_text)
     spatnaOdpoved = 0
     
     pocetOdpovedi = 0
@@ -156,7 +180,7 @@ def main(language):
             screen.blit(spravnaOdpovedText, (moznostiPozice[2] + moznostiSirka[0]/2 - spravnaOdpovedText.get_rect().width/2, moznostiPozice[3] + moznostiSirka[1]/2 - spravnaOdpovedText.get_rect().height/2))
             screen.blit(spatnaOdpovedText1, (moznostiPozice[0] + moznostiSirka[0]/2 - spatnaOdpovedText1.get_rect().width/2, moznostiPozice[3] + moznostiSirka[1]/2 - spravnaOdpovedText.get_rect().height/2))
             screen.blit(spatnaOdpovedText2, (moznostiPozice[1] + moznostiSirka[0]/2 - spatnaOdpovedText2.get_rect().width/2, moznostiPozice[3] + moznostiSirka[1]/2 - spravnaOdpovedText.get_rect().height/2))
-        #sravne spatne
+        #spravne spatne
         if spatnaOdpoved == 1:
             screen.blit(spatnaOdpovedMainText, (sirka_okna/2 - spatnaOdpovedMainText.get_rect().width/2, vyska_okna/2 - spatnaOdpovedMainText.get_rect().height/2))
             nahodnaOtazka = random.choice(otazky)
@@ -172,7 +196,7 @@ def main(language):
             timeOut -= 1
            
         if timeOut == 0 and not spatnaOdpoved == 0:
-            otazkaText, (spravnaOdpovedText,spatnaOdpovedText1, spatnaOdpovedText2), (spatnaOdpovedMainText, spravnaOdpovedMainText), spravneTlacitko = vyberOtazekaspol(otazky)
+            otazkaText, (spravnaOdpovedText,spatnaOdpovedText1, spatnaOdpovedText2), (spatnaOdpovedMainText, spravnaOdpovedMainText), spravneTlacitko = vyberOtazekaspol(otazky,localized_text)
             spatnaOdpoved = 0
         
         if pocetOdpovedi >= 5:

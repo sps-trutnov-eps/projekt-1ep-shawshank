@@ -8,6 +8,8 @@ else:
 import pygame as pg
 import random
 import time
+sys.path.insert(1,DATA_ROOT + '/')
+import languages
 
 pg.init()
 pg.mixer.init()
@@ -17,13 +19,14 @@ def main(language):
     opakovat = 0
     znamka = 1
     vyhra = True
+    localized_text = languages.minigame_lang("lang", language)
 
-    UKOL="Prvočíslo"
+    UKOL=localized_text[0]
     BARVA_POZADI = (0, 20, 0)
     okno = pg.display.set_mode((736,448))
     pg.display.set_caption(UKOL)
     ukol_barva = (255, 255, 255)
-    font = pg.font.SysFont("Comic Sans MS", 42)
+    font = pg.font.SysFont("Comic Sans MS", 40)
 
     def reseni(x, y):
         prvocisla = ""
@@ -36,7 +39,7 @@ def main(language):
                         prvocisla = prvocisla + str(z) + "  "
         odpocet = True
         while odpocet:
-            titul = font.render("Špatně- řešení:", True, (255, 255, 255))
+            titul = font.render(localized_text[1], True, (255, 255, 255))
             outreseni = font.render(prvocisla, True, (255, 255, 255))
             okno.fill(BARVA_POZADI)
             okno.blit(outreseni, (0, 50))
@@ -64,7 +67,7 @@ def main(language):
                     else:
                         odpoved += u.unicode
                 
-            uloha = font.render("Napiš prvočíslo od " + str(zacatek) + " do " + str(konec) + ": ", True, (255, 255, 255))
+            uloha = font.render(localized_text[2] + str(zacatek) + localized_text[3] + str(konec) + ": ", True, (255, 255, 255))
             odpovedin = font.render(odpoved, True, (255, 255, 255))
             
             if odpovezeno == True:
