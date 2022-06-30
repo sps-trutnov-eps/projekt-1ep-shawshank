@@ -1,3 +1,11 @@
+'''
+Útěk ze Střední průmyslové Shawshank
+
+Top-down bludišťovka s minihrami. Unikněte ze školy, než zazvoní na hodinu!
+
+Projekt studentů 1. ročníku oboru elektronické počítačové systémy, jaro 2022
+'''
+
 from email.headerregistry import Group
 import sys
 
