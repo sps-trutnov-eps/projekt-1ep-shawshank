@@ -92,7 +92,7 @@ def vyberPrikladu():
         spatnaOdpovedText1 = font2.render(str(spatnaOdpoved1), True, (255, 255, 255))
         spatnaOdpovedText2 = font2.render(str(spatnaOdpoved2), True, (255, 255, 255))
 
-def main():
+def main(language):
     pygame.display.set_caption('Počítání příkladů')
     global hotovozInt, rozliseni, font1, font2, font3, font4, nadpis, vysledek, prikladuSpatne, prikladuDobre, hotovoz, screen, timeOut, vyberPozice, vyberVelikost, p, priklad, prikladText, spravnyVyber, spravnaOdpoved, spatnaOdpoved1, spatnaOdpoved2, spravnaOdpovedText, spatnaOdpovedText1, spatnaOdpovedText2
     vyberPrikladu()
