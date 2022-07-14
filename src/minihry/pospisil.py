@@ -10,7 +10,7 @@ import os
 import random
 pygame.init()
 
-def main():
+def main(language):
     clock = pygame.time.Clock()
     v1,v2 = (500,331)
     smer = ""
