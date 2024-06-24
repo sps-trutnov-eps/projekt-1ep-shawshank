@@ -8,7 +8,7 @@ else:
 import pygame,random
 pygame.init()
 pygame.mixer.init()
-def main():
+def main(language):
     theme = pygame.mixer.Sound(DATA_ROOT + "/data/music/minigame_theme.mp3")
     stav_hry = "zivot"
     def spawn_kridy():

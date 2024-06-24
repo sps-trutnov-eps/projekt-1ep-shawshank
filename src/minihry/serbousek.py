@@ -9,7 +9,7 @@ import pygame
 import random
 pygame.init()
 pygame.mixer.init()
-def main():
+def main(language):
     theme = pygame.mixer.Sound(DATA_ROOT + "/data/music/minigame_theme.mp3")
     window = pygame.display.set_mode((640,480))
     pygame.display.update()

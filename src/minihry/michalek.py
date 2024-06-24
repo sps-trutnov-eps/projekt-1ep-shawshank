@@ -10,20 +10,23 @@ else:
 import pygame as pg
 import random
 import time
+sys.path.insert(1,DATA_ROOT + '/')
+import languages
 
 pg.init()
 pg.mixer.init()
 
-def main():
+def main(language):
+    localized_text = languages.minigame_lang("michalek", language)
     theme = pg.mixer.Sound(DATA_ROOT + "/data/music/minigame_theme.mp3")
-    UKOL="Vzpočti Diskriminant"
+    UKOL= localized_text[0]
     BARVA_POZADI = (0, 20, 0)
     okno = pg.display.set_mode((736,448))
     pg.display.set_caption(UKOL)
     ukol_barva = (255, 255, 0)
     ukol_barva_alt = (255, 0, 0)
     ub = ukol_barva
-
+    
     seznam_zadani = {"2x² - 11x + 14 = 0":"9",
                      "3x² + 6x + 5 = 0":"-24",
                      "x² + 4x - 16 = 0":"80",
@@ -66,10 +69,10 @@ def main():
                         
             if odpovezeno == True:
                 if odpoved == reseni:
-                    spravne = "Správně"
+                    spravne = localized_text[1]
                     spravneb = (0, 255, 0)
                 else:
-                    spravne = "Špatně"
+                    spravne = localized_text[2]
                     spravneb = (255, 0, 0)
                     vysledek = False
                     

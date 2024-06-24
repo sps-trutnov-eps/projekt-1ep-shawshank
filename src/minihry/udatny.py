@@ -10,7 +10,7 @@ import os
 import random
 pygame.mixer.init()
 pygame.init()
-def main():
+def main(language):
     def cteni_dat_list(jmeno_souboru):
         soubor = open(f'./minihry/udatny/{jmeno_souboru}', 'r', encoding = 'utf-8')
         data = []

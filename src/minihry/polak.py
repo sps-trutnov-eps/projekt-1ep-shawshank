@@ -6,6 +6,9 @@ else:
     DATA_ROOT = '..'
 
 import pygame,random,ctypes,os
+sys.path.insert(1,DATA_ROOT + '/')
+import languages
+
 pygame.init()
 pygame.mixer.init()
 
@@ -26,18 +29,14 @@ def create(amount):
     return line
 
 #postupné vykreslování dialogu
-def speak(text,pos,screen):
+def speak(text,pos,screen,localized_text):
     uder = pygame.mixer.Sound(DATA_ROOT + "/data/music/úder.mp3")
     timeout = 3
     font = pygame.font.SysFont("Courier New",17)
     writing = ""
     text = text.split("\n")
     pygame.time.wait(20)
-    screen.blit(font.render("|s   |",False,"red"),(pos[0]-60,pos[1]+10))
-    screen.blit(font.render("|+   |",False,"red"),(pos[0]-60,pos[1]+20))
-    screen.blit(font.render("|next|",False,"red"),(pos[0]-60,pos[1]+30))
-    screen.blit(font.render("|to  |",False,"red"),(pos[0]-60,pos[1]+40))
-    screen.blit(font.render("|skip|",False,"red"),(pos[0]-60,pos[1]+50))
+    screen.blit(font.render(localized_text[0],False,"red"),(78,screen.get_height()-20))
     for symbol in text[0]:
         pressed = pygame.key.get_pressed()
         if pressed[pygame.K_s]:
@@ -109,7 +108,7 @@ class speaker_class():
             self.username = nameBuffer.value
         except:
             self.username = os.getlogin()
-    def next(self):
+    def next(self, localized_text):
         self.progress += 1
         #první dialog
         if self.progress == 1:
@@ -118,52 +117,52 @@ class speaker_class():
             pygame.time.wait(500)
             self.screen.blit(self.hahaha,(150,90))
             self.screen.blit(self.textbox,self.textbox_rect)
-            speak("Welcome mere human beings!",self.textbox_rect.topleft,self.screen)
+            speak(localized_text[1],self.textbox_rect.topleft,self.screen,localized_text)
             return(False)
         elif self.progress == 2:
             self.screen.blit(self.bc0,(0,0))
             self.screen.blit(self.normal_stand,(300,90))
             self.screen.blit(self.textbox,self.textbox_rect)
-            speak("Today, we will discuss...",self.textbox_rect.topleft,self.screen)
+            speak(localized_text[2],self.textbox_rect.topleft,self.screen,localized_text)
             return(False)
         elif self.progress == 3:
             self.screen.blit(self.bc0,(0,0))
             self.screen.blit(self.normal_stand,(300,90))
             self.screen.blit(self.textbox,self.textbox_rect)
-            speak("...",self.textbox_rect.topleft,self.screen)
+            speak(localized_text[3],self.textbox_rect.topleft,self.screen,localized_text)
             return(False)
         elif self.progress == 4:
             self.screen.blit(self.bc0,(0,0))
             self.screen.blit(self.normal_stand,(300,90))
             self.screen.blit(self.textbox,self.textbox_rect)
-            speak("wait!",self.textbox_rect.topleft,self.screen)
+            speak(localized_text[4],self.textbox_rect.topleft,self.screen,localized_text)
             return(False)
         elif self.progress == 5:
             self.screen.blit(self.bc0,(0,0))
             self.screen.blit(self.normal_stand,(300,90))
             self.screen.blit(self.textbox,self.textbox_rect)
-            speak("Where's þe chalk‽",self.textbox_rect.topleft,self.screen)
+            speak(localized_text[5],self.textbox_rect.topleft,self.screen,localized_text)
             return(False)
         elif self.progress == 6:
             self.screen.blit(self.bc0,(0,0))
             self.screen.blit(self.hahaha,(150,90))
             self.screen.blit(self.textbox,self.textbox_rect)
-            speak("What ever! The Class slave- I mean service, will get it.",self.textbox_rect.topleft,self.screen)
+            speak(localized_text[6],self.textbox_rect.topleft,self.screen,localized_text)
             return(False)
         elif self.progress == 7:
             self.screen.blit(self.bc0,(0,0))
             self.screen.blit(self.reading,(150,90))
             self.screen.blit(self.textbox,self.textbox_rect)
-            speak("It's ",self.textbox_rect.topleft,self.screen)
+            speak(localized_text[7],self.textbox_rect.topleft,self.screen,localized_text)
             return(False)
         elif self.progress == 8:
-            speak("It's "+self.username+".",self.textbox_rect.topleft,self.screen)
+            speak(localized_text[7]+self.username+".",self.textbox_rect.topleft,self.screen,localized_text)
             return(False)
         elif self.progress == 9:
             self.screen.blit(self.bc0,(0,0))
             self.screen.blit(self.hahaha,(150,90))
             self.screen.blit(self.textbox,self.textbox_rect)
-            speak("OK "+self.username+", go get ÞE CHALK!!",self.textbox_rect.topleft,self.screen)
+            speak(localized_text[8]+self.username+localized_text[9],self.textbox_rect.topleft,self.screen,localized_text)
             return(False)
         elif self.progress == 10:
             return(True)
@@ -175,25 +174,25 @@ class speaker_class():
             pygame.time.wait(500)
             self.screen.blit(self.hahaha,(150,90))
             self.screen.blit(self.textbox,self.textbox_rect)
-            speak("Hey...",self.textbox_rect.topleft,self.screen)
+            speak(localized_text[10],self.textbox_rect.topleft,self.screen,localized_text)
             return(False)
         elif self.progress == 12:
             self.screen.blit(self.bc1,(0,0))
             self.screen.blit(self.normal_stand,(300,90))
             self.screen.blit(self.textbox,self.textbox_rect)
-            speak("You got þe chalk... Good job!",self.textbox_rect.topleft,self.screen)
+            speak(localized_text[11],self.textbox_rect.topleft,self.screen,localized_text)
             return(False)
         elif self.progress == 13:
             self.screen.blit(self.bc1,(0,0))
             self.screen.blit(self.normal_stand,(300,90))
             self.screen.blit(self.textbox,self.textbox_rect)
-            speak("Now just bring it back to our realm, so we can use it.",self.textbox_rect.topleft,self.screen)
+            speak(localized_text[12],self.textbox_rect.topleft,self.screen,localized_text)
             return(False)
         elif self.progress == 14:
             self.screen.blit(self.bc1,(0,0))
             self.screen.blit(self.less_normal_stand,(300,90))
             self.screen.blit(self.textbox,self.textbox_rect)
-            speak("Also, under any circumstances, don't ",self.textbox_rect.topleft,self.screen)
+            speak(localized_text[13],self.textbox_rect.topleft,self.screen,localized_text)
             return(True)
         
         #dobrý konec
@@ -203,43 +202,43 @@ class speaker_class():
             pygame.time.wait(500)
             self.screen.blit(self.hahaha,(150,90))
             self.screen.blit(self.textbox,self.textbox_rect)
-            speak("AAAAAA, you're back...",self.textbox_rect.topleft,self.screen)
+            speak(localized_text[14],self.textbox_rect.topleft,self.screen,localized_text)
             return(False)
         elif self.progress == 16:
             self.screen.blit(self.bc0,(0,0))
             self.screen.blit(self.less_normal_stand,(300,90))
             self.screen.blit(self.textbox,self.textbox_rect)
-            speak("GOOD",self.textbox_rect.topleft,self.screen)
+            speak(localized_text[15],self.textbox_rect.topleft,self.screen,localized_text)
             return(False)
         elif self.progress == 17:
             self.screen.blit(self.bc0,(0,0))
             self.screen.blit(self.normal_stand,(300,90))
             self.screen.blit(self.textbox,self.textbox_rect)
-            speak("I guess we can start now.",self.textbox_rect.topleft,self.screen)
+            speak(localized_text[16],self.textbox_rect.topleft,self.screen,localized_text)
             return(False)
         elif self.progress == 18:
             self.screen.blit(self.bc0,(0,0))
             self.screen.blit(self.normal_stand,(300,90))
             self.screen.blit(self.textbox,self.textbox_rect)
-            speak("So, todays theme is...",self.textbox_rect.topleft,self.screen)
+            speak(localized_text[17],self.textbox_rect.topleft,self.screen,localized_text)
             return(False)
         elif self.progress == 19:
             self.screen.blit(self.bc0,(0,0))
             self.screen.blit(self.muhahaha,(150,90))
             self.screen.blit(self.textbox,self.textbox_rect)
-            speak("Þe infinite chaos beyond the stars, far away from\nour understanding...",self.textbox_rect.topleft,self.screen)
+            speak(localized_text[18],self.textbox_rect.topleft,self.screen,localized_text)
             return(False)
         elif self.progress == 20:
             self.screen.blit(self.bc0,(0,0))
             self.screen.blit(self.hahaha,(150,90))
             self.screen.blit(self.textbox,self.textbox_rect)
-            speak("Þe realms both beyond and inside our own...",self.textbox_rect.topleft,self.screen)
+            speak(localized_text[19],self.textbox_rect.topleft,self.screen,localized_text)
             return(False)
         elif self.progress == 21:
             self.screen.blit(self.bc0,(0,0))
             self.screen.blit(self.hahaha,(150,90))
             self.screen.blit(self.textbox,self.textbox_rect)
-            speak("Þe infinite possibilities of human mind and\nhalucinogenic substances from þe ",self.textbox_rect.topleft,self.screen)
+            speak(localized_text[20],self.textbox_rect.topleft,self.screen,localized_text)
             return(True)
         
         #špatný konec
@@ -249,31 +248,31 @@ class speaker_class():
             pygame.time.wait(500)
             self.screen.blit(self.muhahaha,(150,90))
             self.screen.blit(self.textbox,self.textbox_rect)
-            speak("ha...",self.textbox_rect.topleft,self.screen)
+            speak(localized_text[21],self.textbox_rect.topleft,self.screen,localized_text)
             return(False)
         elif self.progress == 23:
             self.screen.blit(self.bc1,(0,0))
             self.screen.blit(self.hahaha,(150,90))
             self.screen.blit(self.textbox,self.textbox_rect)
-            speak("HA...",self.textbox_rect.topleft,self.screen)
+            speak(localized_text[22],self.textbox_rect.topleft,self.screen,localized_text)
             return(False)
         elif self.progress == 24:
             self.screen.blit(self.bc1,(0,0))
             self.screen.blit(self.hahaha,(150,90))
             self.screen.blit(self.textbox,self.textbox_rect)
-            speak("HAHAHA HA HA  HA  HA    Ha",self.textbox_rect.topleft,self.screen)
+            speak(localized_text[23],self.textbox_rect.topleft,self.screen,localized_text)
             return(False)
         elif self.progress == 25:
             self.screen.blit(self.bc1,(0,0))
             self.screen.blit(self.muhahaha,(150,90))
             self.screen.blit(self.textbox,self.textbox_rect)
-            speak("You Failed Miserably.",self.textbox_rect.topleft,self.screen)
+            speak(localized_text[24],self.textbox_rect.topleft,self.screen,localized_text)
             return(False)
         elif self.progress == 26:
             self.screen.blit(self.bc1,(0,0))
             self.screen.blit(self.less_normal_stand,(300,90))
             self.screen.blit(self.textbox,self.textbox_rect)
-            speak("ButYouWillFailNoMore...",self.textbox_rect.topleft,self.screen)
+            speak(localized_text[25],self.textbox_rect.topleft,self.screen,localized_text)
             return(False)
         elif self.progress == 27:
             self.screen.blit(self.bc1,(0,0))
@@ -314,13 +313,13 @@ class speaker_class():
             
             
 #hra samotná
-def main():
+def main(language):
     #základní proměnné
+    localized_text = languages.minigame_lang("polak", language)
     theme = pygame.mixer.Sound(DATA_ROOT + "/data/music/minigame_theme.mp3")
     width,heigth = 23*32,14*32
     screen = pygame.display.set_mode((width,heigth))
     pygame.display.set_caption("¤___¤")
-    screen.blit(pygame.font.SysFont("Courier New",30).render("Loading...",False,"white"),(10,20))
     pygame.display.update()
     clock = pygame.time.Clock()
     speaker = speaker_class(screen)
@@ -370,11 +369,12 @@ def main():
     player_jump_texture.set_colorkey("black")
     player_jump_texture.blit(player_sheet,(-160,-64))
     info_font = pygame.font.SysFont("Courier New",30)
-    info_text = info_font.render("Press ||SPACE|| to jump.",False,"green")
+    info_text = info_font.render(localized_text[26],False,"green")
     lives_indicator = info_font.render(f"{lives} × <3",False,"red")
     
     obsticles = pygame.sprite.Group()
     waiting = pygame.sprite.Group()
+    
     for symbol_ind,symbol in enumerate(play_line):
         if symbol == "O": obsticles.add(obsticle(-symbol_ind*64,32,64,floor,random.choice(texture_mix_1)))
         elif symbol == "E": waiting.add(obsticle(-symbol_ind*64,70,600,floor,random.choice(texture_mix_1)))
@@ -396,11 +396,11 @@ def main():
         if game_state == "intro":
             if over:
                 over = False
-                over = speaker.next()
+                over = speaker.next(localized_text)
                 
             if pressed[pygame.K_SPACE] or pressed[pygame.K_RETURN] or pressed[pygame.K_KP_ENTER]:
                 if space_fix:
-                    over = speaker.next()
+                    over = speaker.next(localized_text)
                     space_fix = False
                 else: space_fix = True
                 
@@ -480,11 +480,11 @@ def main():
             #dialog
             if over:
                 over = False
-                over = speaker.next()
+                over = speaker.next(localized_text)
                 
             if pressed[pygame.K_SPACE] or pressed[pygame.K_RETURN] or pressed[pygame.K_KP_ENTER]:
                 if space_fix:
-                    over = speaker.next()
+                    over = speaker.next(localized_text)
                     space_fix = False
                 else: space_fix = True
                 
@@ -505,7 +505,7 @@ def main():
                 player_rect.midbottom = (128,floor)
                 jump_timeout_base = 40
                 win_image = pygame.image.load(DATA_ROOT + "/data/textury_miniher/cil.png").convert_alpha()
-                info_text = info_font.render("Press ||SEMICOLON|| to secret.",False,"green")
+                info_text = info_font.render(localized_text[29],False,"green")
                 player_jump_texture.blit(player_sheet,(-160,0))
                 jump_timeout = 2
         
@@ -581,16 +581,16 @@ def main():
             if over:
                 speaker.progress = 21
                 over = False
-                over = speaker.next()
+                over = speaker.next(localized_text)
                 
             if pressed[pygame.K_SPACE] or pressed[pygame.K_RETURN] or pressed[pygame.K_KP_ENTER]:
                 if space_fix:
-                    over = speaker.next()
+                    over = speaker.next(localized_text)
                     space_fix = False
                 else: space_fix = True
                 
             if over:
-                win_text = info_font.render("YOU HAVE LOST SUCCSESSFULY",False,"red2")
+                win_text = info_font.render(localized_text[27],False,"red2")
                 win_rect = win_text.get_rect()
                 win_rect.center = (width//2,heigth//2)
                 screen.blit(win_text,win_rect)
@@ -602,16 +602,16 @@ def main():
         else:
             if over:
                 over = False
-                over = speaker.next()
+                over = speaker.next(localized_text)
                 
             if pressed[pygame.K_SPACE] or pressed[pygame.K_RETURN] or pressed[pygame.K_KP_ENTER]:
                 if space_fix:
-                    over = speaker.next()
+                    over = speaker.next(localized_text)
                     space_fix = False
                 else: space_fix = True
                 
             if over:
-                win_text = info_font.render("YOU HAVE WON SUCCSESSFULY",False,"green")
+                win_text = info_font.render(localized_text[28],False,"green")
                 win_rect = win_text.get_rect()
                 win_rect.center = (width//2,heigth//2)
                 screen.fill("black")
