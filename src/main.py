@@ -1,9 +1,9 @@
 '''
-Útěk ze Střední průmyslové Shawshank
+Útek ze Stredni průmyslové Shawshank
 
-Top-down bludišťovka s minihrami. Unikněte ze školy, než zazvoní na hodinu!
+Top-down bludisťovka s minihrami. Uniknete ze skoly, než zazvoni na hodinu!
 
-Projekt studentů 1. ročníku oboru elektronické počítačové systémy, jaro 2022
+Projekt studentů 1. ročniku oboru elektronické počitačové systémy, jaro 2022
 '''
 
 from email.headerregistry import Group
@@ -34,14 +34,14 @@ for name in os.listdir(slozka_miniher):
 pygame.init()
 pygame.mixer.init()
 
-#základní proměnné
+#základni promenné
 game_map,master,minimap = generate()
 
 clock = pygame.time.Clock()
 
 #zvuky
-jasot = pygame.mixer.Sound(DATA_ROOT + "/data/music/jásot.mp3")
-rozmluva = pygame.mixer.Sound(DATA_ROOT + "/data/music/mírumilovná_rozmluva.mp3")
+jasot = pygame.mixer.Sound(DATA_ROOT + "/data/music/jasot.mp3")
+rozmluva = pygame.mixer.Sound(DATA_ROOT + "/data/music/mirumilovna_rozmluva.mp3")
 zvonek_0 = pygame.mixer.Sound(DATA_ROOT + "/data/music/zvonek_0.mp3")
 zvonek_1 = pygame.mixer.Sound(DATA_ROOT + "/data/music/zvonek_1.mp3")
 hall = pygame.mixer.Sound(DATA_ROOT + "/data/music/the_hall.mp3")
@@ -74,7 +74,7 @@ won_press_enter_font_rect = won_press_enter_font_render.get_rect(center=(23*32/2
 won_font_render.set_alpha(0)
 won_press_enter_font_render.set_alpha(0)
 
-#proměné pro cheaty
+#promené pro cheaty
 clip = True
 hitbox = False
 show_minigame = True
@@ -83,7 +83,7 @@ cheat_timeout = 20
 show_minimap = False
 cheaty = False
 
-#základní proměné pro hru
+#základni promené pro hru
 player_x = 23 * 32 / 2
 player_y = 14 * 32 / 2
 player_speed = 3
@@ -116,7 +116,7 @@ hrac_menu_grp.add(menuPlayer(320, player_y - 100))
 janitor_menu_grp = pygame.sprite.Group()
 janitor_menu_grp.add(menuJanitor(250, player_y + 100))
 
-#inventář
+#inventár
 inventoryKey_grp = pygame.sprite.Group()
 invKey = inventoryHasKey(23*32-32-16-16, 16+8)
 inventoryKey_grp.add(invKey)
@@ -131,7 +131,7 @@ postavy_display_grp.add(skolnik)
 menu_state = None
 
 ukolFont = pygame.font.SysFont("Consolas", 12)
-ukolKlic = ukolFont.render("Najdi a seber klíč.", True, (255, 255, 255))
+ukolKlic = ukolFont.render("Najdi a seber klič.", True, (255, 255, 255))
 ukolBoty = ukolFont.render("Najdi a seber boty.", True, (255, 255, 255))
 ukolVen = ukolFont.render("Uteč!", True, (255, 255, 255))
 
@@ -153,7 +153,7 @@ secondChance = False
 #credits
 delta_y = screen.get_rect().centery + 60
 
-#výstup ze dveří
+#výstup ze dveri
 def vystup(pos):
     for line_ind,line in enumerate(game_map[pos[0]][pos[1]][0]):
         for symbol_ind,symbol in enumerate(line):
@@ -173,7 +173,7 @@ def play_minigame():
     if show_minigame:
         outcome = random.choice(minigames).main()
         screen = pygame.display.set_mode((width,heigth))
-        pygame.display.set_caption("¤ Útěk ze střední průmyslové Shawshank ¤")
+        pygame.display.set_caption("¤ Útek ze stredni průmyslové Shawshank ¤")
         player_hitbox_instance.rect.center = vystup(current_position)
         player_instance.rect.centerx = player_hitbox_instance.rect.centerx+4
         player_instance.rect.bottom = player_hitbox_instance.rect.bottom-2
@@ -189,7 +189,7 @@ def play_minigame():
         zvonek_0.play()
         return health
 
-#vytvoření textu
+#vytvoreni textu
 def text(text_size, text, x, y, text_color, text_font, align, sysfont):
     if sysfont:
         font = pygame.font.SysFont(text_font, text_size)
@@ -219,7 +219,7 @@ def text(text_size, text, x, y, text_color, text_font, align, sysfont):
     screen.blit(text, text_rect)
     return text_rect
     
-#načtení zdí speciálních místností
+#načteni zdi speciálnich mistnosti
 def specialni_zdi(mapka):
     global podlaha
     zdi = pygame.sprite.Group()
@@ -227,29 +227,29 @@ def specialni_zdi(mapka):
     for radek_ind,radek in enumerate(mapka):
         for symbol_ind,symbol in enumerate(radek):
             if symbol == "6":
-                zdi.add(zed((symbol_ind*32,radek_ind*32),"zeď_0",mapka[2][1]))
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"zed_0",mapka[2][1]))
             elif symbol == "9":
-                zdi.add(zed((symbol_ind*32,radek_ind*32),"zeď_1",mapka[2][1]))
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"zed_1",mapka[2][1]))
             elif symbol == "12":
-                zdi.add(zed((symbol_ind*32,radek_ind*32),"zeď_2",mapka[2][1]))
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"zed_2",mapka[2][1]))
             elif symbol == "15":
-                zdi.add(zed((symbol_ind*32,radek_ind*32),"zeď_3",mapka[2][1])) 
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"zed_3",mapka[2][1])) 
             elif symbol == "7":
-                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnitřní_roh_0",mapka[2][1])) 
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnitrni_roh_0",mapka[2][1])) 
             elif symbol == "10":
-                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnitřní_roh_1",mapka[2][1]))
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnitrni_roh_1",mapka[2][1]))
             elif symbol == "13":
-                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnitřní_roh_2",mapka[2][1])) 
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnitrni_roh_2",mapka[2][1])) 
             elif symbol == "16":
-                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnitřní_roh_3",mapka[2][1]))  
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnitrni_roh_3",mapka[2][1]))  
             elif symbol == "8":
-                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnější_roh_0",mapka[2][1]))  
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnejsi_roh_0",mapka[2][1]))  
             elif symbol == "11":
-                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnější_roh_1",mapka[2][1]))  
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnejsi_roh_1",mapka[2][1]))  
             elif symbol == "14":
-                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnější_roh_2",mapka[2][1]))
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnejsi_roh_2",mapka[2][1]))
             elif symbol == "17":
-                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnější_roh_3",mapka[2][1]))
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnejsi_roh_3",mapka[2][1]))
             elif symbol == "29":
                 zdi.add(zed((symbol_ind*32,radek_ind*32),"skrinka_horizontalni",mapka[2][1]))
             elif symbol == "21":
@@ -311,7 +311,7 @@ def specialni_zdi(mapka):
                 podlaha.add(specialni_podlahy(screens_with_doors[1], True, symbol_ind, radek_ind, "34"))
     return zdi,interactive
 
-#načtení podlahy speciálních místností
+#načteni podlahy speciálnich mistnosti
 def specialni_podlahy(mapka, under, symbolpos, radekpos, symbol):
     podlaha = pygame.sprite.Group()
     dvere = pygame.sprite.Group()
@@ -342,43 +342,43 @@ def specialni_podlahy(mapka, under, symbolpos, radekpos, symbol):
             podlaha.add(zed((symbolpos*32,radekpos*32),"podlaha_dark",mapka[2][1]))
     return podlaha,dvere
     
-#načtení zdí specificky
+#načteni zdi specificky
 def random_zdi(mapka,ind,door):
     global mozne_prechody
     zdi = pygame.sprite.Group()
     for radek_ind,radek in enumerate(mapka):
         for symbol_ind,symbol in enumerate(radek):
             if symbol == "6":
-                zdi.add(zed((symbol_ind*32,radek_ind*32),"zeď_0",mapka[2][1]))
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"zed_0",mapka[2][1]))
             elif symbol == "9":
-                zdi.add(zed((symbol_ind*32,radek_ind*32),"zeď_1",mapka[2][1]))
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"zed_1",mapka[2][1]))
             elif symbol == "12":
-                zdi.add(zed((symbol_ind*32,radek_ind*32),"zeď_2",mapka[2][1]))
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"zed_2",mapka[2][1]))
             elif symbol == "15":
-                zdi.add(zed((symbol_ind*32,radek_ind*32),"zeď_3",mapka[2][1])) 
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"zed_3",mapka[2][1])) 
             elif symbol == "7":
-                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnitřní_roh_0",mapka[2][1])) 
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnitrni_roh_0",mapka[2][1])) 
             elif symbol == "10":
-                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnitřní_roh_1",mapka[2][1]))
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnitrni_roh_1",mapka[2][1]))
             elif symbol == "13":
-                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnitřní_roh_2",mapka[2][1])) 
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnitrni_roh_2",mapka[2][1])) 
             elif symbol == "16":
-                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnitřní_roh_3",mapka[2][1]))  
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnitrni_roh_3",mapka[2][1]))  
             elif symbol == "8":
-                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnější_roh_0",mapka[2][1]))  
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnejsi_roh_0",mapka[2][1]))  
             elif symbol == "11":
-                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnější_roh_1",mapka[2][1]))  
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnejsi_roh_1",mapka[2][1]))  
             elif symbol == "14":
-                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnější_roh_2",mapka[2][1]))
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnejsi_roh_2",mapka[2][1]))
             elif symbol == "17":
-                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnější_roh_3",mapka[2][1]))
+                zdi.add(zed((symbol_ind*32,radek_ind*32),"vnejsi_roh_3",mapka[2][1]))
                 
         if "1" in radek or "2" in radek or "3" in radek or "4" in radek:
             if door == "regular_door":
                 mozne_prechody.append(ind)
     return zdi
 
-#načtení obrazovek
+#načteni obrazovek
 def urceni_sprite_group(mapa):
     podlaha = pygame.sprite.Group()
     dvere = pygame.sprite.Group()
@@ -389,13 +389,13 @@ def urceni_sprite_group(mapa):
             elif symbol == "5":
                 podlaha.add(zed((symbol_ind*32,radek_ind*32),"podlaha",mapa[2][1]))
             elif symbol == "1":
-                dvere.add(zed((symbol_ind*32,radek_ind*32),"dveře_0",mapa[2][1]))
+                dvere.add(zed((symbol_ind*32,radek_ind*32),"dvere_0",mapa[2][1]))
             elif symbol == "2":
-                dvere.add(zed((symbol_ind*32,radek_ind*32),"dveře_1",mapa[2][1]))
+                dvere.add(zed((symbol_ind*32,radek_ind*32),"dvere_1",mapa[2][1]))
             elif symbol == "3":
-                dvere.add(zed((symbol_ind*32,radek_ind*32),"dveře_2",mapa[2][1]))
+                dvere.add(zed((symbol_ind*32,radek_ind*32),"dvere_2",mapa[2][1]))
             elif symbol == "4":
-                dvere.add(zed((symbol_ind*32,radek_ind*32),"dveře_3",mapa[2][1]))
+                dvere.add(zed((symbol_ind*32,radek_ind*32),"dvere_3",mapa[2][1]))
     return podlaha,dvere
 
 wall_map = []
@@ -437,7 +437,7 @@ def restart():
     hasKlic = False
     hasBoty = False
 
-#kód pro ztmavení / zesvětlení obrazovky
+#kód pro ztmaveni / zesvetleni obrazovky
 fade_white = pygame.Surface((23*32, 14*32))
 fade_black = pygame.Surface((23*32, 14*32))
 fade_white.fill("white")
@@ -458,7 +458,7 @@ creditsRoll = False
 
 #main loop
 while True:
-    #vypnutí okna
+    #vypnuti okna
     pressed = pygame.key.get_pressed()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -487,7 +487,7 @@ while True:
                     sys.exit()
                     pygame.mixer.quit()
             
-        #poyb pozadí
+        #poyb pozadi
         if backgroundMove <= 0:
             backgroundMove = menu_background.get_rect().width - 23 * 32
         else:
@@ -496,7 +496,7 @@ while True:
         if not pygame.mixer.get_busy():
             typing.play()
             
-        #pohyb mezi tlačíky přes tab
+        #pohyb mezi tlačiky pres tab
         if pressed[pygame.K_TAB] and cheat_timeout < 0:
             if pressed[pygame.K_RSHIFT] or pressed[pygame.K_LSHIFT]:
                 if menu_state == None: menu_state = 2
@@ -524,13 +524,13 @@ while True:
         exit_highlight = pygame.image.load(DATA_ROOT + "/data/menu/exit_highlight.png").convert_alpha()
         exit_highlight_rect = exit_highlight.get_rect(topright=(23*32 - 15, 15))
         
-        #vykreslování textu
+        #vykreslováni textu
         screen.blit(txt_bg, txt_bg_rect)
         text(50, "START", 23*32 - 225, 100, (255, 255, 255), DATA_ROOT + "/data/fonts/ARCADECLASSIC.TTF", "topleft", False)
         text(50, "CREDITS", 23*32 - 225, 200, (255, 255, 255), DATA_ROOT + "/data/fonts/ARCADECLASSIC.TTF", "topleft", False)
         text(50, "EXIT", 23*32 - 225, 300, (255, 255, 255), DATA_ROOT + "/data/fonts/ARCADECLASSIC.TTF", "topleft", False)
         
-        #mačkání tlačítek
+        #mačkáni tlačitek
         if text(50, "START", 23*32 - 225, 100, (255, 255, 255), DATA_ROOT + "/data/fonts/ARCADECLASSIC.TTF", "topleft", False).collidepoint(pygame.mouse.get_pos()) or menu_state == 0:
             screen.blit(start_highlight, start_highlight_rect)
             menu_state = 0
@@ -616,9 +616,9 @@ while True:
         if timeForSecondChance <= 0:
             secondChance = False
         
-        #text do menu je úplně dole
+        #text do menu je úplne dole
         
-        #úvodní animace
+        #úvodni animace
         if playerStartGameAnim and player_hitbox_instance.rect.centerx <= 23*32/2:
             
             posun_x = 0
@@ -636,7 +636,7 @@ while True:
          
         #cheaty
         
-        #zapínací zkratka pro cheaty
+        #zapinaci zkratka pro cheaty
         if pressed[pygame.K_d]:
             cheat_code = 1
         if pressed[pygame.K_e] and cheat_code == 1:
@@ -763,7 +763,7 @@ while True:
             
             player_hitbox_instance.posun_x(posun_x)
             
-        #kolize se stolem a skříňkou
+        #kolize se stolem a skriňkou
         if pygame.sprite.spritecollide(hrac_hitbox, interactive, False) and inSpecialRoom:
             for objekt in interactive:
                 if objekt.textura == "stul_stred_klic" and not invKey.completed:
@@ -789,7 +789,7 @@ while True:
                     
         player_hitbox_instance.posun_y(posun_y)
 
-        #kolize se stolem a skříňkou
+        #kolize se stolem a skriňkou
         if pygame.sprite.spritecollide(hrac_hitbox, interactive, False) and inSpecialRoom: 
             for objekt in interactive:
                 if objekt.textura == "stul_stred_klic" and not invKey.completed:
@@ -933,7 +933,7 @@ while True:
                         schoolEscaped = True
                         hall.stop()
         
-        #vykreslování
+        #vykreslováni
         screen.fill("black")
         podlaha.draw(screen)
         zdi.draw(screen)
@@ -953,15 +953,15 @@ while True:
         screen.blit(counter_texture, counter_surface)
         
         if hasKlic and not hasBoty:
-            ukolKlic = ukolFont.render("Najdi a seber klíč.", True, (255, 255, 255))
+            ukolKlic = ukolFont.render("Najdi a seber klič.", True, (255, 255, 255))
             ukolBoty = ukolFont.render(">Najdi a seber boty.", True, (255, 255, 255))
             ukolVen = ukolFont.render("Uteč!", True, (200, 200, 200))
         elif hasBoty and hasKlic:
-            ukolKlic = ukolFont.render("Najdi a seber klíč.", True, (255, 255, 255))
+            ukolKlic = ukolFont.render("Najdi a seber klič.", True, (255, 255, 255))
             ukolBoty = ukolFont.render("Najdi a seber boty.", True, (255, 255, 255))
             ukolVen = ukolFont.render(">Uteč!", True, (255, 255, 255))
         else:
-            ukolKlic = ukolFont.render(">Najdi a seber klíč.", True, (255, 255, 255))
+            ukolKlic = ukolFont.render(">Najdi a seber klič.", True, (255, 255, 255))
             ukolBoty = ukolFont.render("Najdi a seber boty.", True, (200, 200, 200))
             ukolVen = ukolFont.render("Uteč!", True, (200, 200, 200))
 
@@ -969,7 +969,7 @@ while True:
         screen.blit(ukolBoty, (23*32 - ukolBoty.get_rect().width - 5, 47 + ukolBoty.get_rect().height + 5))
         screen.blit(ukolVen, (23*32 - ukolVen.get_rect().width - 5, 47 + 17 + ukolVen.get_rect().height + 5))
         
-        #časomíra
+        #časomira
         current_time -= 0.016
         if current_time > 21: text(30, (str(int(current_time))), 24, 25, "gray", "rockwellcondensedtučné", "center", True)
         elif current_time > 0 : text(30, (str(int(current_time))), 24, 25, "red", "rockwellcondensedtučné", "center", True)
@@ -1023,7 +1023,7 @@ while True:
         #vyhra
         if schoolEscaped:
             i = 0
-            while pruhlednost <= 255: #předělal jsem to tu na 255 místo 20 (více v: https://github.com/sps-trutnov/projekt-1ep-shawshank/issues/72)
+            while pruhlednost <= 255: #predelal jsem to tu na 255 misto 20 (vice v: https://github.com/sps-trutnov/projekt-1ep-shawshank/issues/72)
                 pruhlednost += 0.1*i
                 pruhlednost_textu += 0.1*i
                 i += 1
@@ -1047,7 +1047,7 @@ while True:
             won_font_render.set_alpha(pruhlednost)
             won_press_enter_font_render.set_alpha(pruhlednost)
         
-        #školník
+        #skolnik
         if current_time == 0:
             x_hrace = player_instance.prevPosX
             y_hrace = player_instance.prevPosY
@@ -1087,25 +1087,25 @@ while True:
         credits_text = \
 '''
 Projekt vypracován
-třídou 1.EP skupina 2
+tridou 1.EP skupina 2
 
 ---Generace mapy---
 
 Jakub Polák
-Karel Kříž
-Jan Štěpánek
+Karel Križ
+Jan stepánek
 
 ---Mechanika hráče---
 
-Vojtěch Nepimach
-Karel Kříž
+Vojtech Nepimach
+Karel Križ
 Jakub Polák
 
 ---Textury---
 
 Jakub Polák
-Karel Kříž
-Vojtěch Nepimach
+Karel Križ
+Vojtech Nepimach
 
 ---Zvuky---
 
@@ -1115,13 +1115,13 @@ Anna Poláková
 ---Minihry---
 
 Marek Langer
-Jan Pospíšil
-Tadeáš Udatný
+Jan Pospisil
+Tadeás Udatný
 Martin Michálek
-Tomáš Svoboda
+Tomás Svoboda
 Jakub Polák
 Stanislav Lang
-Votjtěch Laňka
+Votjtech Laňka
 Jan Serbousek
 
 ---Použitý Software---
@@ -1132,7 +1132,7 @@ Pixel Studio
 Aseprite
 Ardour
 
-(více naleznete na githubu)
+(vice naleznete na githubu)
 '''
         screen.fill("black")
         delta_y -= 2
